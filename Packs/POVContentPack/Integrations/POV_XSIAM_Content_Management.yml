@@ -274,11 +274,11 @@ script:
             return CommandResults(
                     outputs_prefix="ConfigurationSetup.CustomPacks",
                     outputs={
-                        "EntryFilename": entry_filename,
-                        "InstallationStatus": 'Success'
+                        "packid": entry_filename,
+                        "installationstatus": 'Success'
                     },
                     raw_response=response_json,
-                    outputs_key_field="EntryFilename"
+                    outputs_key_field="packid"
                 )
 
         except Exception as e:

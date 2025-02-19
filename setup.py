@@ -1,6 +1,7 @@
 import json
 import os
 import time
+import webbrowser
 from typing import Union
 
 import requests
@@ -209,6 +210,7 @@ def main():
     found_alert_id = trigger_playbook()
     url = f"{DEMISTO_BASE_URL.replace('api-', '')}/alerts?action:openAlertDetails={found_alert_id}-workPlan"
     print(f"Alert triggered, view here: {url}")
+    webbrowser.open(url)
 
 
 main()
