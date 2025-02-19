@@ -1,0 +1,176 @@
+commonfields:
+  id: DashboardCreator
+  version: 4
+vcShouldKeepItemLegacyProdMachine: false
+name: DashboardCreator
+script: |2
+
+
+  register_module_line('DashboardCreator', 'start', __line__())
+  demisto.debug('pack name = POVContentPack, pack version = 1.0.0')
+
+  SCRIPT_NAME = 'DashboardCreator'
+
+
+  def parse_data_from_file(dashboard_name: str) -> Union[Dict, List[dict]]:
+      """
+      Parse a File from the demisto context to grab the Dashboards data
+
+      :param dashboard_name: str, name of the Dashboard Entry
+      :return: List of data
+      """
+      dataset_file_entry_id = None
+
+      instance_context = demisto.context()
+      context_files = instance_context.get('File', [])
+      if not isinstance(context_files, list):
+          context_files = [context_files]
+
+      # Search through all Context Files to grab the File's EntryID
+      for file_in_context in context_files:
+          file_in_context_name = file_in_context.get('Name', '')
+          if file_in_context_name == dashboard_name:
+              dataset_file_entry_id = file_in_context.get('EntryID')
+              break
+
+      if not dataset_file_entry_id:
+          error_message = f'Could not find file entry ID: {dashboard_name} .'
+          demisto.debug(f'{SCRIPT_NAME}, "{dashboard_name}" - {error_message}.')
+          raise Exception(error_message)
+
+      # Use the entry ID to grab the file's path
+      try:
+          file_path = demisto.getFilePath(dataset_file_entry_id)['path']
+      except Exception:
+          error_message = f'Could not find a file with entry ID {dataset_file_entry_id}'
+          demisto.debug(f'{SCRIPT_NAME}, "{dataset_file_entry_id}" - {error_message}.')
+          raise Exception(error_message)
+
+      with open(file_path, 'r') as f:
+          raw_file_data = f.read()
+
+      try:
+          parsed_data = json.loads(raw_file_data)
+      except json.JSONDecodeError:
+          error_message = f'Could not determine file type for entry ID {dataset_file_entry_id}'
+          demisto.debug(f'{SCRIPT_NAME}, "{dataset_file_entry_id}" - {error_message}.')
+          raise Exception(error_message)
+
+      return parsed_data
+
+
+  def get_data(dashboard_name: str):
+      """
+      Searches the demisto context for the Dashboard data, either parsing a downloaded file from a URL or grabbing
+      from context
+
+      :param dashboard_name: str, name of the Dashboard Entry
+      :return: List of data
+      """
+
+      context = demisto.context()
+      dashboard_data = {}
+
+      for dashboard in context.get('ConfigurationSetup', {}).get('Dashboards', []):
+          if dashboard.get('name') == dashboard_name:
+              if dashboard.get('data'):
+                  dashboard_data = dashboard.get('data')
+              else:
+                  dashboard_data = parse_data_from_file(dashboard_name)
+              break
+
+      if not dashboard_data:
+          return f"Failure. No dashboard definition found in context for {dashboard_name}"
+
+      if isinstance(dashboard_data, dict):
+          return [dashboard_data]
+      return dashboard_data
+
+
+  def configure_dashboard(dashboard_entry_name: str, dashboard_data: list, instance_name: str = None) -> str:
+      """Configures the dashboard in the XSOAR instance.
+      """
+      context = demisto.context()
+
+      if not dashboard_data:
+          return f"Failure. No dashboard definition {dashboard_entry_name}"
+
+      args = {'uri': '/public_api/v1/dashboards/insert', 'body': {"request_data": dashboard_data}}
+
+      if instance_name:
+          args['using'] = instance_name
+
+      status, res = execute_command(
+          'core-api-post',
+          args,
+          fail_on_error=False,
+      )
+
+      if not status:
+          error_message = f'{SCRIPT_NAME} - {res}'
+          demisto.debug(error_message)
+          return f"Failure. {error_message}"
+
+      errors = res.get('response', {}).get('errors', [])
+      if errors:
+          return f"Failure. {errors}"
+
+      return "Success"
+
+
+  def main():
+      args = demisto.args()
+      instance_name = args.get('using')
+      dashboard_entry_name = args.get('dashboard_entry_name')
+
+      try:
+          data = get_data(dashboard_entry_name)
+
+          if isinstance(data, dict):
+              data = [data]
+
+          configuration_status = configure_dashboard(dashboard_entry_name, data, instance_name)
+
+          return_results(
+              CommandResults(
+                  outputs_prefix='ConfigurationSetup.Dashboards',
+                  outputs_key_field='name',
+                  outputs={
+                      'name': dashboard_entry_name,
+                      'data': data,
+                      'creationstatus': configuration_status,
+                  },
+              )
+          )
+
+      except Exception as e:
+          return_error(f'{SCRIPT_NAME} - Error occurred while configuring list "{dashboard_entry_name}".\n{e}')
+
+
+  if __name__ in ('__main__', '__builtin__', 'builtins'):
+      main()
+
+  register_module_line('DashboardCreator', 'end', __line__())
+type: python
+tags:
+- configuration
+- Content Management
+comment: Dashboard Creator for the Content Management pack.
+enabled: true
+args:
+- name: dashboard_entry_name
+  required: true
+  default: true
+  description: The name of the dashboard entry to configure.
+outputs:
+- contextPath: ConfigurationSetup.Dashboard.creationstatus
+  description: The creation status of the dashboard.
+  type: Unknown
+scripttarget: 0
+subtype: python3
+pswd: ""
+runonce: false
+dockerimage: demisto/xsoar-tools:1.0.0.1902141
+runas: DBotWeakRole
+engineinfo: {}
+mainengineinfo: {}

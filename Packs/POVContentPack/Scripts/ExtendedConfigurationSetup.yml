@@ -1,0 +1,572 @@
+commonfields:
+  id: ExtendedConfigurationSetup
+  version: 32
+vcShouldKeepItemLegacyProdMachine: false
+name: ExtendedConfigurationSetup
+script: |
+  register_module_line('ExtendedConfigurationSetup', 'start', __line__())
+  demisto.debug('pack name = POVContentPack, pack version = 1.0.0')
+
+
+
+  SCRIPT_NAME = 'ExtendedConfigurationSetup'
+
+
+  class Pack:
+      """Pack object for the configuration file.
+
+      Args:
+          id_ (str): Pack ID.
+          version (str): Version of the pack to install.
+      """
+
+      def __init__(self, id_: str, version: str = '', url: str = '', system: str = 'no'):
+          self.id = id_
+          self._version = version
+          self.url = url
+          self.system = system
+
+      @property
+      def version(self) -> str:
+          """The getter method for the version variable.
+          """
+          if self._version == '*':
+              return 'latest'
+          return self._version
+
+      @property
+      def installation_object(self) -> Dict[str, str]:
+          """Creates the layout of an installation object in marketplace for the pack.
+          """
+          return {
+              'id': self.id,
+              'version': self.version
+          }
+
+
+  class IntegrationInstance:
+      """Integration instance object for the configuration file.
+
+      Args:
+          brand_name (str): Integration name to be configured.
+          instance_name (str): Instance name to be configured.
+      """
+      INSTANCES_KEYWORDS_LIST = ['use_cases', 'brand_name', 'instance_name']
+
+      def __init__(self, brand_name: str, instance_name: str):
+          self.brand_name = brand_name
+          self.instance_name = instance_name
+
+      @property
+      def params(self) -> Dict:
+          """Getter for the instance parameters.
+
+          Returns:
+              Dict. {param_name: param_value} for each configured parameter.
+          """
+          return {param_name: param_value for param_name, param_value in self.__dict__.items() if
+                  param_name not in IntegrationInstance.INSTANCES_KEYWORDS_LIST}
+
+      def add_param(self, name: str, value: Any):
+          self.__dict__[name] = value
+
+      def get_param(self, param_name: str, default_value: Any = None) -> Any:
+          """Get the parameter for the instance by name.
+
+          Args:
+              param_name (str): The name of the parameter to get it's value.
+              default_value (Any): The fallback value for the case where the parameter is not configured.
+
+          Returns:
+              Any. The value of the parameter.
+
+          Notes:
+              In the case where the parameter is not configured, will return the default value. or None if not supplied.
+          """
+          try:
+              return self.__dict__[param_name]
+          except KeyError:
+              return default_value
+
+
+  class Job:
+      """Job object for the configuration file.
+
+      Args:
+          job_name (str): Job name to be configured.
+      """
+      JOBS_KEYWORDS_LIST = ['use_cases', 'job_name']
+
+      def __init__(self, job_name: str):
+          self.job_name = job_name
+
+      @property
+      def params(self) -> Dict:
+          """Getter for the instance parameters.
+
+          Returns:
+              Dict. {param_name: param_value} for each configured parameter.
+          """
+          return {
+              param_name: param_value
+              for param_name, param_value in self.__dict__.items() if
+              param_name not in Job.JOBS_KEYWORDS_LIST
+          }
+
+      def add_param(self, name: str, value: Any):
+          self.__dict__[name] = value
+
+      def get_param(self, param_name: str, default_value: Any = None) -> Any:
+          """Get the parameter for the instance by name.
+
+          Args:
+              param_name (str): The name of the parameter to get it's value.
+              default_value (Any): The fallback value for the case where the parameter is not configured.
+
+          Returns:
+              Any. The value of the parameter.
+
+          Notes:
+              In the case where the parameter is not configured, will return the default value. or None if not supplied.
+          """
+          try:
+              return self.__dict__[param_name]
+          except KeyError:
+              return default_value
+
+
+  class LookupDataset:
+      """LookupDataset object for the configuration file.
+
+      Args:
+          id_ (str): Pack ID.
+          version (str): Version of the pack to install.
+      """
+
+      def __init__(self,
+                   dataset_name: str,
+                   dataset_type: str,
+                   dataset_schema: dict,
+                   data: List[Any] = None,
+                   url: str = ''):
+          self.dataset_name = dataset_name
+          self.dataset_type = dataset_type
+          self.dataset_schema = dataset_schema
+          self.data = data if data else []
+          self.url = url
+
+      @property
+      def params(self) -> Dict:
+          """Getter for the instance parameters.
+
+          Returns:
+              Dict. {param_name: param_value} for each configured parameter.
+          """
+          return {
+              param_name: param_value
+              for param_name, param_value in self.__dict__.items()
+          }
+
+
+  class CorrelationRule:
+      """Correlation Rule object for the configuration file.
+
+      Args:
+          correlation_rule_name (str): Job name to be configured.
+      """
+      RULE_KEYWORDS_LIST = ['correlation_rule_name']
+
+      def __init__(self, correlation_rule_name: str):
+          self.correlation_rule_name = correlation_rule_name
+
+      @property
+      def params(self) -> Dict:
+          """Getter for the instance parameters.
+
+          Returns:
+              Dict. {param_name: param_value} for each configured parameter.
+          """
+          return {
+              param_name: param_value
+              for param_name, param_value in self.__dict__.items() if
+              param_name not in CorrelationRule.RULE_KEYWORDS_LIST
+          }
+
+      def add_param(self, name: str, value: Any):
+          self.__dict__[name] = value
+
+      def get_param(self, param_name: str, default_value: Any = None) -> Any:
+          """Get the parameter for the instance by name.
+
+          Args:
+              param_name (str): The name of the parameter to get it's value.
+              default_value (Any): The fallback value for the case where the parameter is not configured.
+
+          Returns:
+              Any. The value of the parameter.
+
+          Notes:
+              In the case where the parameter is not configured, will return the default value. or None if not supplied.
+          """
+          try:
+              return self.__dict__[param_name]
+          except KeyError:
+              return default_value
+
+
+  class Dashboard:
+      """Dashboard object for the configuration file.
+
+      Args:
+          id_ (str): Pack ID.
+          version (str): Version of the pack to install.
+      """
+
+      def __init__(self,
+                   name: str,
+                   data: Union[List, Dict[str, Any]] = None,
+                   url: str = ''):
+          self.name = name
+          self.data = data if data else {}
+          self.url = url
+
+      @property
+      def params(self) -> Dict:
+          """Getter for the instance parameters.
+
+          Returns:
+              Dict. {param_name: param_value} for each configured parameter.
+          """
+          return {
+              param_name: param_value
+              for param_name, param_value in self.__dict__.items()
+          }
+
+
+  class Configuration:
+      def __init__(self, configuration_data: Dict):
+          """Configuration object for the configuration file.
+
+          Args:
+              configuration_data (Dict): The configuration data parsed from the configuration file.
+          """
+          self.config = configuration_data
+
+          # Variables
+          self.sections = list(self.config.keys())
+
+          # Objects Variables
+          self.jobs: Dict[str, Job] = {}
+          self.lists: Dict[str, Dict[str, str]] = {}
+          self.custom_packs: Dict[str, Pack] = {}
+          self.marketplace_packs: Dict[str, Pack] = {}
+          self.integration_instances: Dict[str, IntegrationInstance] = {}
+          self.lookup_datasets: Dict[str, LookupDataset] = {}
+          self.correlation_rules: Dict[str, CorrelationRule] = {}
+          self.dashboards: Dict[str, Dashboard] = {}
+
+          # Load and create Objects
+          self.load_jobs()
+          self.load_lists()
+          self.load_custom_packs()
+          self.load_marketplace_packs()
+          self.load_integration_instances()
+          self.load_lookup_datasets()
+          self.load_correlation_rules()
+          self.load_dashboards()
+
+      def load_custom_packs(self) -> None:
+          """Iterates through the Packs sections and creates a Pack object for each custom pack.
+          """
+          if 'custom_packs' in self.sections:
+              for pack in self.config['custom_packs']:
+                  pack_id = pack.get('id')
+                  pack_url = pack.get('url')
+                  system = pack.get('system', 'no')
+                  if pack_url:
+                      new_pack = Pack(pack_id, url=pack_url, system=system)
+                      self.custom_packs[pack_id] = new_pack
+
+      def load_marketplace_packs(self) -> None:
+          """Iterates through the Packs sections and creates a Pack object for each marketplace pack.
+          """
+          if 'marketplace_packs' in self.sections:
+              for pack in self.config['marketplace_packs']:
+                  pack_id = pack.get('id')
+                  pack_version = pack.get('version')
+                  if pack_version:
+                      new_pack = Pack(pack_id, version=pack_version)
+                      self.marketplace_packs[pack_id] = new_pack
+
+      def load_integration_instances(self) -> None:
+          """Iterates through the integration_instances sections, creates IntegrationInstance object for each instance.
+          """
+          if 'integration_instances' in self.sections:
+              for instance in self.config['integration_instances']:
+                  brand_name = instance.get('brand')
+                  instance_name = instance.get('name')
+                  new_instance = IntegrationInstance(brand_name, instance_name)
+
+                  for param_name, param_value in instance.items():
+                      new_instance.add_param(param_name, param_value)
+
+                  self.integration_instances[instance_name] = new_instance
+
+      def load_jobs(self) -> None:
+          """Iterates through the jobs sections, creates Job object for each job.
+          """
+          if 'jobs' in self.sections:
+              for job in self.config['jobs']:
+                  job_name = job.get('name')
+                  new_job = Job(job_name)
+
+                  for param_name, param_value in job.items():
+                      new_job.add_param(param_name, param_value)
+
+                  self.jobs[job_name] = new_job
+
+      def load_lists(self) -> None:
+          """Iterates through the lists sections, creates Dict object for each list.
+          """
+          if 'lists' in self.sections:
+              for _list in self.config['lists']:
+                  list_name = _list.get('name')
+                  list_value = _list.get('value')
+                  list_type = _list.get('type')
+
+                  self.lists[list_name] = {
+                      "value": list_value,
+                      "type": list_type
+                  }
+
+      def load_lookup_datasets(self) -> None:
+          """Iterates through the Lookup Datsets sections and creates a LookupDatset object for each Lookup Datsets.
+          """
+          if 'lookup_datasets' in self.sections:
+              for lookup in self.config['lookup_datasets']:
+                  dataset_name = lookup.get('dataset_name')
+                  dataset_type = lookup.get('dataset_type')
+                  dataset_schema = lookup.get('dataset_schema')
+                  data = lookup.get('data')
+                  url = lookup.get('url')
+                  if url or data:
+                      new_lookup_dataset = LookupDataset(
+                          dataset_name,
+                          dataset_type,
+                          dataset_schema,
+                          data=data,
+                          url=url
+                      )
+                      self.lookup_datasets[dataset_name] = new_lookup_dataset
+
+      def load_correlation_rules(self) -> None:
+          """Iterates through the Lookup Datsets sections and creates a LookupDatset object for each Lookup Datsets.
+          """
+          if 'correlation_rules' in self.sections:
+              for correlation_rule in self.config['correlation_rules']:
+                  correlation_rule_name = correlation_rule.get('name')
+                  new_correlation_rule = CorrelationRule(correlation_rule_name)
+
+                  for param_name, param_value in correlation_rule.items():
+                      new_correlation_rule.add_param(param_name, param_value)
+
+                  self.correlation_rules[correlation_rule_name] = new_correlation_rule
+
+      def load_dashboards(self) -> None:
+          if 'dashboards' in self.sections:
+              for dashboard in self.config['dashboards']:
+                  name = dashboard.get('name')
+                  data = dashboard.get('data')
+                  url = dashboard.get('url')
+                  if url or data:
+                      new_dashboard = Dashboard(
+                          name,
+                          data=data,
+                          url=url
+                      )
+                      self.dashboards[name] = new_dashboard
+
+
+  def list_exists(list_name: str) -> bool:
+      res = demisto.executeCommand("getList", {"listName": list_name})[0]
+      if res['Type'] == entryTypes['error'] and "Item not found" in res['Contents']:
+          return False
+      else:
+          return True
+
+
+  def create_context(full_configuration: Configuration) -> Dict[str, List[Dict[str, str]]]:
+      custom_packs = [
+          {
+              'packid': pack.id,
+              'packurl': pack.url,
+              'system': pack.system,
+          }
+          for _, pack in full_configuration.custom_packs.items()
+      ]
+
+      marketplace_packs = [
+          {
+              'packid': pack.id,
+              'packversion': str(pack.version),
+          }
+          for _, pack in full_configuration.marketplace_packs.items()
+      ]
+
+      jobs = [
+          job.params for _, job in full_configuration.jobs.items()
+      ]
+
+      instances = [
+          instance.params for _, instance in full_configuration.integration_instances.items()
+      ]
+
+      lookup_datasets = [
+          dataset.params for _, dataset in full_configuration.lookup_datasets.items()
+      ]
+
+      lists = [
+          {
+              'listname': list_name,
+              'listdata': pps["value"],
+          }
+          for list_name, pps in full_configuration.lists.items() if not list_exists(list_name) or pps["type"] != "dynamic"
+      ]
+
+      correlation_rules = [
+          rule.params for _, rule in full_configuration.correlation_rules.items()
+      ]
+      dashboards = [
+          dashboard.params for _, dashboard in full_configuration.dashboards.items()
+      ]
+
+
+      return {
+          'Jobs': jobs,
+          'Lists': lists,
+          'CustomPacks': custom_packs,
+          'MarketplacePacks': marketplace_packs,
+          'IntegrationInstances': instances,
+          'LookupDatasets': lookup_datasets,
+          'CorrelationRules': correlation_rules,
+          'Dashboards': dashboards
+      }
+
+
+  def get_data_from_war_room_file(entry_id) -> bytes:
+      """Retrieves the content of a file from the war-room.
+
+      Args:
+          entry_id (str): The entry ID of the configuration file from the war-room.
+
+      Returns:
+          str. The content of the configuration file.
+      """
+      try:
+          file_path = demisto.getFilePath(entry_id)['path']
+      except Exception:
+          raise DemistoException(f'Could not find a file with entry ID {entry_id}')
+
+      with open(file_path, 'rb') as file:
+          file_content = file.read()
+
+      return file_content
+
+
+  def get_config_data(args: Dict) -> Dict:
+      """Gets the configuration data from Git or from a file entry in the war room..
+
+      Returns:
+          Dict. The parsed configuration file.
+      """
+      configuration_file_entry_id = args.get('configuration_file_entry_id')
+
+      config_data = get_data_from_war_room_file(configuration_file_entry_id)
+
+      try:
+          return json.loads(config_data)
+      except json.JSONDecodeError:
+          raise DemistoException('Configuration file is not a valid JSON structure.')
+
+
+  def main():
+      try:
+          args = demisto.args()
+          config_data = get_config_data(args)
+          config = Configuration(config_data)
+
+          return_results(
+              CommandResults(
+                  outputs_prefix='ConfigurationSetup',
+                  outputs=create_context(config),
+              )
+          )
+
+      except Exception as e:
+          return_error(f'{SCRIPT_NAME} - Error occurred while setting up machine.\n{e}')
+
+
+  if __name__ in ('__main__', '__builtin__', 'builtins'):
+      main()
+
+  register_module_line('ExtendedConfigurationSetup', 'end', __line__())
+type: python
+tags:
+- configuration
+- Content Management
+comment: Configuration loader for the XSIAM POV Content Management
+enabled: true
+args:
+- name: configuration_file_entry_id
+  description: The war room entry ID of the configuration file.
+outputs:
+- contextPath: ConfigurationSetup.Jobs.name
+  description: The name of job to be created.
+  type: Unknown
+- contextPath: ConfigurationSetup.Lists.listname
+  description: The name of the list to be configured.
+  type: Unknown
+- contextPath: ConfigurationSetup.Lists.listdata
+  description: The data of the list to be configured.
+  type: Unknown
+- contextPath: ConfigurationSetup.CustomPacks.packid
+  description: The ID of the custom pack to install.
+  type: Unknown
+- contextPath: ConfigurationSetup.CustomPacks.packurl
+  description: The URL of the custom pack to install.
+  type: Unknown
+- contextPath: ConfigurationSetup.CustomPacks.system
+  description: Whether to save the custom pack at a system-level.
+  type: Unknown
+- contextPath: ConfigurationSetup.MarketplacePacks.packid
+  description: The ID of the marketplace pack to install.
+  type: Unknown
+- contextPath: ConfigurationSetup.MarketplacePacks.packversion
+  description: The version of the marketplace pack to install.
+  type: Unknown
+- contextPath: ConfigurationSetup.IntegrationInstances.name
+  description: The name of the integration instance to be created.
+  type: unknown
+- contextPath: ConfigurationSetup.LookupDatasets.dataset_name
+  description: The name of the lookup dataset to create
+  type: unknown
+- contextPath: ConfigurationSetup.LookupDatasets.url
+  description: The location of the lookup dataset's data.
+  type: unknown
+- contextPath: ConfigurationSetup.CorrelationRules.name
+  description: The name of the correlation rule to create
+  type: unknown
+- contextPath: ConfigurationSetup.Dashboards.name
+  description: The name of the dashboard entry
+  type: unknown
+- contextPath: ConfigurationSetup.Dashboards.url
+  description: The location of the dashboard definition
+  type: unknown
+scripttarget: 0
+subtype: python3
+pswd: ""
+runonce: false
+dockerimage: demisto/xsoar-tools:1.0.0.1902141
+runas: DBotWeakRole
+engineinfo: {}
+mainengineinfo: {}

@@ -1,0 +1,25 @@
+{
+    "name": "POV Content Pack",
+    "description": "Content Pack for starter configuration for POVs",
+    "support": "developer",
+    "currentVersion": "1.0.0",
+    "author": "Anna Barone",
+    "url": "https://live.paloaltonetworks.com/t5/cortex-xsoar-discussions/bd-p/Cortex_XSOAR_Discussions",
+    "email": "",
+    "categories": [
+        "Utilities"
+    ],
+    "tags": [
+        "PoV"
+    ],
+    "useCases": [],
+    "keywords": [],
+    "marketplaces": [
+        "xsoar",
+        "marketplacev2"
+    ],
+    "devEmail": [
+        "abarone@paloaltonetworks.com"
+    ],
+    "githubUser": []
+}

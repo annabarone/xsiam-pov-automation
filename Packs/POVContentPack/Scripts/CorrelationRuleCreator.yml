@@ -1,0 +1,146 @@
+commonfields:
+  id: CorrelationRuleCreator
+  version: 8
+vcShouldKeepItemLegacyProdMachine: false
+name: CorrelationRuleCreator
+script: |-
+  register_module_line('CorrelationRuleCreator', 'start', __line__())
+  demisto.debug('pack name = POVContentPack, pack version = 1.0.0')
+
+
+
+  SCRIPT_NAME = 'CorrelationRuleCreator'
+
+
+  def configure_rule(correlation_rule_name: str, existing_rule: Optional[Dict[str, Any]] = None, instance_name: str = None) -> str:
+      """Configures the correlation rule in the XSOAR instance.
+      """
+      context = demisto.context()
+      rule_params = existing_rule or {}
+
+      for rule in context.get('ConfigurationSetup', {}).get('CorrelationRules', []):
+          if rule.get('name') == correlation_rule_name:
+              rule_params.update(rule)
+              break
+
+      if not rule_params:
+          return f"Failure. No correlation rule definition found in context for {correlation_rule_name}"
+
+      args = {'uri': '/public_api/v1/correlations/insert', 'body': {"request_data": [rule_params]}}
+
+      if instance_name:
+          args['using'] = instance_name
+
+      status, res = execute_command(
+          'core-api-post',
+          args,
+          fail_on_error=False,
+      )
+
+      if not status:
+          error_message = f'{SCRIPT_NAME} - {res}'
+          demisto.debug(error_message)
+          return f"Failure. {error_message}"
+
+      return "Success"
+
+
+  def search_existing_rule(correlation_rule_name: str, instance_name: str = None) -> Dict[str, Any]:
+      """Searches the machine for previously configured correlation rules with the given name.
+
+      Args:
+          correlation_rule_name (str): The name of the correlation rule to update its past configurations.
+          instance_name (str): Core REST API instance name.
+
+      Returns:
+          Dict[str, Any]. The integration data as configured on the machine.
+      """
+
+      args = {
+          'uri': '/public_api/v1/correlations/get',
+          'body': {
+              "request_data": {
+                  "filters": [
+                      {
+                          "field": "name",
+                          "operator": "EQ",
+                          "value": correlation_rule_name
+                      }
+                  ]
+              }
+          }
+      }
+
+      if instance_name:
+          args['using'] = instance_name
+
+      status, res = execute_command(
+          'core-api-post',
+          args,
+          fail_on_error=False,
+      )
+
+      if not status:
+          error_message = f'{SCRIPT_NAME} - {res}'
+          demisto.debug(error_message)
+          return {}
+
+      search_results = res.get('response', {}).get('objects', [])
+      if search_results:
+          return search_results[0]
+
+      return {}
+
+
+  def main():
+      args = demisto.args()
+      instance_name = args.get('using')
+      correlation_rule_name = args.get('correlation_rule_name')
+
+      try:
+          existing_rule = search_existing_rule(correlation_rule_name, instance_name)
+          configuration_status = configure_rule(correlation_rule_name, existing_rule, instance_name)
+
+          return_results(
+              CommandResults(
+                  outputs_prefix='ConfigurationSetup.CorrelationRules',
+                  outputs_key_field='name',
+                  outputs={
+                      'name': correlation_rule_name,
+                      'integrationinstancename': correlation_rule_name,
+                      'creationstatus': configuration_status,
+                  },
+              )
+          )
+
+      except Exception as e:
+          return_error(f'{SCRIPT_NAME} - Error occurred while configuring list "{correlation_rule_name}".\n{e}')
+
+
+  if __name__ in ('__main__', '__builtin__', 'builtins'):
+      main()
+
+  register_module_line('CorrelationRuleCreator', 'end', __line__())
+type: python
+tags:
+- configuration
+- Content Management
+comment: Correlation Rule Creator for the Content Management pack.
+enabled: true
+args:
+- name: correlation_rule_name
+  required: true
+  default: true
+  description: The name of the integration instance to configure.
+outputs:
+- contextPath: ConfigurationSetup.CorrelationRules.creationstatus
+  description: The creation status of the correlation rules.
+  type: Unknown
+scripttarget: 0
+subtype: python3
+pswd: ""
+runonce: false
+dockerimage: demisto/xsoar-tools:1.0.0.1902141
+runas: DBotWeakRole
+engineinfo: {}
+mainengineinfo: {}

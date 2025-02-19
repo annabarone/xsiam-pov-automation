@@ -1,0 +1,375 @@
+commonfields:
+  id: POV XSIAM Content Management
+  version: -1
+vcShouldKeepItemLegacyProdMachine: false
+name: POV XSIAM Content Management
+display: POV XSIAM Content Management
+category: Utilities
+image: data:image/png;base64,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
+description: This integration connects to your XSIAM APIs to configure POV Custom Content.
+detaileddescription: |
+  ### Generate an API Key and API Key ID
+  1. Go to Settings -> Configurations -> API Keys.
+  2. Click the **+New Key** button in the top right corner.
+  3. Generate a key of type **Standard**.
+  4. Copy and paste the key.
+  5. From the ID column, copy the Key ID.
+
+  ### Save the API Key as a Credential 
+  For improved operation, save the API Key as a Credential in Settings > Configurations > Credentials
+
+  ### URL
+  1. Go to **Settings** -> API Keys.
+  2. Click the **Copy URL** button in the top right corner.
+
+configuration:
+- section: Connect
+  display: Server URL (e.g., https://api-<your-hostname>.com)
+  name: url
+  defaultvalue: https://api-example.xdr.us.paloaltonetworks.com
+  type: 0
+  required: true
+- section: Connect
+  display: API Key ID
+  displaypassword: API Key
+  name: credentials
+  type: 9
+  required: true
+- section: Connect
+  advanced: true
+  display: Trust any certificate (not secure)
+  name: insecure
+  type: 8
+  required: false
+- section: Connect
+  advanced: true
+  display: Use system proxy settings
+  name: proxy
+  type: 8
+  required: false
+script:
+  script: |
+    register_module_line('HelloWorld', 'start', __line__())
+    demisto.debug('pack name = HelloWorld, pack version = 3.0.13')
+
+
+
+    """
+    IMPORTS
+    """
+    import json
+    from typing import Any
+    import os
+    import traceback
+    from pkg_resources import get_distribution
+    from demisto_sdk.commands.upload.upload import upload_content_entity
+    from click.exceptions import Exit
+    import dateparser
+
+    requests.packages.urllib3.disable_warnings() # pylint: disable=no-member
+
+
+    ''' CONSTANTS '''
+    LOG_LINE = 'POVXSIAMContentManagement: '  # Make sure to use a line easily to search and read in logs.
+    DATE_FORMAT = '%Y-%m-%dT%H:%M:%SZ'
+    MAX_ALERTS_TO_FETCH = 50
+    DEFAULT_INDICATORS_THRESHOLD = 65
+    HELLOWORLD_SEVERITIES = ['Low', 'Medium', 'High', 'Critical']
+    LIMIT = 10
+    DEFAULT_PAGE_SIZE = 5
+    DUMMY_API_KEY = 'dummy-key'
+    ITEM_TEMPLATE = '"id": {id}, "name": "XSOAR Test Alert #{id}", "severity": "{severity}", "date": "{date}", "status": "{status}"'
+    ''' CLIENT CLASS '''
+
+
+    class Client(BaseClient):
+        """Client class to interact with the service API
+
+        This Client implements API calls, and does not contain any Demisto logic.
+        Should only do requests and return data.
+        It inherits from BaseClient defined in CommonServer Python.
+        Most calls use _http_request() that handles proxy, SSL verification, etc.
+        """
+        def __init__(self, api_id: str, api_key: str, base_url: str, proxy: bool, verify: bool):
+            super().__init__(base_url=base_url, proxy=proxy, verify=verify)
+
+            self.api_id = api_id
+            self.api_key = api_key
+            self.base_url = base_url
+
+            if self.api_id:
+                self._headers = {
+                    "x-xdr-auth-id": self.api_id,
+                    "Authorization": self.api_key
+                }
+
+            self._init_demisto_sdk_var()
+
+            try:
+                demisto.debug(f'Using demisto-sdk version {get_distribution("demisto-sdk").version}')
+            except Exception as e:
+                demisto.debug(f'Could not get demisto-sdk version. Error: {e}')
+
+            setup_envvars()
+
+        def _init_demisto_sdk_var(self):
+            os.environ["DEMISTO_API_KEY"] = self.api_key
+            os.environ["XSIAM_AUTH_ID"] = self.api_id
+            os.environ["DEMISTO_BASE_URL"] = self.base_url
+            os.environ["DEMISTO_SDK_IGNORE_CONTENT_WARNING"] = "1"
+
+        def get_lookup_datasets(self):
+            """
+            Grabs response data from the get_datasets public API endpoint
+            """
+            url = '/public_api/v1/xql/get_datasets'
+            response = self._http_request(
+                    method="POST",
+                    url_suffix=url,
+                    data={},
+                    resp_type="json",
+                    ok_codes=(200,)
+                )
+            return response
+
+        def post_content_bundle(self, file_path: str):
+            """
+            Posts a compressed file from the War Room's Files to the content bundle xsoar API
+            """
+            url = "/xsoar/content/bundle"
+            response = self._http_request(
+                    method="POST",
+                    url_suffix=url,
+                    files={"file": open(file_path, "rb")},
+                    resp_type="json",
+                    ok_codes=(200,)
+                )
+            return response
+
+        def post_system_content_bundle(self, file_path: str):
+            if not os.environ.get('DEMISTO_API_KEY'):
+                self._init_demisto_sdk_var()
+
+            try:
+                upload_content_entity(input=file_path, zip=True, xsiam=True, insecure=True)
+                return {"success": True, "message": f"Successfully uploaded file with path {file_path}"}
+
+            except Exit as e:
+                demisto.debug(f"Exitted: {e}")
+                if e.exit_code != 0:
+                    raise e
+            return {"success": True, "message": f"Successfully uploaded file with path {file_path}"}
+
+
+    ''' HELPER FUNCTIONS '''
+    def setup_envvars():
+        os.environ['DEMISTO_SDK_IGNORE_CONTENT_WARNING'] = "false"
+        os.environ['DEMISTO_SDK_OFFLINE_ENV'] = 'False'
+        os.environ['ARTIFACTS_FOLDER'] = '/tmp/artifacts'
+        os.environ['DEMISTO_SDK_LOG_NO_COLORS'] = 'true'
+        demisto.debug(f'setup_envvars: {os.environ}')
+
+
+    def get_file_path(entry_filename: str) -> str:
+        """
+        Given an entry filename, it will grab the path of that file
+
+        :param entry_filename: str, filename
+        :return:
+        """
+        file_entry_id = ""
+        instance_context = demisto.context()
+        context_files = instance_context.get('File', [])
+        if not isinstance(context_files, list):
+            context_files = [context_files]
+
+        # Search through all Context Files to grab the File's EntryID
+        for file_in_context in context_files:
+            file_in_context_name = file_in_context.get('Name', '')
+            if file_in_context_name == entry_filename:
+                file_entry_id = file_in_context.get('EntryID')
+                break
+
+        if not file_entry_id:
+            error_message = f'Could not find file entry ID: {entry_filename} .'
+            demisto.debug(f'POV XSIAM Content Management, "{entry_filename}" - {error_message}.')
+            raise Exception(error_message)
+
+        # Use the entry ID to grab the file's path
+        try:
+            file_path = demisto.getFilePath(file_entry_id)['path']
+        except Exception:
+            error_message = f'Could not find a file with entry ID {file_entry_id}'
+            demisto.debug(f'POV XSIAM Content Management, "{file_entry_id}" - {error_message}.')
+            raise Exception(error_message)
+
+        return file_path
+
+
+    def rename_file_path(file_name: str, existing_file_path: str) -> str:
+        """
+        demisto-sdk requires the filepath passed must be the zipped filename, not a hashed value. Copying the
+        file in the container and resetting the name for the execution of the integration
+
+        :param file_name: Name of the zipped file
+        :param existing_file_path: Cortex hashed path of zipped file,
+        :return:
+        """
+        renamed_fp = open(file_name, 'wb')
+        with open(existing_file_path, 'rb') as e_fp:
+            renamed_fp.write(e_fp.read())
+            renamed_fp.seek(0,0)
+        renamed_fp.close()
+        return file_name
+
+
+
+    ''' COMMAND FUNCTIONS '''
+
+
+    def test_module(client: Client, params: dict[str, Any]) -> str:
+        """
+        Tests API connectivity and authentication'
+        When 'ok' is returned it indicates the integration works like it is supposed to and connection to the service is
+        successful.
+        Raises exceptions if something goes wrong.
+
+        Args:
+            client (Client): HelloWorld client to use.
+            params (Dict): Integration parameters.
+
+        Returns:
+            str: 'ok' if test passed, anything else will raise an exception and will fail the test.
+        """
+        try:
+            response_json = client.get_lookup_datasets()
+            assert response_json
+
+        except DemistoException as e:
+            if 'Forbidden' in str(e):
+                return 'Authorization Error: make sure API Key is correctly set'
+            else:
+                raise e
+
+        return 'ok'
+
+
+    def install_content_bundle(client: Client, args: dict[str, Any]) -> CommandResults:
+        entry_filename: str = args.get("entry_filename", "")
+        system: str = args.get("save_as_system", "no")
+
+        if not entry_filename:
+            raise ValueError("entry_filename not specified")
+
+        file_path = get_file_path(entry_filename)
+
+        try:
+            # Send API command with the file_path to the /xsoar/content/bundle API
+            if system in ["No", "no"]:
+                response_json = client.post_content_bundle(file_path)
+            else:
+                properly_named_file_path = rename_file_path(entry_filename, file_path)
+                response_json = client.post_system_content_bundle(properly_named_file_path)
+
+            return CommandResults(
+                    outputs_prefix="ConfigurationSetup.CustomPacks",
+                    outputs={
+                        "EntryFilename": entry_filename,
+                        "InstallationStatus": 'Success'
+                    },
+                    raw_response=response_json,
+                    outputs_key_field="EntryFilename"
+                )
+
+        except Exception as e:
+            error_message = f'POV XSIAM Content Management - {str(e)}'
+            demisto.debug(error_message)
+            raise Exception(f'Issue occurred while installing the pack on the machine.\n{str(e)}')
+
+
+    ''' MAIN FUNCTION '''
+
+
+    def main() -> None:  # pragma: no cover
+        """
+        main function, parses params and runs command functions
+        """
+        params = demisto.params()
+        args = demisto.args()
+        command = demisto.command()
+
+        api_id = params.get('credentials', {}).get('identifier')
+        api_key = params.get('credentials', {}).get('password')
+
+        # get the service API url
+        base_url = params.get('url')
+
+        # If your Client class inherits from BaseClient, SSL verification is handled out-of-the-box by it.
+        # Just pass ``verify_certificate`` to the Client constructor
+        verify_certificate = not params.get('insecure', False)
+        proxy = params.get('proxy', False)
+
+        # Integration that implements reputation commands (e.g. url, ip, domain,..., etc) must have
+        # a reliability score of the source providing the intelligence data.
+        reliability = params.get('integrationReliability') or DBotScoreReliability.C
+
+        # INTEGRATION DEVELOPER TIP
+        # You can use functions such as ``demisto.debug()``, ``demisto.info()``,
+        # etc. to print information in the XSOAR server log. You can set the log
+        # level on the server configuration
+        # See: https://xsoar.pan.dev/docs/integrations/code-conventions#logging
+
+        demisto.debug(f'Command being called is {command}')
+        try:
+            client = Client(
+                base_url=base_url,
+                api_key=api_key,
+                api_id=api_id,
+                verify=verify_certificate,
+                proxy=proxy)
+
+            if command == 'test-module':
+                # This is the call made when pressing the integration Test button.
+                result = test_module(client, params)
+                return_results(result)
+
+            elif command == 'pov-install-content-bundle':
+                return_results(install_content_bundle(client, args))
+
+            else:
+                raise NotImplementedError(f'Command {command} is not implemented')
+
+        # Log exceptions and return errors
+        except Exception as e:
+            return_error(f'Failed to execute {command} command.\nError:\n{str(e)}')
+
+
+    ''' ENTRY POINT '''
+
+    if __name__ in ('__main__', '__builtin__', 'builtins'):
+        main()
+
+    register_module_line('HelloWorld', 'end', __line__())
+  type: python
+  commands:
+  - name: pov-install-content-bundle
+    arguments:
+    - name: entry_filename
+      required: true
+      description: 'Filename of Compressed file to install'
+    - name: save_as_system
+      auto: PREDEFINED
+      predefined:
+      - "yes"
+      - "no"
+      description: Save the content bundle as system-level content
+      defaultValue: "no"
+    outputs:
+    - contextPath: POV.ContentBundle.InstallationStatus
+      description: Installation Status of POV bundle
+      type: string
+    description: Installs custom content bundle using /xsoar/content/bundle
+  dockerimage: demisto/xsoar-tools:1.0.0.110586
+  runonce: false
+  subtype: python3
+sourcemoduleid: POV XSIAM Content Management

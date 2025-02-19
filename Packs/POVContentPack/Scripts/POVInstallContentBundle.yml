@@ -1,0 +1,84 @@
+commonfields:
+  id: POVInstallContentBundle
+  version: 6
+vcShouldKeepItemLegacyProdMachine: false
+name: POVInstallContentBundle
+script: |-
+  register_module_line('POVInstallContentBundle', 'start', __line__())
+
+
+  import traceback
+
+
+  demisto.debug('pack name = POVContentPack, pack version = 1.0.0')
+
+
+  def run_command(args: dict) -> dict:
+      """run_command Runs the `pov-install-content-bundle` command using the specified Integration Instance,
+      then inserts a key with the name of the instance to the summary section of results.
+
+      Args:
+          args (dict): Script arguments
+
+      Raises:
+          Exception: Raises an exception if the `pov-install-content-bundle` command returned an error entry.
+
+      Returns:
+          dict: The modified output command results object from `pov-install-content-bundle`
+      """
+      # Set command args
+      allowed_args = ['entry_filename', 'save_as_system']
+      command_args = {k: args.get(k) for k in allowed_args if k in args}
+
+      # Execute the command
+      res = demisto.executeCommand("pov-install-content-bundle", command_args)
+
+      # Check if the command returned an error and raise exception if needed
+      if is_error(res):
+          raise Exception(f'Error executing pov-install-content-bundle: {get_error(res)}')
+
+      # Return command results in original format with additions
+      return res
+
+
+  def main():
+      args = demisto.args()
+
+      try:
+          return_results(run_command(args))
+      except Exception as ex:
+          demisto.error(traceback.format_exc())  # print the traceback
+          return_error(f'Failed to execute POVInstallContentBundle. Error: {str(ex)}')
+
+
+  if __name__ in ('__main__', '__builtin__', 'builtins'):
+      main()
+
+  register_module_line('POVInstallContentBundle', 'end', __line__())
+type: python
+tags: []
+comment: Wrapper for the pov-install-content-bundle Integration Instance Command
+enabled: true
+args:
+- name: entry_filename
+  required: true
+- name: save_as_system
+  required: true
+  auto: PREDEFINED
+  predefined:
+  - "yes"
+  - "no"
+  description: Save the content bundle as system-level content
+  defaultValue: "no"
+outputs:
+- contextPath: ConfigurationSetup.CustomPacks.installationstatus
+  description: The creation status of the correlation rules.
+  type: Unknown
+scripttarget: 0
+subtype: python3
+pswd: ""
+runonce: false
+dockerimage: demisto/python3:3.12.8.1983910
+runas: DBotWeakRole
+engineinfo: {}
+mainengineinfo: {}
