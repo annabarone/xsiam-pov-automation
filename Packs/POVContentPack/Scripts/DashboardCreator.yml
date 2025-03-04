@@ -110,7 +110,9 @@ script: |2
           error_message = f'{SCRIPT_NAME} - {res}'
           demisto.debug(error_message)
           return f"Failure. {error_message}"
-
+      
+      if isinstance(res, list):
+          res = res[0]
       errors = res.get('response', {}).get('errors', [])
       if errors:
           return f"Failure. {errors}"

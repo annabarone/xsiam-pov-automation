@@ -109,6 +109,9 @@ script: |-
           demisto.debug(error_message)
           return f"Failure. {error_message}"
 
+      if isinstance(res, list):
+    	  res = res[0]
+
       return str(res.get("response", {}).get("reply"))
 
 
@@ -176,6 +179,8 @@ script: |-
           demisto.debug(error_message)
           return {}
 
+      if isinstance(res, list):
+    	  res = res[0]
       search_results = res.get('response', {}).get("reply", [])
       name_results = [x for x in search_results if dataset_name == x.get('Dataset Name')]
       if name_results:

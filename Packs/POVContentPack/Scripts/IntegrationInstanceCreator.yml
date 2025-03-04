@@ -72,6 +72,9 @@ script: |-
           demisto.debug(error_message)
           return {}
 
+      if isinstance(res, list):
+    	  res = res[0]
+  
       search_results = res.get('response', {}).get('instances', [])
       name_results = [x for x in search_results if integration_instance_name in x.get('name')]
       if name_results:

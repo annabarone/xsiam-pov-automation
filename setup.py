@@ -6,10 +6,11 @@ from typing import Union
 
 import requests
 from click.exceptions import Exit
-from demisto_sdk.commands.upload.upload import upload_content_entity
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(dotenv_path='.env')
+
+from demisto_sdk.commands.upload.upload import upload_content_entity
 
 DEMISTO_BASE_URL = os.getenv("DEMISTO_BASE_URL", "")
 XSIAM_AUTH_ID = os.getenv("XSIAM_AUTH_ID", "")
@@ -20,6 +21,21 @@ headers = {
     "x-xdr-auth-id": str(XSIAM_AUTH_ID),
     "Authorization": DEMISTO_API_KEY
 }
+
+
+def verify_dotenv():
+    print("\n---Please verify these environment variables:\n")
+    print(f"DEMISTO_BASE_URL: {DEMISTO_BASE_URL}")
+    print(f"XSIAM_AUTH_ID: {XSIAM_AUTH_ID}")
+    print(f"CONTENT_REPO_RAW_LINK: {CONTENT_REPO_RAW_LINK}\n")
+
+    # Ask for confirmation from the user
+    confirmation = input("Are these variables expected? (yes/no): ")
+    if confirmation.lower().strip() == "yes":
+        print("Confirmation received.\n")
+    else:
+        print("Exiting because the variables were not accepted.\n")
+        exit(-1)
 
 
 def upload_initial_content():
@@ -204,9 +220,15 @@ def trigger_playbook(retries: int=6) -> Union[str, None]:
 
 
 def main():
+    # Before sending information to the tenant, verify that the correct tenant is configured.
+    verify_dotenv()
+
+    # Initial set-up for starter configuration playbook
     upload_initial_content()
     create_integration_instances()
     time.sleep(15)
+
+    # Trigger the alert to actually run the playbook, which configures the XSIAM tenant
     found_alert_id = trigger_playbook()
     url = f"{DEMISTO_BASE_URL.replace('api-', '')}/alerts?action:openAlertDetails={found_alert_id}-workPlan"
     print(f"Alert triggered, view here: {url}")
