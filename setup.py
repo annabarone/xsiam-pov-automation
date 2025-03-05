@@ -38,6 +38,32 @@ def verify_dotenv():
         exit(-1)
 
 
+def verify_credentials():
+    """
+    Verify that the "Standard XSIAM API Key" exists in the tenant
+
+    :return: None, exits if incorrect credentials were received.
+    """
+    response = requests.post(
+        url=f"{DEMISTO_BASE_URL}/xsoar/settings/credentials",
+        headers=headers,
+        json={})
+
+    if response.status_code == 200:
+        json_results = response.json()
+        credentials_w_id = [x for x in json_results.get('credentials', []) if x.get('id') == "Standard XSIAM API Key"]
+        credentials_w_name = [x for x in json_results.get('credentials', []) if x.get('name') == "Standard XSIAM API Key"]
+        if credentials_w_id:
+            return
+        elif credentials_w_name:
+            print("The credential with 'Standard XSIAM API Key' ID was not found in your tenant. You most likely "
+                  "renamed your credential. Please delete the credential and recreate it with the correct name.")
+        else:
+            print("No credentials with 'Standard XSIAM API Key' name were found in your tenant. Please create a "
+                  "credential with this name and rerun this script.")
+        exit(-2)
+
+
 def upload_initial_content():
 
     path = os.path.join(os.path.dirname(__file__), "Packs/POVContentPack")
@@ -52,6 +78,58 @@ def upload_initial_content():
             raise e
 
 
+def test_existing_instance(instance_dict: dict) -> bool:
+    """
+    For a given integration instance, run the test command to verify that the enabled instance works.
+
+    :param instance_dict: dict, integration instance's configuration
+    :return: True if "Test" works, False otherwise
+    """
+    response = requests.post(
+        url=f"{DEMISTO_BASE_URL}/xsoar/settings/integration/test",
+        headers=headers,
+        json=instance_dict)
+
+    if response.status_code == 200:
+        json_results = response.json()
+        test_results = json_results.get("success", "N/A")
+        if test_results == "N/A":
+            raise Exception(f"Testing existing integration instance failed: {test_results.get('message')}")
+        elif not test_results:
+            return False
+        elif test_results:
+            return True
+    else:
+        raise Exception(f"Failure when getting integration instances: {response.text}")
+
+
+def integration_instance_exists(brand: str) -> bool:
+    """
+    Given a brand, check the tenant for existing, enabled integration instances
+
+    :param brand: str
+    :return: True if enabled instance exists, False otherwise
+    """
+    response = requests.post(
+        url=f"{DEMISTO_BASE_URL}/xsoar/public/v1/settings/integration/search",
+        headers=headers,
+        json={})
+
+    if response.status_code == 200:
+        json_results = response.json()
+        instance_results = json_results.get("instances")
+
+        insts = [x for x in instance_results if x.get('brand') == brand and x.get('enabled') == 'true']
+        if len(insts) > 1:
+            raise Exception(f"More than one {brand} instance detected: {[x.get('name') for x in insts]}")
+        elif len(insts) == 0:
+            return False
+        elif len(insts) == 1:
+            return test_existing_instance(insts[0])
+    else:
+        raise Exception(f"Failure when getting integration instances: {response.text}")
+
+
 def create_integration_instances():
 
     # Grab the Integration Instance Data for POV XSIAM Content Management
@@ -59,11 +137,21 @@ def create_integration_instances():
     with open(path, "r") as f:
         instance_def_list = json.load(f)
 
+    print("Kicking off integration instance creation.")
+
     # Reset the server URL
     for instance_def in instance_def_list:
         params_list = instance_def["data"]
         server_url_param = [x for x in params_list if x.get("name") == "url"][0]
         server_url_param["value"] = DEMISTO_BASE_URL
+
+        # Verify that there isn't an existing instance that's enabled for this integration
+        brand = instance_def.get("brand")
+        if brand:
+            already_exists = integration_instance_exists(brand)
+            if already_exists:
+                print(f"Not creating {brand} integration instance because an enabled instance already exists.")
+                continue
 
         # Send integration instance creation request
         response = requests.put(
@@ -73,9 +161,12 @@ def create_integration_instances():
 
         if response.status_code == 200:
             json_results = response.json()
+            print(f"Created {brand} integration instance.")
         else:
             if not "already exists" in response.text:
                 raise Exception(f"Failure: {response.text}")
+            else:
+                print("Could not update the existing integraiton instance.")
 
 
 def get_custom_alerts(external_id):
@@ -220,8 +311,9 @@ def trigger_playbook(retries: int=6) -> Union[str, None]:
 
 
 def main():
-    # Before sending information to the tenant, verify that the correct tenant is configured.
+    # Before sending information to the tenant, verify that the correct tenant and credentials are configured
     verify_dotenv()
+    verify_credentials()
 
     # Initial set-up for starter configuration playbook
     upload_initial_content()
