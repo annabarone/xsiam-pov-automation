@@ -300,8 +300,8 @@ def trigger_playbook(retries: int=6) -> Union[str, None]:
                 return alert_id
             except Exception as e:
                 if "Couldn't find alert with external" in str(e):
-                    print("Waiting for alert to register with XSIAM. Retrying alert search after 60 seconds.")
-                    time.sleep(60)
+                    print("Waiting for alert to register with XSIAM. Retrying alert search after 30 seconds.")
+                    time.sleep(30)
                     continue
                 else:
                     print(e)
