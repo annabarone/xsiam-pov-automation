@@ -40,7 +40,7 @@ script: |-
       if not status:
           error_message = f'{SCRIPT_NAME} - {res}'
           demisto.debug(error_message)
-          return f"Failure. {error_message}"
+          raise Exception(f"POST to /public_api/v1/correlations/insert failed with error: {error_message}")
 
       return "Success"
 
@@ -83,7 +83,7 @@ script: |-
       if not status:
           error_message = f'{SCRIPT_NAME} - {res}'
           demisto.debug(error_message)
-          return {}
+          raise Exception(f"POST to /public_api/v1/correlations/get failed with error: {error_message}")
 
       if isinstance(res, list):
           res = res[0]

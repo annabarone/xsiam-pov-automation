@@ -107,7 +107,7 @@ script: |-
       if not status:
           error_message = f'{SCRIPT_NAME} - add_data - {res}'
           demisto.debug(error_message)
-          return f"Failure. {error_message}"
+          raise Exception(f"POST to /public_api/v1/xql/lookups/add_data failed with error: {error_message}")
 
       if isinstance(res, list):
     	  res = res[0]
@@ -147,7 +147,7 @@ script: |-
       if not status:
           error_message = f'{SCRIPT_NAME} - create_dataset - {res}'
           demisto.debug(error_message)
-          return f"Failure. {error_message}"
+          raise Exception(f"POST to /public_api/v1/xql/add_dataset failed with error: {error_message}")
 
       return "Success"
 
@@ -177,7 +177,7 @@ script: |-
       if not status:
           error_message = f'{SCRIPT_NAME} - search_existing_dataset - {res}'
           demisto.debug(error_message)
-          return {}
+          raise Exception(f"POST to /public_api/v1/xql/get_datasets failed with error: {error_message}")
 
       if isinstance(res, list):
     	  res = res[0]

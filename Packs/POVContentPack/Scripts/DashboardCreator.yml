@@ -109,7 +109,7 @@ script: |2
       if not status:
           error_message = f'{SCRIPT_NAME} - {res}'
           demisto.debug(error_message)
-          return f"Failure. {error_message}"
+          raise Exception(f"POST to /public_api/v1/dashboards/insert failed with error: {error_message}")
       
       if isinstance(res, list):
           res = res[0]
