@@ -78,6 +78,16 @@ def upload_initial_content():
             raise e
 
 
+def verify_core_rest_api_values(instance_dict: dict) -> bool:
+    # Double check that the "Base marketplace url" defined is correct
+    base_marketplace_url = [data for data in instance_dict.get("data", []) if data.get("name") == "marketplace_url"][0].get("value")
+    if not base_marketplace_url == "https://marketplace.xsoar.paloaltonetworks.com/content/packs/":
+        raise Exception(f"Existing {instance_dict.get('brand')} integration instance not correctly configured. Please "
+                        f"disable the existing instance and rerun the automation, or change the 'Base marketplace url' "
+                        f"to 'https://marketplace.xsoar.paloaltonetworks.com/content/packs/'.")
+    return True
+
+
 def test_existing_instance(instance_dict: dict) -> bool:
     """
     For a given integration instance, run the test command to verify that the enabled instance works.
@@ -85,6 +95,10 @@ def test_existing_instance(instance_dict: dict) -> bool:
     :param instance_dict: dict, integration instance's configuration
     :return: True if "Test" works, False otherwise
     """
+    extra_verification = {
+        "Core REST API": verify_core_rest_api_values
+    }
+
     response = requests.post(
         url=f"{DEMISTO_BASE_URL}/xsoar/settings/integration/test",
         headers=headers,
@@ -93,11 +107,20 @@ def test_existing_instance(instance_dict: dict) -> bool:
     if response.status_code == 200:
         json_results = response.json()
         test_results = json_results.get("success", "N/A")
+
+        # If test call fails
         if test_results == "N/A":
             raise Exception(f"Testing existing integration instance failed: {test_results.get('message')}")
+
+        # If Integration Instance Test fails
         elif not test_results:
-            return False
+            raise Exception(f"Testing existing {instance_dict.get('brand')} integration instance not successful. Please "
+                            f"disable the instance and rerun the automation.")
+
         elif test_results:
+            # For certain integration instances, we may need to double-check something, that's defined here
+            if extra_verification.get(instance_dict.get("brand")):
+                return extra_verification.get(instance_dict.get("brand"))(instance_dict)
             return True
     else:
         raise Exception(f"Failure when getting integration instances: {response.text}")

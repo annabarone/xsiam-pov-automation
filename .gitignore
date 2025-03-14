@@ -1,3 +1,6 @@
 /.env
 /.venv
 /venv
+/venv-309/
+/venv-311/
+/venv-312/

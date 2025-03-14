@@ -197,16 +197,17 @@ script: |-
       try:
           # Check to see if the Dataset exists before adding data
           existing_dataset = search_existing_dataset(lookup_dataset_name, instance_name)
-          if existing_dataset:
-              dataset_creation_status = "Success"
-          else:
+          if not existing_dataset:
               dataset_creation_status = create_dataset(lookup_dataset_name, instance_name)
 
-          # If dataset exists, add data to the dataset
-          if dataset_creation_status == "Success":
-              lookup_data_status = add_data(lookup_dataset_name, instance_name)
+              # If dataset created successfully, add data to the dataset
+              if dataset_creation_status == "Success":
+                  lookup_data_status = add_data(lookup_dataset_name, instance_name)
+              else:
+                  lookup_data_status = dataset_creation_status
+
           else:
-              lookup_data_status = dataset_creation_status
+              lookup_data_status = "Dataset already exists."
 
           return_results(
               CommandResults(
