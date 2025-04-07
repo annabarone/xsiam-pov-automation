@@ -8,10 +8,10 @@ starttaskid: "0"
 tasks:
   "0":
     id: "0"
-    taskid: e76749f3-b997-43b6-8f11-7bad6e4e194c
+    taskid: 82a70f62-880c-46e1-8a60-212e7d4d7445
     type: start
     task:
-      id: e76749f3-b997-43b6-8f11-7bad6e4e194c
+      id: 82a70f62-880c-46e1-8a60-212e7d4d7445
       version: -1
       name: ""
       description: Start Task
@@ -38,13 +38,14 @@ tasks:
     isautoswitchedtoquietmode: false
   "2":
     id: "2"
-    taskid: 4f806457-e2a5-472d-8296-e619d45b3426
+    taskid: 8e81719a-9ea3-4893-99f1-3b20a86135cc
     type: regular
     task:
-      id: 4f806457-e2a5-472d-8296-e619d45b3426
+      id: 8e81719a-9ea3-4893-99f1-3b20a86135cc
       version: -1
       name: Configuration Setup with Saved XSIAM File
-      description: Configurtaion loader for the Content Management pack.
+      description: Parses xsoar_config.json file to save configuration to context
+        for the Content Management pack.
       scriptName: ExtendedConfigurationSetup
       type: regular
       iscommand: false
@@ -84,10 +85,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "3":
     id: "3"
-    taskid: 0e4c44cb-3694-40dc-87a5-30f596ce2c4c
+    taskid: 215a937a-c9d1-4343-8f2a-4a58926ad9ee
     type: title
     task:
-      id: 0e4c44cb-3694-40dc-87a5-30f596ce2c4c
+      id: 215a937a-c9d1-4343-8f2a-4a58926ad9ee
       version: -1
       name: DONE
       description: DONE
@@ -99,8 +100,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 646,
-          "y": 4428
+          "x": 484,
+          "y": 6431
         }
       }
     note: false
@@ -112,13 +113,16 @@ tasks:
     isautoswitchedtoquietmode: false
   "5":
     id: "5"
-    taskid: f170e61a-ab90-417c-812d-516c30a5853f
+    taskid: 0e13d962-47d4-4d45-96b7-9ad1463552b4
     type: regular
     task:
-      id: f170e61a-ab90-417c-812d-516c30a5853f
+      id: 0e13d962-47d4-4d45-96b7-9ad1463552b4
       version: -1
       name: Set Custom Packs Installed field
-      description: commands.local.cmd.set.incident
+      description: "Saves \"Install Custom Packs\" task results to Alert Field \"custompacksinstalled\"
+        from XSOAR CI/CD content. \n\nIf \"custompacksinstalled\" does not exist,
+        task will continue on error. This is a non-breaking issue. Simply check the
+        output of \"Install Custom Packs\" to see task status."
       script: Builtin|||setAlert
       type: regular
       iscommand: true
@@ -148,13 +152,16 @@ tasks:
     isautoswitchedtoquietmode: false
   "6":
     id: "6"
-    taskid: 818f1d51-7bbc-4b93-898a-8a9b8bf47c87
+    taskid: e0a74ec9-d00b-4028-b2d6-7caf9d71ff68
     type: regular
     task:
-      id: 818f1d51-7bbc-4b93-898a-8a9b8bf47c87
+      id: e0a74ec9-d00b-4028-b2d6-7caf9d71ff68
       version: -1
       name: Set Marketplace Packs Installed field
-      description: commands.local.cmd.set.incident
+      description: "Saves \"Install Marketplace Packs\" task results to Alert Field
+        \"marketplacepacksinstalled\" from XSOAR CI/CD content. \n\nIf \"marketplacepacksinstalled\"
+        does not exist, task will continue on error. This is a non-breaking issue.
+        Simply check the output of \"Install Marketplace Packs\" to see task status."
       script: Builtin|||setAlert
       type: regular
       iscommand: true
@@ -184,13 +191,16 @@ tasks:
     isautoswitchedtoquietmode: false
   "7":
     id: "7"
-    taskid: a2500570-c115-425f-8976-eb542abda83e
+    taskid: 199ffb64-16a4-44f6-af5f-150b6ad4032e
     type: regular
     task:
-      id: a2500570-c115-425f-8976-eb542abda83e
+      id: 199ffb64-16a4-44f6-af5f-150b6ad4032e
       version: -1
       name: Set Lists Created field
-      description: commands.local.cmd.set.incident
+      description: "Saves \"Create Lists\" task results to Alert Field \"listscreated\"
+        from XSOAR CI/CD content. \n\nIf \"listcreated\" does not exist, task will
+        continue on error. This is a non-breaking issue. Simply check the output of
+        \"Create Lists\" to see task status."
       script: Builtin|||setAlert
       type: regular
       iscommand: true
@@ -202,6 +212,7 @@ tasks:
       listscreated:
         simple: ${ConfigurationSetup.Lists}
     separatecontext: false
+    continueonerror: true
     continueonerrortype: ""
     view: |-
       {
@@ -219,30 +230,34 @@ tasks:
     isautoswitchedtoquietmode: false
   "8":
     id: "8"
-    taskid: 5728b778-5ebe-4ad3-8c6a-840f62cec801
+    taskid: 60379a0e-ca01-4e0b-85c9-0f145b054ca4
     type: regular
     task:
-      id: 5728b778-5ebe-4ad3-8c6a-840f62cec801
+      id: 60379a0e-ca01-4e0b-85c9-0f145b054ca4
       version: -1
       name: Set Jobs Created field
-      description: commands.local.cmd.set.incident
+      description: "Saves \"Create Jobs\" task results to Alert Field \"jobscreated\"
+        from XSOAR CI/CD content. \n\nIf \"jobscreated\" does not exist, task will
+        continue on error. This is a non-breaking issue. Simply check the output of
+        \"Create Jobs\" to see task status."
       script: Builtin|||setAlert
       type: regular
       iscommand: true
       brand: Builtin
     nexttasks:
       '#none#':
-      - "48"
+      - "82"
     scriptarguments:
       jobscreated:
         simple: ${ConfigurationSetup.Jobs}
     separatecontext: false
+    continueonerror: true
     continueonerrortype: ""
     view: |-
       {
         "position": {
-          "x": -30,
-          "y": 3616
+          "x": 32,
+          "y": 3639
         }
       }
     note: false
@@ -254,10 +269,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "11":
     id: "11"
-    taskid: a8a0bc46-9f43-48cd-8fcb-5b890fc9cda8
+    taskid: 5627d51d-14b4-4c51-8f3b-49ded41bf741
     type: title
     task:
-      id: a8a0bc46-9f43-48cd-8fcb-5b890fc9cda8
+      id: 5627d51d-14b4-4c51-8f3b-49ded41bf741
       version: -1
       name: Install Custom Packs
       description: Install Custom Packs
@@ -285,10 +300,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "12":
     id: "12"
-    taskid: da4ba5c5-d5ae-46d0-b779-1fe34d39f9cd
+    taskid: d2716fe7-76c1-49e6-8e55-dcc7534da6ba
     type: regular
     task:
-      id: da4ba5c5-d5ae-46d0-b779-1fe34d39f9cd
+      id: d2716fe7-76c1-49e6-8e55-dcc7534da6ba
       version: -1
       name: Install Custom Packs
       description: Wrapper for the pov-install-content-bundle Integration Instance
@@ -325,10 +340,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "13":
     id: "13"
-    taskid: 573ffc4e-ea40-4079-84fa-071c46efaf68
+    taskid: 3fb95fe3-6bfb-4cca-8863-6300904defd7
     type: title
     task:
-      id: 573ffc4e-ea40-4079-84fa-071c46efaf68
+      id: 3fb95fe3-6bfb-4cca-8863-6300904defd7
       version: -1
       name: Install Marketplace Packs
       description: Install Marketplace Packs
@@ -356,10 +371,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "14":
     id: "14"
-    taskid: fb87a7f1-6e38-400f-8e16-52014ec64b30
+    taskid: 28bf1e16-4ddd-4c26-8fe4-0288f5150153
     type: regular
     task:
-      id: fb87a7f1-6e38-400f-8e16-52014ec64b30
+      id: 28bf1e16-4ddd-4c26-8fe4-0288f5150153
       version: -1
       name: Install Marketplace Packs
       description: Content packs installer from marketplace.
@@ -402,10 +417,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "15":
     id: "15"
-    taskid: f3c0b883-f556-4d82-8fd4-6245336442e5
+    taskid: 3c2e7f37-68a4-4b8b-881d-690636ac9c09
     type: title
     task:
-      id: f3c0b883-f556-4d82-8fd4-6245336442e5
+      id: 3c2e7f37-68a4-4b8b-881d-690636ac9c09
       version: -1
       name: Configure Lists
       description: Configure the lists
@@ -433,10 +448,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "17":
     id: "17"
-    taskid: 5a733b34-16cc-4bb7-8f4e-84fd11b1574f
+    taskid: 29cc6bf3-9351-4df3-8b8e-e924a949ae90
     type: title
     task:
-      id: 5a733b34-16cc-4bb7-8f4e-84fd11b1574f
+      id: 29cc6bf3-9351-4df3-8b8e-e924a949ae90
       version: -1
       name: Configure Jobs
       description: Configure the jobs
@@ -451,8 +466,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 122,
-          "y": 3139
+          "x": 184,
+          "y": 3162
         }
       }
     note: false
@@ -464,10 +479,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "18":
     id: "18"
-    taskid: f4f20ed7-ca2f-4df5-825b-158550138e06
+    taskid: 579bf385-d80e-4a4d-8a77-5f564889373d
     type: regular
     task:
-      id: f4f20ed7-ca2f-4df5-825b-158550138e06
+      id: 579bf385-d80e-4a4d-8a77-5f564889373d
       version: -1
       name: Create Jobs
       description: Job Creator for the Content Management pack.
@@ -486,8 +501,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": -30,
-          "y": 3471
+          "x": 32,
+          "y": 3494
         }
       }
     note: false
@@ -499,10 +514,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "20":
     id: "20"
-    taskid: 82c0b2ca-7b62-4f8d-8d83-3dd93336c292
+    taskid: ae16b959-2eef-4112-8e24-32d1864fa5a6
     type: regular
     task:
-      id: 82c0b2ca-7b62-4f8d-8d83-3dd93336c292
+      id: ae16b959-2eef-4112-8e24-32d1864fa5a6
       version: -1
       name: Create Lists
       description: List creator for the content management pack.
@@ -536,10 +551,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "28":
     id: "28"
-    taskid: 658f04f6-a9fb-4ffc-80e6-06084d4ec064
+    taskid: ab3d8194-4107-4519-8ac5-2d92b44b8ebd
     type: title
     task:
-      id: 658f04f6-a9fb-4ffc-80e6-06084d4ec064
+      id: ab3d8194-4107-4519-8ac5-2d92b44b8ebd
       version: -1
       name: Configurations
       description: Configurations
@@ -568,10 +583,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "30":
     id: "30"
-    taskid: e63ee484-382e-4b35-8cce-6763d8c14077
+    taskid: 88601d1d-463e-46a6-8a84-10a91ee83d2a
     type: regular
     task:
-      id: e63ee484-382e-4b35-8cce-6763d8c14077
+      id: 88601d1d-463e-46a6-8a84-10a91ee83d2a
       version: -1
       name: Download Custom Packs using an HTTP request
       description: Sends an HTTP request. Returns the response as a JSON file.
@@ -609,10 +624,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "32":
     id: "32"
-    taskid: 83f5a941-4522-4063-89dc-3733fc4acff4
+    taskid: ba3e1172-e8a4-4a52-87c1-5ad0cfb3ba68
     type: regular
     task:
-      id: 83f5a941-4522-4063-89dc-3733fc4acff4
+      id: ba3e1172-e8a4-4a52-87c1-5ad0cfb3ba68
       version: -1
       name: closeInvestigation
       description: Close the current incident
@@ -628,8 +643,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 646,
-          "y": 4253
+          "x": 484,
+          "y": 6256
         }
       }
     note: false
@@ -641,10 +656,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "33":
     id: "33"
-    taskid: 7a818b90-c627-4fe5-8444-353cfc164789
+    taskid: ca4a2da5-ae10-43a5-801c-706ee2e978db
     type: condition
     task:
-      id: 7a818b90-c627-4fe5-8444-353cfc164789
+      id: ca4a2da5-ae10-43a5-801c-706ee2e978db
       version: -1
       name: Lists to Create?
       description: Changes the properties of an incident.
@@ -684,10 +699,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "34":
     id: "34"
-    taskid: 9437d816-a9cd-4abc-89e3-6de05a6390b4
+    taskid: 447a2755-b9ba-4085-8729-57077048a470
     type: condition
     task:
-      id: 9437d816-a9cd-4abc-89e3-6de05a6390b4
+      id: 447a2755-b9ba-4085-8729-57077048a470
       version: -1
       name: Jobs to Create?
       description: Changes the properties of an incident.
@@ -696,7 +711,7 @@ tasks:
       brand: Builtin
     nexttasks:
       '#default#':
-      - "48"
+      - "82"
       "yes":
       - "18"
     separatecontext: false
@@ -714,8 +729,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 118,
-          "y": 3276
+          "x": 180,
+          "y": 3299
         }
       }
     note: false
@@ -727,10 +742,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "40":
     id: "40"
-    taskid: 88c6a05e-6798-4afb-884e-b15e05ce8eb5
+    taskid: b34b4b9a-83eb-4ea6-bb54-9b0cbea3ad4e
     type: regular
     task:
-      id: 88c6a05e-6798-4afb-884e-b15e05ce8eb5
+      id: b34b4b9a-83eb-4ea6-bb54-9b0cbea3ad4e
       version: -1
       name: Download Configuration File from raw HTTP GitHub Repo
       description: Sends http request. Returns the response as json.
@@ -768,10 +783,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "44":
     id: "44"
-    taskid: 93d4ed10-e22c-4fb5-8cb4-1a6403acbdf9
+    taskid: 328a33f6-f3fc-4586-8fa9-0e2d733f449b
     type: title
     task:
-      id: 93d4ed10-e22c-4fb5-8cb4-1a6403acbdf9
+      id: 328a33f6-f3fc-4586-8fa9-0e2d733f449b
       version: -1
       name: Content Fetch
       type: title
@@ -798,10 +813,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "48":
     id: "48"
-    taskid: 867f6f4f-5c00-404d-804c-9036bd5960f9
+    taskid: 42d7d23d-be18-45b9-8896-45b5c4b40869
     type: title
     task:
-      id: 867f6f4f-5c00-404d-804c-9036bd5960f9
+      id: 42d7d23d-be18-45b9-8896-45b5c4b40869
       version: -1
       name: Clean-Up
       type: title
@@ -809,14 +824,14 @@ tasks:
       brand: ""
     nexttasks:
       '#none#':
-      - "32"
+      - "85"
     separatecontext: false
     continueonerrortype: ""
     view: |-
       {
         "position": {
-          "x": 646,
-          "y": 4109
+          "x": 484,
+          "y": 5904
         }
       }
     note: false
@@ -828,10 +843,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "50":
     id: "50"
-    taskid: 2fb2c518-ade3-448a-8e51-4277a360b3cb
+    taskid: b9d63b55-09ef-4178-8910-2333d608177f
     type: title
     task:
-      id: 2fb2c518-ade3-448a-8e51-4277a360b3cb
+      id: b9d63b55-09ef-4178-8910-2333d608177f
       version: -1
       name: Set-Up Playbook Pre-Reqs
       description: This section installs required content packs, such as ContentManagement
@@ -861,10 +876,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "53":
     id: "53"
-    taskid: e6603861-6441-4124-8950-be441929908b
+    taskid: 9a89ed63-5d34-410e-80ed-6fdf020bb383
     type: condition
     task:
-      id: e6603861-6441-4124-8950-be441929908b
+      id: 9a89ed63-5d34-410e-80ed-6fdf020bb383
       version: -1
       name: Custom Packs to Install?
       description: Checks whether there are custom packs to install when no source
@@ -905,10 +920,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "54":
     id: "54"
-    taskid: 92c01a9a-9118-4c3a-8dab-b48ccbc1e5e1
+    taskid: 9fa0f3cb-2b84-4584-895c-35f024140f3b
     type: regular
     task:
-      id: 92c01a9a-9118-4c3a-8dab-b48ccbc1e5e1
+      id: 9fa0f3cb-2b84-4584-895c-35f024140f3b
       version: -1
       name: Grab Enabled Integration Instances
       description: Gets all currently enabled integration instances.
@@ -937,10 +952,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "55":
     id: "55"
-    taskid: e1bc5d97-63af-44fe-8854-4c7ec43eb97c
+    taskid: 9df1aa50-5093-4be0-8425-d37ffa56d958
     type: condition
     task:
-      id: e1bc5d97-63af-44fe-8854-4c7ec43eb97c
+      id: 9df1aa50-5093-4be0-8425-d37ffa56d958
       version: -1
       name: POV XSIAM Integration Instance Enabled?
       type: condition
@@ -978,10 +993,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "56":
     id: "56"
-    taskid: 1ae0eb73-5a4e-4ce4-881d-20e05852305f
+    taskid: 75ee68dc-7a31-4f39-899a-07bb7a2f4814
     type: regular
     task:
-      id: 1ae0eb73-5a4e-4ce4-881d-20e05852305f
+      id: 75ee68dc-7a31-4f39-899a-07bb7a2f4814
       version: -1
       name: Grab Server URL
       description: Get the Server URL.
@@ -1010,13 +1025,16 @@ tasks:
     isautoswitchedtoquietmode: false
   "57":
     id: "57"
-    taskid: d1aac95f-23e2-497e-820f-81b27006b9d0
+    taskid: bf06e83b-261b-4ebf-9b32-56aab9ae6985
     type: regular
     task:
-      id: d1aac95f-23e2-497e-820f-81b27006b9d0
+      id: bf06e83b-261b-4ebf-9b32-56aab9ae6985
       version: -1
-      name: Create XSIAM Integration Instance
-      description: send HTTP PUT request.
+      name: Create pov-install-content-bundle Integration Instance
+      description: "Creates a 'POV XSIAM Content Management' Integration Instance,
+        which is used to install custom content bundles. \n\nIf the instance already
+        exists, the command will error. This is expected, and the task will continue
+        on error."
       script: '|||core-api-put'
       type: regular
       iscommand: true
@@ -1079,10 +1097,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "58":
     id: "58"
-    taskid: 3a2a4a6f-346e-4ae8-8e60-bc7e4c989212
+    taskid: 81f19745-9e12-4799-9c87-a0de721d478a
     type: regular
     task:
-      id: 3a2a4a6f-346e-4ae8-8e60-bc7e4c989212
+      id: 81f19745-9e12-4799-9c87-a0de721d478a
       version: -1
       name: Install XSOAR CI/CD MP Pack
       description: Content packs installer from marketplace.
@@ -1120,13 +1138,13 @@ tasks:
     isautoswitchedtoquietmode: false
   "59":
     id: "59"
-    taskid: 7efae4f5-67a2-4ed6-86fe-32ce48e4ea96
+    taskid: c997483c-9d40-4757-b25e-cbfe2753774d
     type: regular
     task:
-      id: 7efae4f5-67a2-4ed6-86fe-32ce48e4ea96
+      id: c997483c-9d40-4757-b25e-cbfe2753774d
       version: -1
       name: Update Base
-      description: Content packs installer from marketplace.
+      description: Installs/upgrades Base Marketplace content pack
       scriptName: ContentPackInstaller
       type: regular
       iscommand: false
@@ -1161,10 +1179,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "60":
     id: "60"
-    taskid: 536fa5a7-01f0-4789-81a5-41c98b27b8bd
+    taskid: 9e1782b4-0532-4837-87c7-ef9b9ca98ace
     type: regular
     task:
-      id: 536fa5a7-01f0-4789-81a5-41c98b27b8bd
+      id: 9e1782b4-0532-4837-87c7-ef9b9ca98ace
       version: -1
       name: Delete Pre Configs' ConfigurationSetup Context
       description: "Delete field from context.\n\nThis automation runs using the default
@@ -1201,13 +1219,17 @@ tasks:
     isautoswitchedtoquietmode: false
   "61":
     id: "61"
-    taskid: 895f59d0-157c-4444-817d-1db6f3feb9af
+    taskid: bcec549b-904c-41da-86eb-4d0467e7c78b
     type: regular
     task:
-      id: 895f59d0-157c-4444-817d-1db6f3feb9af
+      id: bcec549b-904c-41da-86eb-4d0467e7c78b
       version: -1
       name: Set Integration Instances Created field
-      description: commands.local.cmd.set.incident
+      description: "Saves \"Create Integration Instances\" task results to Alert Field
+        \"integrationinstancescreated\" from [POVContentPack content](https://github.com/annabarone/xsiam-pov-automation/tree/main/Packs/POVContentPack).
+        \n\nIf \"integrationinstancescreated\" does not exist, task will continue
+        on error. This is a non-breaking issue. Simply check the output of \"Create
+        Integration Instances\" to see task status."
       script: Builtin|||setAlert
       type: regular
       iscommand: true
@@ -1219,6 +1241,7 @@ tasks:
       integrationinstancescreated:
         simple: ${ConfigurationSetup.IntegrationInstances}
     separatecontext: false
+    continueonerror: true
     continueonerrortype: ""
     view: |-
       {
@@ -1236,10 +1259,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "62":
     id: "62"
-    taskid: 0fc2e313-47a3-4f71-834d-846214d47ae9
+    taskid: 0fd15c77-02ed-45cf-8835-582f3d5f08fb
     type: regular
     task:
-      id: 0fc2e313-47a3-4f71-834d-846214d47ae9
+      id: 0fd15c77-02ed-45cf-8835-582f3d5f08fb
       version: -1
       name: Create Integration Instances
       description: Integration Instance Creator for the Content Management pack.
@@ -1271,10 +1294,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "63":
     id: "63"
-    taskid: f7a9afbc-4522-45ef-89ef-68a5c6dc44aa
+    taskid: c99ceb2a-e007-4ed7-8c15-9ce566358143
     type: condition
     task:
-      id: f7a9afbc-4522-45ef-89ef-68a5c6dc44aa
+      id: c99ceb2a-e007-4ed7-8c15-9ce566358143
       version: -1
       name: Integration Instances to Create?
       description: Changes the properties of an incident.
@@ -1314,10 +1337,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "64":
     id: "64"
-    taskid: eb175642-e5e8-48d6-8c85-ccd32171b5be
+    taskid: 3d98baa5-1dc7-4611-850b-1eed09513458
     type: title
     task:
-      id: eb175642-e5e8-48d6-8c85-ccd32171b5be
+      id: 3d98baa5-1dc7-4611-850b-1eed09513458
       version: -1
       name: Configure Integration Instances
       description: Configure the integration instances
@@ -1345,10 +1368,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "65":
     id: "65"
-    taskid: ac65b7ba-760a-47cf-81ed-eb00cf09279e
+    taskid: 41c38924-be01-40f2-8e5a-8d65b4ebfd44
     type: title
     task:
-      id: ac65b7ba-760a-47cf-81ed-eb00cf09279e
+      id: 41c38924-be01-40f2-8e5a-8d65b4ebfd44
       version: -1
       name: Configurations, Part 2
       type: title
@@ -1358,8 +1381,6 @@ tasks:
       '#none#':
       - "67"
       - "17"
-      - "75"
-      - "77"
     separatecontext: false
     continueonerrortype: ""
     view: |-
@@ -1378,30 +1399,35 @@ tasks:
     isautoswitchedtoquietmode: false
   "66":
     id: "66"
-    taskid: 8f5db8fd-b46d-4400-8a74-0800da999f08
+    taskid: c5e5d75f-b50c-476e-b3d8-6566ca43a2f8
     type: regular
     task:
-      id: 8f5db8fd-b46d-4400-8a74-0800da999f08
+      id: c5e5d75f-b50c-476e-b3d8-6566ca43a2f8
       version: -1
       name: Set Lookup Datasets Created field
-      description: commands.local.cmd.set.incident
+      description: "Saves \"Create Lookup Datasets\" task results to Alert Field \"lookupdatasetscreated\"
+        from [POVContentPack content](https://github.com/annabarone/xsiam-pov-automation/tree/main/Packs/POVContentPack).
+        \n\nIf \"lookupdatasetscreated\" does not exist, task will continue on error.
+        This is a non-breaking issue. Simply check the output of \"Create Lookup Datasets\"
+        to see task status."
       script: Builtin|||setAlert
       type: regular
       iscommand: true
       brand: Builtin
     nexttasks:
       '#none#':
-      - "48"
+      - "82"
     scriptarguments:
       lookupdatasetscreated:
         simple: ${ConfigurationSetup.LookupDatasets}
     separatecontext: false
+    continueonerror: true
     continueonerrortype: ""
     view: |-
       {
         "position": {
-          "x": 1014,
-          "y": 3858
+          "x": 1008,
+          "y": 3886
         }
       }
     note: false
@@ -1413,10 +1439,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "67":
     id: "67"
-    taskid: 4b68abdb-27a8-4e24-8aaf-434ab00e4097
+    taskid: 8dd1260f-3f59-44a8-8892-80c814ac2138
     type: title
     task:
-      id: 4b68abdb-27a8-4e24-8aaf-434ab00e4097
+      id: 8dd1260f-3f59-44a8-8892-80c814ac2138
       version: -1
       name: Configure Lookup Datasets
       description: Configure the jobs
@@ -1431,8 +1457,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 848,
-          "y": 3139
+          "x": 842,
+          "y": 3167
         }
       }
     note: false
@@ -1444,10 +1470,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "68":
     id: "68"
-    taskid: 5b476305-21d3-427d-8736-b2c5fcd8c17d
+    taskid: f5fb50f5-146b-4e2c-8714-d25aa3d20b26
     type: regular
     task:
-      id: 5b476305-21d3-427d-8736-b2c5fcd8c17d
+      id: f5fb50f5-146b-4e2c-8714-d25aa3d20b26
       version: -1
       name: Install Lookup Dataset
       description: Lookup Dataset Creator for the Content Management pack.
@@ -1466,8 +1492,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 1014,
-          "y": 3716
+          "x": 1008,
+          "y": 3744
         }
       }
     note: false
@@ -1479,10 +1505,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "69":
     id: "69"
-    taskid: 7adede74-9902-4708-849b-faa2cd26b451
+    taskid: c0a584fd-5580-40ed-8106-38e6b49046ba
     type: condition
     task:
-      id: 7adede74-9902-4708-849b-faa2cd26b451
+      id: c0a584fd-5580-40ed-8106-38e6b49046ba
       version: -1
       name: Lookup Datasets to Create?
       description: Changes the properties of an incident.
@@ -1491,7 +1517,7 @@ tasks:
       brand: Builtin
     nexttasks:
       '#default#':
-      - "48"
+      - "82"
       "yes":
       - "70"
     separatecontext: false
@@ -1509,8 +1535,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 848,
-          "y": 3284
+          "x": 842,
+          "y": 3312
         }
       }
     note: false
@@ -1522,10 +1548,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "70":
     id: "70"
-    taskid: 458733cd-7764-487c-96d9-322a71db829e
+    taskid: 0745e9fc-4ae0-48b1-8910-9662b50d7585
     type: condition
     task:
-      id: 458733cd-7764-487c-96d9-322a71db829e
+      id: 0745e9fc-4ae0-48b1-8910-9662b50d7585
       version: -1
       name: Need to grab data from URL?
       description: Changes the properties of an incident.
@@ -1552,8 +1578,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 1014,
-          "y": 3443
+          "x": 1008,
+          "y": 3471
         }
       }
     note: false
@@ -1565,10 +1591,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "71":
     id: "71"
-    taskid: 67379c1c-8f5f-4bae-b889-543f71d596e2
+    taskid: 79476a44-f573-42da-8cde-2f29a63698a2
     type: regular
     task:
-      id: 67379c1c-8f5f-4bae-b889-543f71d596e2
+      id: 79476a44-f573-42da-8cde-2f29a63698a2
       version: -1
       name: Download Lookup Dataset from URL
       description: Sends http request. Returns the response as json.
@@ -1593,8 +1619,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 1251,
-          "y": 3570
+          "x": 1245,
+          "y": 3598
         }
       }
     note: false
@@ -1606,13 +1632,16 @@ tasks:
     isautoswitchedtoquietmode: false
   "72":
     id: "72"
-    taskid: ed4eb946-ae56-47b5-8cc9-9e8a8c2c7198
+    taskid: bb120fe9-2767-41ad-94cb-13e5fd3b99ae
     type: regular
     task:
-      id: ed4eb946-ae56-47b5-8cc9-9e8a8c2c7198
+      id: bb120fe9-2767-41ad-94cb-13e5fd3b99ae
       version: -1
       name: Set Correlation Rules Created field
-      description: commands.local.cmd.set.incident
+      description: |-
+        Saves "Create Correlation Rules" task results to Alert Field "correlationrulescreated" from [POVContentPack content](https://github.com/annabarone/xsiam-pov-automation/tree/main/Packs/POVContentPack).
+
+        If "correlationrulescreated" does not exist, task will continue on error. This is a non-breaking issue. Simply check the output of "Create Correlation Rules" to see task status.
       script: Builtin|||setAlert
       type: regular
       iscommand: true
@@ -1624,12 +1653,13 @@ tasks:
       correlationrulescreated:
         simple: ${ConfigurationSetup.CorrelationRules}
     separatecontext: false
+    continueonerror: true
     continueonerrortype: ""
     view: |-
       {
         "position": {
-          "x": -741,
-          "y": 3616
+          "x": -186,
+          "y": 5182
         }
       }
     note: false
@@ -1641,10 +1671,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "73":
     id: "73"
-    taskid: c77c9432-1b20-4b9f-8e70-1d222987e341
+    taskid: 0ee8da8f-fc25-4436-8e63-82cc74b7a982
     type: regular
     task:
-      id: c77c9432-1b20-4b9f-8e70-1d222987e341
+      id: 0ee8da8f-fc25-4436-8e63-82cc74b7a982
       version: -1
       name: Create Correlation Rules
       description: Correlation Rule Creator for the Content Management pack.
@@ -1663,8 +1693,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": -741,
-          "y": 3471
+          "x": -186,
+          "y": 5037
         }
       }
     note: false
@@ -1676,10 +1706,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "74":
     id: "74"
-    taskid: 31fe3a87-bbe4-46da-8700-8fff3546b190
+    taskid: 48a30073-72ec-4164-8074-0c8e4e723d6d
     type: condition
     task:
-      id: 31fe3a87-bbe4-46da-8700-8fff3546b190
+      id: 48a30073-72ec-4164-8074-0c8e4e723d6d
       version: -1
       name: Correlation Rules to Create?
       description: Changes the properties of an incident.
@@ -1706,8 +1736,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": -518,
-          "y": 3276
+          "x": 37,
+          "y": 4842
         }
       }
     note: false
@@ -1719,10 +1749,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "75":
     id: "75"
-    taskid: 53c4886c-3624-45aa-8da5-9b8b82c43204
+    taskid: 41d3e2fd-5bb5-4918-8348-14ead9b73877
     type: title
     task:
-      id: 53c4886c-3624-45aa-8da5-9b8b82c43204
+      id: 41d3e2fd-5bb5-4918-8348-14ead9b73877
       version: -1
       name: Configure Correlation Rules
       type: title
@@ -1736,8 +1766,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": -518,
-          "y": 3127
+          "x": 37,
+          "y": 4699
         }
       }
     note: false
@@ -1749,13 +1779,16 @@ tasks:
     isautoswitchedtoquietmode: false
   "76":
     id: "76"
-    taskid: 43ff9cd1-e0e0-4673-bf94-db18274d584b
+    taskid: 6e60cfde-2eb6-4406-9939-16e44711f5d9
     type: regular
     task:
-      id: 43ff9cd1-e0e0-4673-bf94-db18274d584b
+      id: 6e60cfde-2eb6-4406-9939-16e44711f5d9
       version: -1
       name: Set Dashboard Created field
-      description: commands.local.cmd.set.incident
+      description: |-
+        Saves "Create Dashboards" task results to Alert Field "dashboardscreated" from [POVContentPack content](https://github.com/annabarone/xsiam-pov-automation/tree/main/Packs/POVContentPack).
+
+        If "dashboardscreated" does not exist, task will continue on error. This is a non-breaking issue. Simply check the output of "Create Dashboards" to see task status.
       script: Builtin|||setAlert
       type: regular
       iscommand: true
@@ -1767,12 +1800,13 @@ tasks:
       dashboardscreated:
         simple: ${ConfigurationSetup.Dashboards}
     separatecontext: false
+    continueonerror: true
     continueonerrortype: ""
     view: |-
       {
         "position": {
-          "x": 1784,
-          "y": 3862
+          "x": 1214,
+          "y": 5438
         }
       }
     note: false
@@ -1784,10 +1818,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "77":
     id: "77"
-    taskid: db2e9c60-bcf2-4209-ba86-9afb176769c6
+    taskid: 514ab96b-8a91-4aa7-83e1-739c7f64203c
     type: title
     task:
-      id: db2e9c60-bcf2-4209-ba86-9afb176769c6
+      id: 514ab96b-8a91-4aa7-83e1-739c7f64203c
       version: -1
       name: Configure Dashboards
       description: Configure the jobs
@@ -1802,8 +1836,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 1560,
-          "y": 3127
+          "x": 990,
+          "y": 4707
         }
       }
     note: false
@@ -1815,10 +1849,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "78":
     id: "78"
-    taskid: f96effaf-4ac6-430d-a7d5-8592f0c1b544
+    taskid: 0afb7c74-7347-49c3-8b72-b16d8b0b0eb3
     type: regular
     task:
-      id: f96effaf-4ac6-430d-a7d5-8592f0c1b544
+      id: 0afb7c74-7347-49c3-8b72-b16d8b0b0eb3
       version: -1
       name: Import Dashboards
       description: Dashboard Creator for the Content Management pack.
@@ -1837,8 +1871,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 1784,
-          "y": 3720
+          "x": 1214,
+          "y": 5300
         }
       }
     note: false
@@ -1850,10 +1884,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "79":
     id: "79"
-    taskid: f3857544-9474-4870-aab5-43c065959fe3
+    taskid: d05918ce-3b67-444b-83b0-fb84b7c476fa
     type: condition
     task:
-      id: f3857544-9474-4870-aab5-43c065959fe3
+      id: d05918ce-3b67-444b-83b0-fb84b7c476fa
       version: -1
       name: Dashboards to Create?
       description: Changes the properties of an incident.
@@ -1880,8 +1914,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 1560,
-          "y": 3276
+          "x": 990,
+          "y": 4856
         }
       }
     note: false
@@ -1893,10 +1927,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "80":
     id: "80"
-    taskid: 8ba3fcac-43d6-4a31-b4de-e0abfeb7600f
+    taskid: e9a2685f-5eb5-4efd-8f31-b47eace45065
     type: condition
     task:
-      id: 8ba3fcac-43d6-4a31-b4de-e0abfeb7600f
+      id: e9a2685f-5eb5-4efd-8f31-b47eace45065
       version: -1
       name: Need to grab data from URL?
       description: Changes the properties of an incident.
@@ -1923,8 +1957,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 1784,
-          "y": 3443
+          "x": 1214,
+          "y": 5023
         }
       }
     note: false
@@ -1936,10 +1970,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "81":
     id: "81"
-    taskid: 622b4fa7-714f-439b-b335-35aba7b27868
+    taskid: 4bf47767-e052-4b62-88d1-400a3f2fa1a3
     type: regular
     task:
-      id: 622b4fa7-714f-439b-b335-35aba7b27868
+      id: 4bf47767-e052-4b62-88d1-400a3f2fa1a3
       version: -1
       name: Download Dashboard from URL
       description: Sends http request. Returns the response as json.
@@ -1964,8 +1998,145 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 2021,
-          "y": 3570
+          "x": 1451,
+          "y": 5150
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "82":
+    id: "82"
+    taskid: b10dacc3-f653-42fa-b61b-356908bb9f41
+    type: title
+    task:
+      id: b10dacc3-f653-42fa-b61b-356908bb9f41
+      version: -1
+      name: CM FF Configurations, Part 3
+      description: 'The following sections include configuration actions for configuration
+        objects only available via API for tenants with the CM FF enabled. '
+      type: title
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "83"
+    separatecontext: false
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": 514,
+          "y": 4255
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "83":
+    id: "83"
+    taskid: 6e81e1ac-b9ca-4f91-b672-f21867eccfae
+    type: regular
+    task:
+      id: 6e81e1ac-b9ca-4f91-b672-f21867eccfae
+      version: -1
+      name: Check Content Management APIs are enabled
+      description: send HTTP POST request.
+      script: '|||core-api-post'
+      type: regular
+      iscommand: true
+      brand: ""
+    nexttasks:
+      '#error#':
+      - "84"
+      '#none#':
+      - "75"
+      - "77"
+    scriptarguments:
+      body:
+        simple: '{"request_data": {"filters": []}}'
+      uri:
+        simple: /public_api/v1/correlations/get
+    separatecontext: false
+    continueonerror: true
+    continueonerrortype: errorPath
+    view: |-
+      {
+        "position": {
+          "x": 514,
+          "y": 4371
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "84":
+    id: "84"
+    taskid: ceb38be4-7f9a-43e7-aa45-8d6b1eb98acf
+    type: regular
+    task:
+      id: ceb38be4-7f9a-43e7-aa45-8d6b1eb98acf
+      version: -1
+      name: Request CM FF and Continue
+      description: Continue the investigation.
+      type: regular
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "75"
+      - "77"
+    separatecontext: false
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": 503,
+          "y": 4525
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "85":
+    id: "85"
+    taskid: e3b017cb-c6e3-4aea-bcf8-f6e7c6c5d823
+    type: regular
+    task:
+      id: e3b017cb-c6e3-4aea-bcf8-f6e7c6c5d823
+      version: -1
+      name: Complete the Manual Configuration Steps
+      description: Please complete the [Manual Steps Guide](https://docs.google.com/document/d/1KrpoHsACJdNekTatWsVDnBO2vOq0VP4KqYMVSj9JwHA/edit?tab=t.0#heading=h.5y2vxu57lyb0)
+        for additional manual configuration.
+      type: regular
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "32"
+    separatecontext: false
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": 484,
+          "y": 6074
         }
       }
     note: false
@@ -1979,21 +2150,22 @@ view: |-
   {
     "linkLabelsPosition": {
       "33_64_#default#": 0.1,
-      "34_48_#default#": 0.23,
+      "34_18_yes": 0.44,
+      "34_82_#default#": 0.25,
       "53_64_#default#": 0.1,
       "55_30_yes": 0.57,
       "63_65_#default#": 0.27,
-      "69_48_#default#": 0.14,
       "69_70_yes": 0.65,
+      "69_82_#default#": 0.23,
       "70_68_#default#": 0.45,
       "74_48_#default#": 0.1,
       "79_48_#default#": 0.12
     },
     "paper": {
       "dimensions": {
-        "height": 5320,
-        "width": 3143,
-        "x": -741,
+        "height": 7323,
+        "width": 2018,
+        "x": -186,
         "y": -832
       }
     }
