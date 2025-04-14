@@ -412,6 +412,7 @@ def delete_config_automation_content():
         "IntegrationInstanceCreator",
         "LookupDatasetCreator",
         "POVInstallContentBundle",
+        "POVJobCreator",
         "XSIAMContentPackInstaller",
     ])
 

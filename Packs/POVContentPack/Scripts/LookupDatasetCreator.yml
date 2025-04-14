@@ -75,18 +75,25 @@ script: |-
       context = demisto.context()
       instance_params = {}
 
-      for instance in context.get('ConfigurationSetup', {}).get('LookupDatasets', []):
-          if instance.get('dataset_name') == dataset_name:
-              data = instance.get('data')
-              if not data:
-                  data = parse_data_from_file(dataset_name)
-
-              data = remove_omitted_fields(data)
-
-              instance_params = {
-                  'dataset_name': dataset_name,
-                  'data': data
-              }
+      config_setup = context.get("ConfigurationSetup", [])
+      if isinstance(config_setup, dict):
+          config_setup = [config_setup]
+  
+      for config in config_setup:
+          for instance in config.get('LookupDatasets', []):
+              if instance.get('dataset_name') == dataset_name:
+                  data = instance.get('data')
+                  if not data:
+                      data = parse_data_from_file(dataset_name)
+    
+                  data = remove_omitted_fields(data)
+    
+                  instance_params = {
+                      'dataset_name': dataset_name,
+                      'data': data
+                  }
+                  break
+          if instance_params:
               break
 
       if not instance_params:
@@ -119,14 +126,22 @@ script: |-
       """
       context = demisto.context()
       instance_params = {}
+  
+      config_setup = context.get("ConfigurationSetup", [])
+      if isinstance(config_setup, dict):
+          config_setup = [config_setup]
 
-      for instance in context.get('ConfigurationSetup', {}).get('LookupDatasets', []):
-          if instance.get('dataset_name') == dataset_name:
-              instance_params = {
-                  'dataset_name': dataset_name,
-                  'dataset_type': instance.get('dataset_type'),
-                  'dataset_schema': instance.get('dataset_schema')
-              }
+      for config in config_setup:
+
+          for instance in config.get('LookupDatasets', []):
+              if instance.get('dataset_name') == dataset_name:
+                  instance_params = {
+                      'dataset_name': dataset_name,
+                      'dataset_type': instance.get('dataset_type'),
+                      'dataset_schema': instance.get('dataset_schema')
+                  }
+                  break
+          if instance_params:
               break
 
       if not instance_params:
@@ -220,7 +235,7 @@ script: |-
           )
 
       except Exception as e:
-          return_error(f'{SCRIPT_NAME} - Error occurred while configuring list "{lookup_dataset_name}".\n{e}')
+          return_error(f'{SCRIPT_NAME} - Error occurred while configuring lookup dataset "{lookup_dataset_name}".\n{e}')
 
 
   if __name__ in ('__main__', '__builtin__', 'builtins'):

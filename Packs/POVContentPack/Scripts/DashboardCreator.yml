@@ -153,7 +153,7 @@ script: |2
           )
 
       except Exception as e:
-          return_error(f'{SCRIPT_NAME} - Error occurred while configuring list "{dashboard_entry_name}".\n{e}')
+          return_error(f'{SCRIPT_NAME} - Error occurred while configuring dashboard "{dashboard_entry_name}".\n{e}')
 
 
   if __name__ in ('__main__', '__builtin__', 'builtins'):

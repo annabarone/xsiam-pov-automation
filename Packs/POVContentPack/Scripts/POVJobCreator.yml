@@ -12,11 +12,11 @@ script: |
 
   def configure_job(job_name: str, existing_job: Optional[Dict[str, Any]] = None, instance_name: str = None) -> bool:
       """Configures the job in the XSOAR instance."""
-      instance_context = demisto.context()
+      context = demisto.context()
       job_params = existing_job or {}
       is_scheduled = job_params.get("scheduled")
 
-      config_setup = instance_context.get("ConfigurationSetup", [])
+      config_setup = context.get("ConfigurationSetup", [])
       if isinstance(config_setup, dict):
           config_setup = [config_setup]
 
@@ -114,7 +114,7 @@ script: |
           )
 
       except Exception as e:
-          return_error(f'{SCRIPT_NAME} - Error occurred while configuring list "{job_name}".\n{e}')
+          return_error(f'{SCRIPT_NAME} - Error occurred while configuring job "{job_name}".\n{e}')
 
 
   if __name__ in ("__main__", "__builtin__", "builtins"):

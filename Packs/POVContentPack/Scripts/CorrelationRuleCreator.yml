@@ -123,7 +123,7 @@ script: |-
           )
 
       except Exception as e:
-          return_error(f'{SCRIPT_NAME} - Error occurred while configuring list "{correlation_rule_name}".\n{e}')
+          return_error(f'{SCRIPT_NAME} - Error occurred while configuring correlation rule "{correlation_rule_name}".\n{e}')
 
 
   if __name__ in ('__main__', '__builtin__', 'builtins'):
