@@ -8,7 +8,6 @@ script: |-
   demisto.debug('pack name = POVContentPack, pack version = 1.0.0')
 
 
-
   SCRIPT_NAME = 'LookupDatasetCreator'
   OMITTED_FIELDS = ['_collector_name', '_collector_type', '_insert_time', '_update_time']
 
@@ -232,6 +231,7 @@ type: python
 tags:
 - configuration
 - Content Management
+- POV
 comment: Lookup Dataset Creator for the Content Management pack.
 enabled: true
 args:

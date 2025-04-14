@@ -70,13 +70,20 @@ script: |2
 
       context = demisto.context()
       dashboard_data = {}
-
-      for dashboard in context.get('ConfigurationSetup', {}).get('Dashboards', []):
-          if dashboard.get('name') == dashboard_name:
-              if dashboard.get('data'):
-                  dashboard_data = dashboard.get('data')
-              else:
-                  dashboard_data = parse_data_from_file(dashboard_name)
+  
+      config_setup = context.get("ConfigurationSetup", [])
+      if isinstance(config_setup, dict):
+          config_setup = [config_setup]
+  
+      for config in config_setup:
+          for dashboard in config.get('Dashboards', []):
+              if dashboard.get('name') == dashboard_name:
+                  if dashboard.get('data'):
+                      dashboard_data = dashboard.get('data')
+                  else:
+                      dashboard_data = parse_data_from_file(dashboard_name)
+                  break
+          if dashboard_data: 
               break
 
       if not dashboard_data:
@@ -157,6 +164,7 @@ type: python
 tags:
 - configuration
 - Content Management
+- POV
 comment: Dashboard Creator for the Content Management pack.
 enabled: true
 args:

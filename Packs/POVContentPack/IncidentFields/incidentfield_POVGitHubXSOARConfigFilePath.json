@@ -21,7 +21,7 @@
 	"template": "",
 	"description": "",
 	"cliName": "povgithubxsoarconfigfilepath",
-	"type": "shortText",
+	"type": "longText",
 	"orgType": "",
 	"closeForm": false,
 	"editForm": true,

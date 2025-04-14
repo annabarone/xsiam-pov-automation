@@ -18,9 +18,16 @@ script: |-
       context = demisto.context()
       instance_params = existing_instance or {}
 
-      for instance in context.get('ConfigurationSetup', {}).get('IntegrationInstances', []):
-          if instance.get('name') == integration_instance_name:
-              instance_params.update(instance)
+      config_setup = context.get("ConfigurationSetup", [])
+      if isinstance(config_setup, dict):
+          config_setup = [config_setup]
+  
+      for config in config_setup:
+          for instance in config.get('IntegrationInstances', []):
+              if instance.get('name') == integration_instance_name:
+                  instance_params.update(instance)
+                  break
+          if instance_params: 
               break
 
       if not instance_params:
@@ -119,6 +126,7 @@ type: python
 tags:
 - configuration
 - Content Management
+- POV
 comment: Integration Instance Creator for the Content Management pack.
 enabled: true
 args:

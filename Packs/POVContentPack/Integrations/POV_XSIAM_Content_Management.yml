@@ -50,9 +50,7 @@ configuration:
 script:
   script: |
     register_module_line('HelloWorld', 'start', __line__())
-    demisto.debug('pack name = HelloWorld, pack version = 3.0.13')
-
-
+    demisto.debug('pack name = POVContentPack, pack version = 1.0.0')
 
     """
     IMPORTS
