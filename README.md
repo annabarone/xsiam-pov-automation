@@ -4,6 +4,16 @@ Welcome to the XSIAM POV Automation repository. This automation configures the s
 Cortex XSIAM tenant. The starter configuration content is located in a different repository, such as 
 https://github.com/annabarone/xsiam-soc-framework-content.
 
+
+## (Recommended) Hosted Web Application
+
+The recommended way to run the XSIAM POV Tenant Configurations is by using the hosted POV Companion web application:
+
+https://pov-companion.ts.paloaltonetworks.com/tenant-configurations
+
+
+## (Not Recommended) Local Environment
+
 The python setup script in this repository will:
 
 1. Upload the POVContentPack in the Packs directory 
