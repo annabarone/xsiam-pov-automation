@@ -56,7 +56,10 @@ script: |-
 
   register_module_line('POVInstallContentBundle', 'end', __line__())
 type: python
-tags: []
+tags:
+- configuration
+- Content Management
+- POV
 comment: Wrapper for the pov-install-content-bundle Integration Instance Command
 enabled: true
 args:

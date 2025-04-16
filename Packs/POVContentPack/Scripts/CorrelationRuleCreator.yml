@@ -18,9 +18,16 @@ script: |-
       context = demisto.context()
       rule_params = existing_rule or {}
 
-      for rule in context.get('ConfigurationSetup', {}).get('CorrelationRules', []):
-          if rule.get('name') == correlation_rule_name:
-              rule_params.update(rule)
+      config_setup = context.get("ConfigurationSetup", [])
+      if isinstance(config_setup, dict):
+          config_setup = [config_setup]
+  
+      for config in config_setup:
+          for rule in config.get('CorrelationRules', []):
+              if rule.get('name') == correlation_rule_name:
+                  rule_params.update(rule)
+                  break
+          if rule_params:
               break
 
       if not rule_params:
@@ -116,7 +123,7 @@ script: |-
           )
 
       except Exception as e:
-          return_error(f'{SCRIPT_NAME} - Error occurred while configuring list "{correlation_rule_name}".\n{e}')
+          return_error(f'{SCRIPT_NAME} - Error occurred while configuring correlation rule "{correlation_rule_name}".\n{e}')
 
 
   if __name__ in ('__main__', '__builtin__', 'builtins'):
@@ -127,6 +134,7 @@ type: python
 tags:
 - configuration
 - Content Management
+- POV
 comment: Correlation Rule Creator for the Content Management pack.
 enabled: true
 args:
