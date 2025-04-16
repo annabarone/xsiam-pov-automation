@@ -268,7 +268,7 @@ def create_custom_alert() -> Union[str, None]:
                 "description": "Starter Configuration Easy Button for XSIAM POV",
                 "playbook": "XSIAM Starter Configuration Setup",
                 "mitre_defs": {},
-                "pov_github_xsoar_config_file_path": CONTENT_REPO_RAW_LINK,
+                "pov_github_xsoar_config_file_path": ",".join([CONTENT_REPO_RAW_LINK]),
             }
         }
     }
@@ -293,11 +293,11 @@ def trigger_playbook(retries: int=6) -> Union[str, None]:
 
     # Overall custom alert creation retries -- this will loop if an alert was successfully created but the XSIAM tenant
     # doesn't log the alert or register it in a given time
-    for _ in range(retries):
+    for x in range(retries):
 
         # Initially attempt to kick off custom alert -- sometimes errors because initial content isn't registered yet
         # Will retry until custom alert is generated -- if not generated, it'll exit
-        for _ in range(retries):
+        for y in range(retries):
             try:
                 external_id = create_custom_alert()
                 break
@@ -317,7 +317,7 @@ def trigger_playbook(retries: int=6) -> Union[str, None]:
                             "tenant in time.")
 
         # Try to correlate the external ID to an alert ID
-        for _ in range(retries):
+        for z in range(retries):
             try:
                 alert_id = get_alert_id(external_id)
                 return alert_id
