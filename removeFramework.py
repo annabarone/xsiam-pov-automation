@@ -360,7 +360,9 @@ def delete_soc_content():
         "incident_httprequestcookies"
     ])
     delete_lists([
-        "Job_Utility_Bulk_Alert_Closer_ID_List"
+        "Job_Utility_Bulk_Alert_Closer_ID_List",
+	"Assets_Type",
+	"ProductionAssets"
     ])
     delete_playbooks([
         "JOB - Triage Incidents",
@@ -372,7 +374,9 @@ def delete_soc_content():
         "Use Case - Close NGFW Prevented",
         "Foundation - Upon Trigger",
         "Close Incidents",
+        "XSIAM Starter Configuration Setup",
         "Foundation - Dedup",
+        "Foundation - Error Handling",
         "Foundation - Enrichment",
     ])
     delete_scripts([
