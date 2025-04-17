@@ -374,7 +374,6 @@ def delete_soc_content():
         "Use Case - Close NGFW Prevented",
         "Foundation - Upon Trigger",
         "Close Incidents",
-        "XSIAM Starter Configuration Setup",
         "Foundation - Dedup",
         "Foundation - Error Handling",
         "Foundation - Enrichment",
@@ -423,4 +422,4 @@ def delete_config_automation_content():
 
 if __name__ == "__main__":
     delete_soc_content()
-    delete_config_automation_content()
+    # delete_config_automation_content()

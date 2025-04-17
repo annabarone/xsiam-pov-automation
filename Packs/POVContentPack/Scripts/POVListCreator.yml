@@ -111,9 +111,8 @@ script: |-
           return_results(
               CommandResults(
                   outputs_prefix='ConfigurationSetup.Lists',
-                  outputs_key_field='name',
+                  outputs_key_field='listname',
                   outputs={
-                      'name': list_name,
                       'listname': list_name,
                       'creationstatus': configuration_status,
                   },
