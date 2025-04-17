@@ -1,0 +1,154 @@
+commonfields:
+  id: POVListCreator
+  version: 8
+vcShouldKeepItemLegacyProdMachine: false
+name: POVListCreator
+script: |-
+  register_module_line('POVListCreator', 'start', __line__())
+  demisto.debug('pack name = POVContentPack, pack version = 1.0.0')
+
+
+
+  SCRIPT_NAME = 'POVListCreator'
+
+
+  def configure_list(list_name: str, existing_list: Optional[Dict[str, Any]] = None, instance_name: str = None) -> str:
+      """Configures the List in the XSOAR instance.
+      """
+      context = demisto.context()
+      list_params = existing_list or {}
+
+      config_setup = context.get("ConfigurationSetup", [])
+      if isinstance(config_setup, dict):
+          config_setup = [config_setup]
+  
+      for config in config_setup:
+          for list_entry in config.get('Lists', []):
+              if list_entry.get('listname') == list_name:
+                  list_params.update(list_entry)
+                  break
+          if list_params:
+              break
+
+      if not list_params:
+          return f"Failure. No List definition found in context for {list_name}"
+
+      body = {
+          "name": list_params.get("listname"),
+          "data": list_params.get("listdata"),
+          "type": list_params.get("listtype")
+      }
+      args = {'uri': '/xsoar/public/v1/lists/save', 'body': body}
+
+      if instance_name:
+          args['using'] = instance_name
+
+      status, res = execute_command(
+          'core-api-post',
+          args,
+          fail_on_error=False,
+      )
+
+      if not status:
+          error_message = f'{SCRIPT_NAME} - {res}'
+          demisto.debug(error_message)
+          raise Exception(f"POST to /xsoar/public/v1/lists/save failed with error: {error_message}")
+
+      return "Success"
+
+
+  def search_existing_list(list_name: str, instance_name: str = None) -> Dict[str, Any]:
+      """Searches the machine for previously configured lists with the given name.
+
+      Args:
+          list_name (str): The name of the list to update its past configurations.
+          instance_name (str): Core REST API instance name.
+
+      Returns:
+          Dict[str, Any]. The list data as configured on the machine.
+      """
+
+      args = {
+          'uri': '/xsoar/public/v1/lists'
+      }
+
+      if instance_name:
+          args['using'] = instance_name
+
+      status, res = execute_command(
+          'core-api-get',
+          args,
+          fail_on_error=False,
+      )
+
+      if not status:
+          error_message = f'{SCRIPT_NAME} - {res}'
+          demisto.debug(error_message)
+          raise Exception(f"GET to /public_api/v1/lists failed with error: {error_message}")
+
+      if isinstance(res, list):
+          res = res[0]
+      search_results = res.get('response', [])
+      search_results = [x for x in search_results if x.get('name') == list_name]
+      if search_results:
+          return search_results[0]
+
+      return {}
+
+
+  def main():
+      args = demisto.args()
+      instance_name = args.get('using')
+      list_name = args.get('list_name')
+
+      try:
+          existing_list = search_existing_list(list_name, instance_name)
+          if not existing_list:
+              configuration_status = configure_list(list_name, existing_list, instance_name)
+          else:
+              configuration_status = "Already exists."
+
+          return_results(
+              CommandResults(
+                  outputs_prefix='ConfigurationSetup.Lists',
+                  outputs_key_field='name',
+                  outputs={
+                      'name': list_name,
+                      'listname': list_name,
+                      'creationstatus': configuration_status,
+                  },
+              )
+          )
+
+      except Exception as e:
+          return_error(f'{SCRIPT_NAME} - Error occurred while configuring list "{list_name}".\n{e}')
+
+
+  if __name__ in ('__main__', '__builtin__', 'builtins'):
+      main()
+
+  register_module_line('POVListCreator', 'end', __line__())
+type: python
+tags:
+- configuration
+- Content Management
+- POV
+comment: List Creator for the Content Management pack.
+enabled: true
+args:
+- name: list_name
+  required: true
+  default: true
+  description: The name of the integration instance to configure.
+outputs:
+- contextPath: ConfigurationSetup.Lists.creationstatus
+  description: The creation status of the  list.
+  type: Unknown
+scripttarget: 0
+subtype: python3
+pswd: ""
+runonce: false
+dockerimage: demisto/xsoar-tools:1.0.0.1902141
+runas: DBotWeakRole
+engineinfo: {}
+mainengineinfo: {}

@@ -518,7 +518,7 @@ tasks:
       version: -1
       name: Create Lists
       description: List creator for the content management pack.
-      scriptName: ListCreator
+      scriptName: POVListCreator
       type: regular
       iscommand: false
       brand: ""
