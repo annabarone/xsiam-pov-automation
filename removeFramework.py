@@ -422,4 +422,4 @@ def delete_config_automation_content():
 
 if __name__ == "__main__":
     delete_soc_content()
-    # delete_config_automation_content()
+    delete_config_automation_content()
