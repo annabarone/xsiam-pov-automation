@@ -259,6 +259,30 @@ def delete_dashboards(dashboards: list[str]):
         else:
             print(f"Error: {response.status_code} - {response.text}")
 
+
+def delete_widgets(widgets: list[str]):
+    for widget in widgets:
+        print("Deleting Widget: " + widget)
+
+        data = {
+            "request_data": {
+                "filters": [
+                    {"field": "title", "operator": "EQ", "value": widget}
+                ]
+            }
+        }
+
+        response = requests.post(
+            url=f"{DEMISTO_BASE_URL}/public_api/v1/widgets/delete",
+            headers=headers,
+            json=data
+        )
+        if response.status_code == 200:
+            resp = response.json()
+        else:
+            print(f"Error: {response.status_code} - {response.text}")
+
+
 def delete_integration(integration: str):
     response = requests.post(
         url=f"{DEMISTO_BASE_URL}/xsoar/settings/integration-conf/delete",
@@ -347,6 +371,21 @@ def delete_soc_content():
         "Proofpoint TAP v2_instance_1",
         "Whois_instance_1"
     ])
+    delete_widgets([
+        "Common Use Cases",
+        "Time Saved by XSIAM per Task",
+        "Total FTEs Saved",
+        "Total SOC Hours Worked by XSIAM",
+        "Time Save by Category",
+        "Tools used by XSIAM by Hour",
+        "XSIAM Vendor Usage",
+        "Total Alerts",
+        "Alerts Auto Resolved",
+        "Total Incidents after Grouping",
+        "Analysts Incidents",
+        "Total Alerts By Source",
+        "Custom Scripts Usage"
+    ])
     # delete_classifiers([""])
     delete_dashboards(["XSIAM SOC Value Metrics"])
     # delete_layouts([""})
@@ -416,10 +455,30 @@ def delete_config_automation_content():
         "LookupDatasetCreator",
         "POVInstallContentBundle",
         "POVJobCreator",
+        "POVListCreator",
         "XSIAMContentPackInstaller",
+    ])
+
+
+def delete_threat_intel():
+    delete_integration_instances([
+        "abuse.ch SSL Blacklist Feed_instance_1",
+        "Blocklist_de Feed_instance_1",
+        "BruteForceBlocker Feed_instance_1",
+        "FeedURLhaus_instance_1",
+        "Feodo Tracker IP Blocklist Feed_instance_1",
+        "LOLBAS Feed_instance_1",
+        "MalwareBazaar Feed_instance_1",
+        "MITRE ATT&CK v2_instance_1",
+        "SpamhausFeed_instance_1",
+        "TeamCymru_instance_1",
+        "ThreatFox Feed_instance_1",
+        "Tor Exit Addresses Feed_instance_1",
+        "Whois_instance_1"
     ])
 
 
 if __name__ == "__main__":
     delete_soc_content()
+    delete_threat_intel()
     delete_config_automation_content()
