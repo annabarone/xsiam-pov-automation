@@ -2088,7 +2088,10 @@ tasks:
       id: bbd7b60d-4000-4dc7-8b07-d54be85d1a52
       version: -1
       name: Request CM FF and Continue
-      description: Continue the investigation.
+      description: "In order to continue with the configuration, the Content Management
+        APIs need to be enabled on your XSIAM tenant. This is done via a Feature Flag.
+        Please use [this form](https://docs.google.com/forms/d/e/1FAIpQLScJUm_I2ZHi3Ql9KezCgFUqgvceWgI-jhHjOquapQCyOPsuhA/viewform)
+        to enable the FF on your tenant. \n\nWhen the CM FF is enabled, please continue."
       type: regular
       iscommand: false
       brand: ""
