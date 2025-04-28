@@ -332,7 +332,7 @@ script: |
               for _list in self.config['lists']:
                   list_name = _list.get('name')
                   list_value = _list.get('value')
-                  list_type = _list.get('type')
+                  list_type = _list.get('type', 'plain_text')
 
                   self.lists[list_name] = {
                       "value": list_value,
@@ -429,6 +429,7 @@ script: |
           {
               'listname': list_name,
               'listdata': pps["value"],
+              'listtype': pps["type"]
           }
           for list_name, pps in full_configuration.lists.items() if not list_exists(list_name) or pps["type"] != "dynamic"
       ]
