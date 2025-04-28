@@ -300,7 +300,6 @@ script:
             else:
                 properly_named_file_path = rename_file_path(entry_filename, file_path)
                 path_to_upload = unzip_files_to_verify_compression(entry_filename, file_path)
-                demisto.log(f"path_to_upload:{path_to_upload}")
                 response_json = client.post_system_content_bundle(path_to_upload)
 
             return CommandResults(

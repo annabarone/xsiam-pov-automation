@@ -71,6 +71,8 @@ def upload_initial_content():
     try:
         upload_content_entity(
             input=path,
+            zip=True,
+            xsiam=True,
             insecure=True,
         )
     except Exit as e:
