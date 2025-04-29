@@ -241,17 +241,10 @@ script:
         with open(lp_path, "w") as f:
             json.dump({"sections": []}, f)
 
-
         with zipfile.ZipFile(file_path, "r") as zf:
             zf.extractall(pack_path)
 
-        metadata_file_path = os.path.join(pack_path, "metadata.json")
-        if os.path.exists(metadata_file_path):
-            return file_path
-        else:
-            return pack_path
-
-
+        return pack_path
 
 
     ''' COMMAND FUNCTIONS '''

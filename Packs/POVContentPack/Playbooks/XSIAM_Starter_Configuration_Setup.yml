@@ -100,8 +100,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 484,
-          "y": 6431
+          "x": 547,
+          "y": 6621
         }
       }
     note: false
@@ -627,7 +627,7 @@ tasks:
       id: 70855918-72ed-4333-8d93-d2f0ded95fe1
       version: -1
       name: closeInvestigation
-      description: Close the current incident
+      description: Close the current alert
       script: Builtin|||closeInvestigation
       type: regular
       iscommand: true
@@ -640,8 +640,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 484,
-          "y": 6256
+          "x": 547,
+          "y": 6446
         }
       }
     note: false
@@ -659,7 +659,7 @@ tasks:
       id: 15f83068-757e-4c85-8c5c-17a01b05449f
       version: -1
       name: Lists to Create?
-      description: Changes the properties of an incident.
+      description: Changes the properties of an alert.
       type: condition
       iscommand: false
       brand: Builtin
@@ -702,7 +702,7 @@ tasks:
       id: 4390fb07-1d0c-4687-8a88-69f7b311b29b
       version: -1
       name: Jobs to Create?
-      description: Changes the properties of an incident.
+      description: Changes the properties of an alert.
       type: condition
       iscommand: false
       brand: Builtin
@@ -827,8 +827,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 484,
-          "y": 5904
+          "x": 547,
+          "y": 6094
         }
       }
     note: false
@@ -1185,10 +1185,9 @@ tasks:
       name: Delete Pre Configs' ConfigurationSetup Context
       description: "Delete field from context.\n\nThis automation runs using the default
         Limited User role, unless you explicitly change the permissions.\nFor more
-        information, see the section about permissions here:\n- For Cortex XSOAR 6
-        see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
-        \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
-        For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+        information, see the section about permissions here:\n- For Cortex see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+        \n- For Cortex Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+        For Cortex.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
       scriptName: DeleteContext
       type: regular
       iscommand: false
@@ -1298,7 +1297,7 @@ tasks:
       id: e8f3f403-6159-4b3b-8395-1577d50e2efa
       version: -1
       name: Integration Instances to Create?
-      description: Changes the properties of an incident.
+      description: Changes the properties of an alert.
       type: condition
       iscommand: false
       brand: Builtin
@@ -1509,7 +1508,7 @@ tasks:
       id: ff6ba7d4-465d-4d8e-80a7-91bde78cc56e
       version: -1
       name: Lookup Datasets to Create?
-      description: Changes the properties of an incident.
+      description: Changes the properties of an alert.
       type: condition
       iscommand: false
       brand: Builtin
@@ -1552,7 +1551,7 @@ tasks:
       id: 535ca4b2-93c8-43d0-8a36-32966715fb2f
       version: -1
       name: Need to grab data from URL?
-      description: Changes the properties of an incident.
+      description: Changes the properties of an alert.
       type: condition
       iscommand: false
       brand: Builtin
@@ -1656,8 +1655,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": -186,
-          "y": 5182
+          "x": -123,
+          "y": 5372
         }
       }
     note: false
@@ -1691,8 +1690,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": -186,
-          "y": 5037
+          "x": -123,
+          "y": 5227
         }
       }
     note: false
@@ -1710,7 +1709,7 @@ tasks:
       id: d59eb1d1-881d-4dc5-851d-2438fc440300
       version: -1
       name: Correlation Rules to Create?
-      description: Changes the properties of an incident.
+      description: Changes the properties of an alert.
       type: condition
       iscommand: false
       brand: Builtin
@@ -1734,8 +1733,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 37,
-          "y": 4842
+          "x": 100,
+          "y": 5032
         }
       }
     note: false
@@ -1764,8 +1763,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 37,
-          "y": 4699
+          "x": 100,
+          "y": 4889
         }
       }
     note: false
@@ -1803,8 +1802,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 1214,
-          "y": 5438
+          "x": 1277,
+          "y": 5628
         }
       }
     note: false
@@ -1834,8 +1833,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 990,
-          "y": 4707
+          "x": 1053,
+          "y": 4897
         }
       }
     note: false
@@ -1869,8 +1868,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 1214,
-          "y": 5300
+          "x": 1277,
+          "y": 5490
         }
       }
     note: false
@@ -1888,7 +1887,7 @@ tasks:
       id: a63c0bbe-b125-4c4b-8a7b-6db3580f877a
       version: -1
       name: Dashboards to Create?
-      description: Changes the properties of an incident.
+      description: Changes the properties of an alert.
       type: condition
       iscommand: false
       brand: Builtin
@@ -1912,8 +1911,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 990,
-          "y": 4856
+          "x": 1053,
+          "y": 5046
         }
       }
     note: false
@@ -1931,7 +1930,7 @@ tasks:
       id: e407d3dc-65e5-430e-892f-462635e8edc4
       version: -1
       name: Need to grab data from URL?
-      description: Changes the properties of an incident.
+      description: Changes the properties of an alert.
       type: condition
       iscommand: false
       brand: Builtin
@@ -1955,8 +1954,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 1214,
-          "y": 5023
+          "x": 1277,
+          "y": 5213
         }
       }
     note: false
@@ -1996,8 +1995,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 1451,
-          "y": 5150
+          "x": 1514,
+          "y": 5340
         }
       }
     note: false
@@ -2022,7 +2021,7 @@ tasks:
       brand: ""
     nexttasks:
       '#none#':
-      - "83"
+      - "87"
     separatecontext: false
     continueonerrortype: ""
     view: |-
@@ -2070,7 +2069,7 @@ tasks:
       {
         "position": {
           "x": 514,
-          "y": 4371
+          "y": 4571
         }
       }
     note: false
@@ -2105,7 +2104,7 @@ tasks:
       {
         "position": {
           "x": 503,
-          "y": 4525
+          "y": 4725
         }
       }
     note: false
@@ -2136,8 +2135,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 484,
-          "y": 6074
+          "x": 547,
+          "y": 6264
         }
       }
     note: false
@@ -2184,6 +2183,55 @@ tasks:
     quietmode: 0
     isoversize: false
     isautoswitchedtoquietmode: false
+  "87":
+    id: "87"
+    taskid: bdc3c5eb-2f31-4dcd-a7a0-eca0aff9de66
+    type: condition
+    task:
+      id: bdc3c5eb-2f31-4dcd-a7a0-eca0aff9de66
+      version: -1
+      name: CM FF items to create?
+      description: Changes the properties of an alert.
+      type: condition
+      iscommand: false
+      brand: Builtin
+    nexttasks:
+      '#default#':
+      - "48"
+      "yes":
+      - "83"
+    separatecontext: false
+    conditions:
+    - label: "yes"
+      condition:
+      - - operator: isNotEmpty
+          left:
+            value:
+              simple: ConfigurationSetup.CorrelationRules
+            iscontext: true
+          right:
+            value: {}
+        - operator: isNotEmpty
+          left:
+            value:
+              simple: ConfigurationSetup.Dashboards
+            iscontext: true
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": 514,
+          "y": 4365
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+system: true
 view: |-
   {
     "linkLabelsPosition": {
@@ -2197,13 +2245,14 @@ view: |-
       "69_82_#default#": 0.23,
       "70_68_#default#": 0.45,
       "74_48_#default#": 0.1,
-      "79_48_#default#": 0.12
+      "79_48_#default#": 0.12,
+      "87_48_#default#": 0.13
     },
     "paper": {
       "dimensions": {
-        "height": 7323,
+        "height": 7513,
         "width": 2018,
-        "x": -186,
+        "x": -123,
         "y": -832
       }
     }
