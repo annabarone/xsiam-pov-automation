@@ -363,12 +363,10 @@ def delete_soc_content():
     delete_jobs(["Auto Triage", "Collect Playbook Metrics"])
 
     delete_correlation_rules([
-        "Production Proofpoint TAP - Messages Blocked or Clicks Blocked",
-        "Production Proofpoint TAP - Messages Delivered"
+        ""
     ])
     delete_integration_instances([
         "PlaybookMetrics",
-        "Proofpoint TAP v2_instance_1",
         "Whois_instance_1"
     ])
     delete_widgets([
@@ -390,17 +388,12 @@ def delete_soc_content():
     delete_dashboards(["XSIAM SOC Value Metrics"])
     # delete_layouts([""})
     delete_incident_fields([
-        "incident_forensicdnsmarkdown",
-        "incident_forensicfilemarkdown",
-        "incident_forensicnetworkmarkdown",
-        "incident_forensicsummarymarkdown",
-        "incident_httpcookiesmd",
-        "incident_httprawhtml",
-        "incident_httprequestcookies"
+        ""
     ])
     delete_lists([
         "Job_Utility_Bulk_Alert_Closer_ID_List",
 	"Assets_Type",
+	"SOCOptimizationConfig",
 	"ProductionAssets"
     ])
     delete_playbooks([
@@ -408,21 +401,18 @@ def delete_soc_content():
         "JOB - Store Playbook Metrics in Dataset",
         "Get Alert Tasks and Store to Dataset",
         "Utility - Emergency Alert Resolver",
-        "Use Case - Proofpoint Message Delivered",
-        "Use Case - Proofpoint Click Permitted",
-        "Use Case - Close NGFW Prevented",
         "Foundation - Upon Trigger",
         "Close Incidents",
         "Foundation - Dedup",
         "Foundation - Error Handling",
         "Foundation - Enrichment",
+        "Foundation - Load Configuration"
     ])
     delete_scripts([
         "CloseAlerts"
     ])
     delete_layouts([
-        "Proofpoint - Click Permitted",
-        "Proofpoint - Message Delivered"
+        ""
     ])
     delete_datasets([
         "xsiam_playbookmetrics_raw",
