@@ -12,18 +12,21 @@ The recommended way to run the XSIAM POV Tenant Configurations is by using the h
 https://pov-companion.ts.paloaltonetworks.com/tenant-configurations
 
 
-## (Not Recommended) Local Environment
+## (Developer-Only) Local Environment
 
-The python setup script in this repository will:
+#### System Requirements 
 
-1. Upload the POVContentPack in the Packs directory 
-2. Create a Cortex/Core REST API Integration Instance using the credential manually created 
-3. Trigger a custom alert 
-4. Grab the alert's ID and output the URL to the alert's workplan
+* Python 3.9, 3.10 or 3.11.
 
-Follow the below steps to run the script: 
+* git installed.
 
-### Generate API Key
+* A linux, mac or WSL2 machine.
+
+* A Palo Alto Networks XSIAM tenant with Instance Administrator access
+
+### XSIAM Setup
+
+#### Generate API Key
 
 To begin, you need to generate a Standard XSIAM API Key with Instance Administrator roles. 
 
@@ -43,7 +46,7 @@ To begin, you need to generate a Standard XSIAM API Key with Instance Administra
 5. Back on the API Key Table page, keep track of your API Key's ID in the table, and the API URL in the top right corner
 
 
-### Save API Key as a Credential 
+#### Save API Key as a Credential 
 
 1. In XSIAM, navigate to: 
         **Settings > Configuration > Integrations > Credentials**
@@ -61,7 +64,9 @@ To begin, you need to generate a Standard XSIAM API Key with Instance Administra
 4. Click **Save**.
 
 
-### Run Easy Button
+### Local Python Environment Setup
+
+After git cloning this repository locally, you will need to:
 
 1. Please create a `.env` file in the root directory with the follow values: 
 
@@ -73,8 +78,7 @@ CONTENT_REPO_RAW_LINK=http://raw.githubusercontent.com/annabarone/xsiam-soc-fram
 ```
 
 If you have a different repository with content, please change the CONTENT_REPO_RAW_LINK with your repository's 
-`xsoar_config.json`'s RAW link.
-
+`xsoar_config.json`'s GitHub RAW link.
 
 2. Create a python venv with `python -m venv venv`
 
@@ -82,7 +86,49 @@ If you have a different repository with content, please change the CONTENT_REPO_
 
 4. Install the requirements with `pip install -r requirements.txt`
 
-5. Run the `setup.py` file with `python setup.py`
+#### setup.py Configuration Script
+
+The python setup.py script in this repository will:
+
+* Upload the POVContentPack in the Packs directory 
+* Create a Cortex/Core REST API Integration Instance using the credential manually created 
+* Trigger a custom alert 
+* Grab the alert's ID and output the URL to the alert's workplan
+
+With the previous local environment setup steps completed, you can run the setup script with: 
+
+```shell
+python setup.py
+```
 
 As a result, a Custom Alert will be created that auto-runs the XSIAM Starter Configuration Setup playbook. This playbook
 grabs the configuration from your CONTENT_REPO on GitHub and installs all content there. 
+
+
+#### removeFramework.py Configuration Script
+
+The python setup.py script in this repository will:
+
+* Delete all custom content regarding the SOC Framework from your tenant
+* Delete all POVContentPack content from your tenant 
+
+With the previous local environment setup steps completed, you can run the setup script with: 
+
+```shell
+python removeFramework.py
+```
+
+
+#### capture.py Configuration Script
+
+The python capture.py script in this repository will:
+
+* Download all custom content that can be configured with the XSIAM Starter Configuration Setup playbook 
+* Format the custom content in demisto-sdk packages and an xsoar_config.json file
+* Provide instructions on how to upload the packages to GitHub and utilize in the setup.py script
+
+With the previous local environment setup steps completed, you can run the setup script with: 
+
+```shell
+python capture.py
+```
