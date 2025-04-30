@@ -29,15 +29,14 @@ headers = {
 }
 
 
-
 def verify_dotenv():
-    print("\n---Please verify these environment variables:\n")
-    print(f"DEMISTO_BASE_URL: {DEMISTO_BASE_URL}")
-    print(f"XSIAM_AUTH_ID: {XSIAM_AUTH_ID}")
+    print("\n>> Please verify these environment variables:\n")
+    print(f"\tDEMISTO_BASE_URL: {DEMISTO_BASE_URL}")
+    print(f"\tXSIAM_AUTH_ID: {XSIAM_AUTH_ID}\n")
 
     # Ask for confirmation from the user
-    confirmation = input("Are these variables expected? (yes/no): ")
-    if confirmation.lower().strip() == "yes":
+    confirmation = (str(input(">> Are these variables expected? (Y/N): "))).lower().strip()
+    if confirmation == "y":
         print("Confirmation received.\n")
     else:
         print("Exiting because the variables were not accepted.\n")
@@ -100,12 +99,9 @@ def _call(method: str, path: str, body: Union[dict, None] = None, retries: int =
             time.sleep(15)
 
 
-def init_empty_package(name: str = "POVContentPack") -> None:
-    # Initially set-up the pack structure
-    packs_path = os.path.join(os.path.dirname(__file__), "Packs")
+def init_empty_package(packs_path: str, name: str = "POVContentPack") -> None:
+    # Initially set up the pack structure
     pack_path = os.path.join(packs_path, name)
-    if not os.path.exists(packs_path):
-        os.makedirs(packs_path)
 
     # If the Packs/name directory exists, don't initiate the pack again
     if os.path.exists(pack_path):
@@ -243,7 +239,7 @@ def download_lookup_datasets(path: str) -> List[dict]:
         datasets.extend([{
             "dataset_name": x.get('Dataset Name'),
             "dataset_type": "lookup",
-            "url": "## FILL MANDATORY FIELD ## - YOU NEED TO UPDATE THIS WITH RAW GITHUB LOCATION OF JSON FILE"
+            "url": f"## FILL MANDATORY FIELD ## - UPDATE WITH RAW GITHUB LOCATION OF DATASET'S JSON FILE /LookupData/{x.get('Dataset Name')}"
         } for x in results])
 
     else:
@@ -340,7 +336,7 @@ def format_xsoar_config_file(pack_path: str, name: str) -> None:
         "custom_packs": [
             {
                 "id": f"{name}.zip",
-                "url": "## FILL MANDATORY FIELD ##",
+                "url": "## FILL MANDATORY FIELD ## - UPDATE WITH GITHUB URL OF THE PACK'S ZIP FILE",
                 "system": "yes"
             }
         ]
@@ -368,47 +364,80 @@ def __main__():
     verify_dotenv()
     verify_credentials()
 
+    # Prompts user to determine where to store the packs
     while True:
-        name = input("Enter the name of the pack, (no spaces allowed): ").strip()
+        directory = (str(input(f">> Enter the directory to store your pack (default: {os.path.dirname(__file__)}): "))).strip()
+        if directory == "":
+            directory = os.path.dirname(__file__)
+        if os.path.exists(directory):
+            directory = os.path.abspath(directory)
+            break
+        else:
+            print("This directory doesn't exist. Try another one.")
+
+    # Prompts the user for the PackName
+    while True:
+        name = (str(input(">> Enter the name of the pack, (no spaces allowed): "))).strip()
         if " " not in name:
             break
         else:
             print("No spaces allowed. Retry...")
 
-    packs_path = os.path.join(os.path.dirname(__file__), "Packs")
+    packs_path = os.path.join(directory, "Packs")
+    if not os.path.exists(packs_path):
+        os.makedirs(packs_path)
     pack_path = os.path.join(packs_path, name)
 
-    init_empty_package(name=name)
+    # Capture necessary data points
+    init_empty_package(packs_path, name=name)
     download_content_from_sdk(pack_path)
-
     download_content_from_api(pack_path)
-
     format_xsoar_config_file(pack_path, name)
 
-    print(f"------\n"
-          f"The pack has been successfully downloaded all content here: {pack_path}\n\n"
-          f"A few things you'll need to do: \n"
-          f"\t1. Remove all non-necessary content for your package directory\n")
+    print(f"\n============\n"
+          f"The script successfully downloaded all custom content here: {pack_path}\n"
+          f"============\n"
+          f">> Now, you'll need to: \n"
+          f"\t1. Remove all irrelevant content from the package directory\n"
+          f"\t2. Remove all irrelevant content from the xsoar_config.json file\n")
 
     while True:
-        validation = input("Enter 'yes' when you've removed all un-necessary content: ").strip()
-        if "yes" == validation:
+        validation = (str(input(">> Enter 'y' when you've removed all irrelevant content: "))).lower().strip()
+        if "y" == validation:
             break
         else:
-            print("Need a 'yes' here. Retry...\n")
+            print("Need a 'y' here. Retry...\n")
 
     shutil.make_archive(pack_path, "zip", pack_path)
 
-    print(f"\n\nThe demisto-sdk content was properly zipped! \n\nNow for your xsoar_config.json file:\n"
-          f"\t1. Remove all non-necessary content for your xsoar_config.json file\n"
-          f"\t2. Fill in the 'dataset_schema' for any lookup datasets you push with xsoar_config.json\n"
-          f"\t3. Fill in the 'url' for the lookup datasets you push with xsoar_config.json\n"
-          f"\t4. If you are updating Marketplace Packs to their latest, change the version to 'latest'\n"
-          f"\t5. Once you upload the Pack to a GitHub repo as a .tar or .tar.gz file, add the URL to the `custom_packs` "
-          f"in the xsoar_config.json file\n\n"
-          )
+    print(f"\n============\n"
+          f"The demisto-sdk content was properly zipped! \n"
+          f"============\n"
+          f"\nYou can locally upload using: `demisto-sdk upload -x -z -i {pack_path}`\n\n"
+          f"Please note: This will only upload content allowed by the demisto-sdk (Playbooks, Integrations, etc) "
+          f"and will not run any starter configuration automation to install MP packs, create jobs, "
+          f"create integration instances, etc.\n")
 
-    print("\n Please note that right now, this must be uplaoded as a non-zipped directory via "
-          "`demisto-sdk upload -x -z -i <pack_dir>`")
+    while True:
+        automation_load = (str(input("\n>> Are you planning on pushing this configuration using the XSIAM Starter "
+                                     "Config Setup Playbook (Y/N) "))).lower().strip()
+        if automation_load in ['y', 'n']:
+            break
+        else:
+            print("Need a 'Y' or 'N' here. Retry...\n")
+
+    if automation_load == 'y':
+        print(f"\n\nTo push this configuration using the XSIAM Starter Config Setup Playbook, the Pack directory (including all sub-directories "
+              f"and files) needs to be uploaded to a GitHub repository. \n\n"
+              f"Once uploaded, you'll need to:\n"
+              f"\t1. Input the GitHub URL of the Pack's .zip file in the xsoar_config.json file (.zip files can be placed in directory or generated as a release asset)\n"
+              f"\t2. For all MP packs, change the packs' versions to 'latest' in the xsoar_config.json if you want the latest every time\n"
+              f"\t3. For all lookup datasets, fill in the 'dataset_schema' in the xsoar_config.json\n"
+              f"\t4. For all lookup datasets, fill in the 'url' for the lookup datasets in xsoar_config.json\n"
+              )
+
+        print("Once those are updated and pushed to GitHub, copy the xsoar_config.json's RAW GitHub URL and add to your"
+              ".env file to run the setup.py script.\n\n")
+
 
 __main__()
