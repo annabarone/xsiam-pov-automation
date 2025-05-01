@@ -57,6 +57,7 @@ script:
     from click.exceptions import Exit
     import dateparser
     import zipfile
+    import shutil
 
     requests.packages.urllib3.disable_warnings() # pylint: disable=no-member
 
@@ -223,14 +224,18 @@ script:
         If a zip file was compressed locally without demisto-sdk, it will not have a metadata.json and the upload will fail. The files must be
         extracted and the directory structure will be pushed.
         """
+        # Format the pack directory
         packs_path = os.path.join(os.getcwd(), "Packs")
         pack_name = file_name.replace(".zip", "")
         pack_path = os.path.join(packs_path, pack_name)
-
         if not os.path.exists(packs_path):
             os.makedirs(packs_path)
 
-        # Also need to surpress the Test logs
+        # Verify that the filepath is a zipfile
+        if not zipfile.is_zipfile(file_path):
+            raise Exception("The passed in file is not a zipfile.")
+
+        # Also need to supress the Test logs by creating Tests/Marketplace/landingPage_sections.json
         test_path = os.path.join(os.getcwd(), "Tests")
         if not os.path.exists(test_path):
             os.makedirs(test_path)
@@ -240,9 +245,30 @@ script:
         lp_path = os.path.join(mp_path, "landingPage_sections.json")
         with open(lp_path, "w") as f:
             json.dump({"sections": []}, f)
+    
+        # Verify the zipfile is a valid demisto-sdk package with a pack_metadata.json   
+        with zipfile.ZipFile(file_path, "r") as zf:
+            zip_filelist = zf.infolist()
+        metadata_file = [x.filename for x in zip_filelist if "pack_metadata.json" in x.filename]
+        if not metadata_file:
+            raise Exception("The zipfile passed in is not a valid demisto-sdk package and is missing a pack_metadata.json file")
+
+        # Check the zipfile isn't zipped behind too many directories, only one allowed
+        metadata_file_path_list = metadata_file[0].split("/")
+        if len(metadata_file_path_list) > 2:
+            raise Exception(f"The zipfile passed in is packed too deep in a directory. Please repackage the zip file with the content at the top level: {metadata_file_path_list}")
 
         with zipfile.ZipFile(file_path, "r") as zf:
             zf.extractall(pack_path)
+
+        # Need to remove the zipfile's root directory
+        if len(metadata_file_path_list) == 2:
+            root_dir = os.path.join(pack_path, metadata_file_path_list[0])
+            for item in os.listdir(root_dir):
+                source_item = os.path.join(root_dir, item)
+                target_item = os.path.join(pack_path, item)
+                shutil.move(source_item, target_item)
+            os.rmdir(root_dir)
 
         return pack_path
 
