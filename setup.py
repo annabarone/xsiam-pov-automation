@@ -270,7 +270,7 @@ def create_custom_alert() -> Union[str, None]:
                 "description": "Starter Configuration Easy Button for XSIAM POV",
                 "playbook": "XSIAM Starter Configuration Setup",
                 "mitre_defs": {},
-                "pov_github_xsoar_config_file_path": ",".join([CONTENT_REPO_RAW_LINK]),
+                "pov_github_xsoar_config_file_path": CONTENT_REPO_RAW_LINK,
             }
         }
     }

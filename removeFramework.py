@@ -362,9 +362,9 @@ def delete_correlation_rules(correlation_rules: list[str]):
 def delete_soc_content():
     delete_jobs(["Auto Triage", "Collect Playbook Metrics"])
 
-    delete_correlation_rules([
-        ""
-    ])
+    # delete_correlation_rules([
+    #     ""
+    # ])
     delete_integration_instances([
         "PlaybookMetrics",
         "Whois_instance_1"
@@ -387,14 +387,14 @@ def delete_soc_content():
     # delete_classifiers([""])
     delete_dashboards(["XSIAM SOC Value Metrics"])
     # delete_layouts([""})
-    delete_incident_fields([
-        ""
-    ])
+    # delete_incident_fields([
+    #     ""
+    # ])
     delete_lists([
         "Job_Utility_Bulk_Alert_Closer_ID_List",
-	"Assets_Type",
-	"SOCOptimizationConfig",
-	"ProductionAssets"
+        "Assets_Type",
+        "SOCOptimizationConfig",
+        "ProductionAssets"
     ])
     delete_playbooks([
         "JOB - Triage Incidents",
@@ -411,9 +411,9 @@ def delete_soc_content():
     delete_scripts([
         "CloseAlerts"
     ])
-    delete_layouts([
-        ""
-    ])
+    # delete_layouts([
+    #     ""
+    # ])
     delete_datasets([
         "xsiam_playbookmetrics_raw",
         "value_tags"
@@ -470,5 +470,5 @@ def delete_threat_intel():
 
 if __name__ == "__main__":
     delete_soc_content()
-    delete_threat_intel()
-    delete_config_automation_content()
+    # delete_threat_intel()
+    # delete_config_automation_content()

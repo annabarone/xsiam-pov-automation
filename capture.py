@@ -156,7 +156,6 @@ def download_content_from_sdk(path: str) -> None:
         Downloader(
             output=path,
             all_custom_content=True,
-            auto_replace_uuids=False,
             all_custom_fields=True,
         ).download()
     except Exit as e:
