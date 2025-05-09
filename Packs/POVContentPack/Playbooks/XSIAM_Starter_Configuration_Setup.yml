@@ -25,8 +25,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 602.5,
-          "y": -832
+          "x": 605.5,
+          "y": -1508
         }
       }
     note: false
@@ -52,7 +52,7 @@ tasks:
       brand: ""
     nexttasks:
       '#none#':
-      - "28"
+      - "93"
     scriptarguments:
       configuration_file_entry_id:
         complex:
@@ -72,8 +72,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 602.5,
-          "y": 587
+          "x": 605.5,
+          "y": -89
         }
       }
     note: false
@@ -767,8 +767,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 602.5,
-          "y": 445
+          "x": 605.5,
+          "y": -231
         }
       }
     note: false
@@ -797,8 +797,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 602.5,
-          "y": 204
+          "x": 605.5,
+          "y": -472
         }
       }
     note: false
@@ -860,8 +860,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 603,
-          "y": -673
+          "x": 606,
+          "y": -1349
         }
       }
     note: false
@@ -1009,8 +1009,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 603,
-          "y": -538
+          "x": 606,
+          "y": -1214
         }
       }
     note: false
@@ -1081,8 +1081,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 603,
-          "y": -393
+          "x": 606,
+          "y": -1069
         }
       }
     note: false
@@ -1122,8 +1122,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 602.5,
-          "y": -103
+          "x": 605.5,
+          "y": -779
         }
       }
     note: false
@@ -1164,8 +1164,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 603,
-          "y": -256
+          "x": 606,
+          "y": -932
         }
       }
     note: false
@@ -1203,8 +1203,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 602.5,
-          "y": 60
+          "x": 605.5,
+          "y": -616
         }
       }
     note: false
@@ -2174,8 +2174,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 602.5,
-          "y": 312
+          "x": 605.5,
+          "y": -364
         }
       }
     note: false
@@ -2329,6 +2329,166 @@ tasks:
     quietmode: 0
     isoversize: false
     isautoswitchedtoquietmode: false
+  "90":
+    id: "90"
+    taskid: 44808db1-855c-4c8f-b36a-d5bdd06a4676
+    type: regular
+    task:
+      id: 44808db1-855c-4c8f-b36a-d5bdd06a4676
+      version: -1
+      name: Complete the Manual Pre-Configuration Steps
+      description: |-
+        Please follow these guides to complete the pre-configuration:
+
+        ${pre_guide_template}
+      type: regular
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "28"
+    separatecontext: false
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": 910,
+          "y": 570
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "91":
+    id: "91"
+    taskid: db80f05c-222c-4034-b2c7-cfb55a99f9aa
+    type: condition
+    task:
+      id: db80f05c-222c-4034-b2c7-cfb55a99f9aa
+      version: -1
+      name: Pre Manual Steps Required?
+      type: condition
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#default#':
+      - "28"
+      "yes":
+      - "92"
+    separatecontext: false
+    conditions:
+    - label: "yes"
+      condition:
+      - - operator: isExists
+          left:
+            value:
+              simple: ConfigurationSetup.PreConfigDocs
+            iscontext: true
+          right:
+            value: {}
+      - - operator: isNotEmpty
+          left:
+            value:
+              simple: ConfigurationSetup.PreConfigDocs
+            iscontext: true
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": 605.5,
+          "y": 278
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "92":
+    id: "92"
+    taskid: 6737af79-9737-4ed7-a685-2ea915d604a2
+    type: regular
+    task:
+      id: 6737af79-9737-4ed7-a685-2ea915d604a2
+      version: -1
+      name: Set Pre Manual Guide output
+      description: Set a value in context under the key you entered.
+      scriptName: Set
+      type: regular
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "90"
+    scriptarguments:
+      extend-context:
+        simple: template
+      key:
+        simple: pre_guide_template
+      value:
+        complex:
+          root: ConfigurationSetup.PreConfigDocs
+          accessor: markdown_text
+          transformers:
+          - operator: join
+            args:
+              separator:
+                value:
+                  simple: |2+
+
+
+    separatecontext: false
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": 910,
+          "y": 424
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "93":
+    id: "93"
+    taskid: aaab7d04-1cf1-4c4e-aecb-8bec910df0f0
+    type: title
+    task:
+      id: aaab7d04-1cf1-4c4e-aecb-8bec910df0f0
+      version: -1
+      name: Manual Pre-Configuration
+      type: title
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "91"
+    separatecontext: false
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": 605.5,
+          "y": 120
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
 system: true
 view: |-
   {
@@ -2349,10 +2509,10 @@ view: |-
     },
     "paper": {
       "dimensions": {
-        "height": 7683,
+        "height": 8359,
         "width": 2018,
         "x": -123,
-        "y": -832
+        "y": -1508
       }
     }
   }
