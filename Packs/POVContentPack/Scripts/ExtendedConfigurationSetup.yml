@@ -213,6 +213,28 @@ script: |
           except KeyError:
               return default_value
 
+  class ManualConfigDoc:
+      """ManualConfigDoc object for the configuration file.
+      """
+
+      def __init__(self, name: str = '', url: str = ''):
+          self.name = name
+          self.url = url
+          self.markdown_text = f"[{name}]({url})"
+
+      @property
+      def params(self) -> Dict:
+          """Getter for the instance parameters.
+
+          Returns:
+              Dict. {param_name: param_value} for each configured parameter.
+          """
+          return {
+              param_name: param_value
+              for param_name, param_value in self.__dict__.items()
+          }
+
+
 
   class Dashboard:
       """Dashboard object for the configuration file.
@@ -264,6 +286,8 @@ script: |
           self.lookup_datasets: Dict[str, LookupDataset] = {}
           self.correlation_rules: Dict[str, CorrelationRule] = {}
           self.dashboards: Dict[str, Dashboard] = {}
+          self.pre_config_docs: Dict[str, ManualConfigDoc] = {}
+          self.post_config_docs: Dict[str, ManualConfigDoc] = {}
 
           # Load and create Objects
           self.load_jobs()
@@ -274,6 +298,24 @@ script: |
           self.load_lookup_datasets()
           self.load_correlation_rules()
           self.load_dashboards()
+          self.load_pre_config_docs()
+          self.load_post_config_docs()
+          
+      def load_pre_config_docs(self) -> None:  
+          if 'pre_config_docs' in self.sections:
+              for doc in self.config['pre_config_docs']:
+                  doc_name = doc.get("name")
+                  doc_url = doc.get("url")
+                  new_doc = ManualConfigDoc(name=doc_name, url=doc_url)
+                  self.pre_config_docs[doc_name] = new_doc
+                
+      def load_post_config_docs(self) -> None:
+          if 'post_config_docs' in self.sections:
+              for doc in self.config['post_config_docs']:
+                  doc_name = doc.get("name")
+                  doc_url = doc.get("url")
+                  new_doc = ManualConfigDoc(name=doc_name, url=doc_url)
+                  self.post_config_docs[doc_name] = new_doc
 
       def load_custom_packs(self) -> None:
           """Iterates through the Packs sections and creates a Pack object for each custom pack.
@@ -440,7 +482,12 @@ script: |
       dashboards = [
           dashboard.params for _, dashboard in full_configuration.dashboards.items()
       ]
-
+      pre_config_docs = [
+          pre_config_doc.params for _, pre_config_doc in full_configuration.pre_config_docs.items()
+      ]
+      post_config_docs = [
+          post_config_doc.params for _, post_config_doc in full_configuration.post_config_docs.items()
+      ]
 
       return {
           'Jobs': jobs,
@@ -450,7 +497,9 @@ script: |
           'IntegrationInstances': instances,
           'LookupDatasets': lookup_datasets,
           'CorrelationRules': correlation_rules,
-          'Dashboards': dashboards
+          'Dashboards': dashboards,
+          'PreConfigDocs': pre_config_docs,
+          'PostConfigDocs': post_config_docs
       }
 
 
@@ -562,6 +611,24 @@ outputs:
   type: unknown
 - contextPath: ConfigurationSetup.Dashboards.url
   description: The location of the dashboard definition
+  type: unknown
+- contextPath: ConfigurationSetup.PreConfigDocs.name
+  description: The name of the pre-configuration document
+  type: unknown
+- contextPath: ConfigurationSetup.PreConfigDocs.url
+  description: The url location of the pre-configuration document
+  type: unknown
+- contextPath: ConfigurationSetup.PreConfigDocs.markdown_text
+  description: The markdown text of any pre-configuration documents
+  type: unknown
+- contextPath: ConfigurationSetup.PostConfigDocs.name
+  description: The name of the post-configuration document
+  type: unknown
+- contextPath: ConfigurationSetup.PostConfigDocs.url
+  description: The url location of the post-configuration document
+  type: unknown
+- contextPath: ConfigurationSetup.PostConfigDocs.markdown_text
+  description: The markdown text of any post-configuration documents
   type: unknown
 scripttarget: 0
 subtype: python3

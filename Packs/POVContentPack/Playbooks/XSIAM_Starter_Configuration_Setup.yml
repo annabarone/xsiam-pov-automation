@@ -1,5 +1,5 @@
 id: XSIAM Starter Configuration Setup
-version: 18
+version: 19
 vcShouldKeepItemLegacyProdMachine: false
 name: XSIAM Starter Configuration Setup
 description: Playbook to run to set-up your XSIAM Tenant with Starter Configuration
@@ -101,7 +101,7 @@ tasks:
       {
         "position": {
           "x": 547,
-          "y": 6621
+          "y": 6791
         }
       }
     note: false
@@ -641,7 +641,7 @@ tasks:
       {
         "position": {
           "x": 547,
-          "y": 6446
+          "y": 6652
         }
       }
     note: false
@@ -821,7 +821,7 @@ tasks:
       brand: ""
     nexttasks:
       '#none#':
-      - "85"
+      - "88"
     separatecontext: false
     continueonerrortype: ""
     view: |-
@@ -2122,8 +2122,10 @@ tasks:
       id: 781d5a6d-fa72-4c18-8cd3-b8b4ccd175b2
       version: -1
       name: Complete the Manual Configuration Steps
-      description: Please complete the [Manual Steps Guide](https://docs.google.com/document/d/1KrpoHsACJdNekTatWsVDnBO2vOq0VP4KqYMVSj9JwHA/edit?tab=t.0#heading=h.5y2vxu57lyb0)
-        for additional manual configuration.
+      description: |-
+        Please follow these guides to complete the configuration:
+
+        ${template}
       type: regular
       iscommand: false
       brand: ""
@@ -2135,8 +2137,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 547,
-          "y": 6264
+          "x": 870,
+          "y": 6503
         }
       }
     note: false
@@ -2231,6 +2233,102 @@ tasks:
     quietmode: 0
     isoversize: false
     isautoswitchedtoquietmode: false
+  "88":
+    id: "88"
+    taskid: 703f3415-52c8-4b54-8f43-e08578487807
+    type: condition
+    task:
+      id: 703f3415-52c8-4b54-8f43-e08578487807
+      version: -1
+      name: Manual Steps Required?
+      type: condition
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#default#':
+      - "32"
+      "yes":
+      - "89"
+    separatecontext: false
+    conditions:
+    - label: "yes"
+      condition:
+      - - operator: isExists
+          left:
+            value:
+              simple: ConfigurationSetup.PostConfigDocs
+            iscontext: true
+          right:
+            value: {}
+      - - operator: isNotEmpty
+          left:
+            value:
+              simple: ConfigurationSetup.PostConfigDocs
+            iscontext: true
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": 547,
+          "y": 6208
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "89":
+    id: "89"
+    taskid: 7a9b83da-07c8-47a6-b1bb-cc48064a7736
+    type: regular
+    task:
+      id: 7a9b83da-07c8-47a6-b1bb-cc48064a7736
+      version: -1
+      name: Set Manual Guide output
+      description: Set a value in context under the key you entered.
+      scriptName: Set
+      type: regular
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "85"
+    scriptarguments:
+      extend-context:
+        simple: template
+      key:
+        simple: template
+      value:
+        complex:
+          root: ConfigurationSetup.PostConfigDocs
+          accessor: markdown_text
+          transformers:
+          - operator: join
+            args:
+              separator:
+                value:
+                  simple: |2+
+
+
+    separatecontext: false
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": 870,
+          "y": 6380
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
 system: true
 view: |-
   {
@@ -2246,11 +2344,12 @@ view: |-
       "70_68_#default#": 0.45,
       "74_48_#default#": 0.1,
       "79_48_#default#": 0.12,
-      "87_48_#default#": 0.13
+      "87_48_#default#": 0.13,
+      "88_89_yes": 0.46
     },
     "paper": {
       "dimensions": {
-        "height": 7513,
+        "height": 7683,
         "width": 2018,
         "x": -123,
         "y": -832
