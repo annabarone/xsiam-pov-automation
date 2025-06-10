@@ -5,6 +5,7 @@ name: XSIAM Starter Configuration Setup
 description: Playbook to run to set-up your XSIAM Tenant with Starter Configuration
   for POVs
 starttaskid: "0"
+adopted: true
 tasks:
   "0":
     id: "0"

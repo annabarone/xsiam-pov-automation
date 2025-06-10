@@ -74,7 +74,7 @@ After git cloning this repository locally, you will need to:
 DEMISTO_BASE_URL=<<<<your API URL>>>>
 DEMISTO_API_KEY=<<<<your API Key previously generated>>>>
 XSIAM_AUTH_ID=<<<<your API Key ID from API Key Table>>>>
-CONTENT_REPO_RAW_LINK=http://raw.githubusercontent.com/annabarone/xsiam-soc-framework-content/refs/heads/master/xsoar_config.json
+CONTENT_REPO_RAW_LINK=https://raw.githubusercontent.com/Palo-Cortex/soc-optimization/refs/heads/main/xsoar_config.json
 ```
 
 If you have a different repository with content, please change the CONTENT_REPO_RAW_LINK with your repository's 
