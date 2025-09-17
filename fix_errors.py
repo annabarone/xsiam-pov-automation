@@ -7,7 +7,7 @@ Ensures content items have a valid `fromversion` (YAML) or `fromVersion` (JSON).
 
 Usage:
     # Capture validator output
-    demisto-sdk validate -g 2>&1 | tee sdk_errors.txt
+    demisto-sdk validate -i Packs/soc-crowdstrike-falcon -g 2>&1 | tee sdk_errors.txt
 
     # Preview (no writes)
     python3 fix_errors.py sdk_errors.txt --dry-run
