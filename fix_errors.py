@@ -29,13 +29,13 @@ Notes:
     - Minimum version applied is whatever the SDK reports per line (e.g., 5.0.0 / 6.5.0).
     - No backup files are created — commit first if you want rollback.
     - Designed so you can extend for other validation codes later.
+
 """
 #!/usr/bin/env python3
 import argparse
 import json
 import os
 import re
-import sys
 import glob
 
 # Optional YAML libs (ruamel preferred for formatting preservation)
