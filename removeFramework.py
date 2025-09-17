@@ -470,5 +470,5 @@ def delete_threat_intel():
 
 if __name__ == "__main__":
     delete_soc_content()
-    # delete_threat_intel()
-    # delete_config_automation_content()
+    delete_threat_intel()
+    delete_config_automation_content()

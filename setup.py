@@ -205,11 +205,11 @@ def get_custom_alerts(external_id):
     data = {
         "request_data": {
             "filters": [
-                {
-                    "field": "alert_source",
-                    "operator": "in",
-                    "value": ["Custom Alert"]
-                },
+                # {
+                #     "field": "alert_source",
+                #     "operator": "in",
+                #     "value": ["Custom Alert"]
+                # },
                 {
                     "field": "external_id_list",
                     "operator": "in",
