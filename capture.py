@@ -407,7 +407,7 @@ def __main__():
         else:
             print("Need a 'y' here. Retry...\n")
 
-    shutil.make_archive(pack_path, "zip", pack_path)
+    # shutil.make_archive(pack_path, "zip", pack_path)
 
     print(f"\n============\n"
           f"The demisto-sdk content was properly zipped! \n"
