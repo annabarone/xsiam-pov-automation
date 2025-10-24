@@ -53,7 +53,6 @@ script:
     import os
     import traceback
     from pkg_resources import get_distribution
-    from demisto_sdk.commands.upload.upload import upload_content_entity
     from click.exceptions import Exit
     import dateparser
     import zipfile
@@ -142,6 +141,11 @@ script:
         def post_system_content_bundle(self, file_path: str):
             if not os.environ.get('DEMISTO_API_KEY'):
                 self._init_demisto_sdk_var()
+
+            os.environ["DEMISTO_SDK_SKIP_LOGGER_SETUP"] = "yes"
+            from demisto_sdk.commands.common.logger import logging_setup
+            logging_setup("xsiam-pov-automation", console_threshold="CRITICAL", propagate=True)
+            from demisto_sdk.commands.upload.upload import upload_content_entity
 
             try:
                 upload_content_entity(input=file_path, zip=True, xsiam=True, insecure=True)
@@ -334,7 +338,7 @@ script:
         except Exception as e:
             error_message = f'POV XSIAM Content Management - {str(e)}'
             demisto.debug(error_message)
-            raise Exception(f'Issue occurred while installing the pack on the machine.\n{str(e)}')
+            raise Exception(f'Issue occurred while installing the {entry_filename} pack on the machine.\n{str(e)}')
 
 
     ''' MAIN FUNCTION '''
@@ -419,7 +423,7 @@ script:
       description: Installation Status of POV bundle
       type: string
     description: Installs custom content bundle using /xsoar/content/bundle
-  dockerimage: demisto/xsoar-tools:1.0.0.110586
+  dockerimage: demisto/xsoar-tools:1.0.0.4887903
   runonce: false
   subtype: python3
 sourcemoduleid: POV XSIAM Content Management
