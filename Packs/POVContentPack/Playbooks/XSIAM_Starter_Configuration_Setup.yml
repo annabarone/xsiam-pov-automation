@@ -1,5 +1,5 @@
 id: XSIAM Starter Configuration Setup
-version: 23
+version: 21
 contentitemexportablefields:
   contentitemfields:
     packID: POVContentPack
@@ -32,7 +32,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "50"
+        - "50"
     separatecontext: false
     continueonerrortype: ""
     view: |-
@@ -67,20 +67,20 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "93"
+        - "93"
     scriptarguments:
       configuration_file_entry_id:
         complex:
           root: File
           filters:
-          - - operator: isEqualString
-              left:
-                value:
-                  simple: File.Name
-                iscontext: true
-              right:
-                value:
-                  simple: xsoar_config.json
+            - - operator: isEqualString
+                left:
+                  value:
+                    simple: File.Name
+                  iscontext: true
+                right:
+                  value:
+                    simple: xsoar_config.json
           accessor: EntryID
     separatecontext: false
     continueonerrortype: ""
@@ -148,7 +148,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "64"
+        - "64"
     scriptarguments:
       custompacksinstalled:
         simple: ${ConfigurationSetup.CustomPacks}
@@ -189,7 +189,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "11"
+        - "11"
     scriptarguments:
       marketplacepacksinstalled:
         simple: ${ConfigurationSetup.MarketplacePacks}
@@ -230,7 +230,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "64"
+        - "64"
     scriptarguments:
       listscreated:
         simple: ${ConfigurationSetup.Lists}
@@ -271,7 +271,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "48"
+        - "48"
     scriptarguments:
       jobscreated:
         simple: ${ConfigurationSetup.Jobs}
@@ -308,7 +308,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "53"
+        - "53"
     separatecontext: false
     continueonerrortype: ""
     view: |-
@@ -327,10 +327,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "12":
     id: "12"
-    taskid: 7120467a-eab6-411e-a61f-e99d16afc6f8
+    taskid: 87b9aad3-80ff-409c-a4ea-bdaa731dc8aa
     type: regular
     task:
-      id: 7120467a-eab6-411e-a61f-e99d16afc6f8
+      id: 87b9aad3-80ff-409c-a4ea-bdaa731dc8aa
       version: -1
       name: Install Custom Packs
       description: Upload packs to the core server from the URL or marketplace.
@@ -342,9 +342,9 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#error#':
-      - "96"
+        - "96"
       '#none#':
-      - "5"
+        - "5"
     scriptarguments:
       execution-timeout:
         simple: "600"
@@ -352,8 +352,6 @@ tasks:
         simple: ${ConfigurationSetup.CustomPacks.packurl}
       retry-count:
         simple: "1"
-      skip_validation:
-        simple: "false"
     separatecontext: false
     continueonerror: true
     continueonerrortype: errorPath
@@ -387,7 +385,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "14"
+        - "14"
     separatecontext: false
     continueonerrortype: ""
     view: |-
@@ -421,7 +419,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "6"
+        - "6"
     scriptarguments:
       execution-timeout:
         simple: "1000"
@@ -465,7 +463,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "33"
+        - "33"
     separatecontext: false
     continueonerrortype: ""
     view: |-
@@ -498,7 +496,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "34"
+        - "34"
     separatecontext: false
     continueonerrortype: ""
     view: |-
@@ -532,7 +530,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "8"
+        - "8"
     scriptarguments:
       job_name:
         simple: ${ConfigurationSetup.Jobs.name}
@@ -569,7 +567,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "7"
+        - "7"
     scriptarguments:
       list_data:
         simple: ${ConfigurationSetup.Lists.listdata}
@@ -607,8 +605,8 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "15"
-      - "13"
+        - "15"
+        - "13"
     separatecontext: false
     continueonerrortype: ""
     view: |-
@@ -642,7 +640,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "12"
+        - "12"
     scriptarguments:
       filename:
         simple: ${ConfigurationSetup.CustomPacks.packid}
@@ -685,7 +683,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "3"
+        - "3"
     separatecontext: false
     continueonerrortype: ""
     view: |-
@@ -718,20 +716,20 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#default#':
-      - "64"
+        - "64"
       "yes":
-      - "20"
+        - "20"
     separatecontext: false
     conditions:
-    - label: "yes"
-      condition:
-      - - operator: isNotEmpty
-          left:
-            value:
-              simple: ConfigurationSetup.Lists
-            iscontext: true
-          right:
-            value: {}
+      - label: "yes"
+        condition:
+          - - operator: isNotEmpty
+              left:
+                value:
+                  simple: ConfigurationSetup.Lists
+                iscontext: true
+              right:
+                value: {}
     continueonerrortype: ""
     view: |-
       {
@@ -763,20 +761,20 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#default#':
-      - "48"
+        - "48"
       "yes":
-      - "18"
+        - "18"
     separatecontext: false
     conditions:
-    - label: "yes"
-      condition:
-      - - operator: isNotEmpty
-          left:
-            value:
-              simple: ConfigurationSetup.Jobs
-            iscontext: true
-          right:
-            value: {}
+      - label: "yes"
+        condition:
+          - - operator: isNotEmpty
+              left:
+                value:
+                  simple: ConfigurationSetup.Jobs
+                iscontext: true
+              right:
+                value: {}
     continueonerrortype: ""
     view: |-
       {
@@ -809,7 +807,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "2"
+        - "2"
     scriptarguments:
       filename:
         simple: xsoar_config.json
@@ -850,7 +848,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "86"
+        - "86"
     separatecontext: false
     continueonerrortype: ""
     view: |-
@@ -882,7 +880,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "88"
+        - "88"
     separatecontext: false
     continueonerrortype: ""
     view: |-
@@ -917,7 +915,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "56"
+        - "56"
     separatecontext: false
     continueonerrortype: ""
     view: |-
@@ -951,20 +949,20 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#default#':
-      - "64"
+        - "64"
       "yes":
-      - "54"
+        - "54"
     separatecontext: false
     conditions:
-    - label: "yes"
-      condition:
-      - - operator: isNotEmpty
-          left:
-            value:
-              complex:
-                root: ConfigurationSetup
-                accessor: CustomPacks
-            iscontext: true
+      - label: "yes"
+        condition:
+          - - operator: isNotEmpty
+              left:
+                value:
+                  complex:
+                    root: ConfigurationSetup
+                    accessor: CustomPacks
+                iscontext: true
     continueonerrortype: ""
     view: |-
       {
@@ -997,7 +995,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "55"
+        - "55"
     separatecontext: false
     continueonerrortype: ""
     view: |-
@@ -1029,19 +1027,19 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       "yes":
-      - "30"
+        - "30"
     separatecontext: false
     conditions:
-    - label: "yes"
-      condition:
-      - - operator: containsGeneral
-          left:
-            value:
-              simple: EnabledInstances
-            iscontext: true
-          right:
-            value:
-              simple: POV XSIAM Content Management Instance
+      - label: "yes"
+        condition:
+          - - operator: containsGeneral
+              left:
+                value:
+                  simple: EnabledInstances
+                iscontext: true
+              right:
+                value:
+                  simple: POV XSIAM Content Management Instance
     continueonerrortype: ""
     view: |-
       {
@@ -1074,7 +1072,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "94"
+        - "94"
     separatecontext: false
     continueonerrortype: ""
     view: |-
@@ -1111,7 +1109,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "59"
+        - "59"
     scriptarguments:
       body:
         simple: '{"version": 22, "propagationLabels": ["all"], "isOverridable": false,
@@ -1181,7 +1179,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "60"
+        - "60"
     scriptarguments:
       install_dependencies:
         simple: "true"
@@ -1224,7 +1222,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "58"
+        - "58"
     scriptarguments:
       install_dependencies:
         simple: "true"
@@ -1272,7 +1270,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "44"
+        - "44"
     scriptarguments:
       key:
         simple: ConfigurationSetup
@@ -1313,7 +1311,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "65"
+        - "65"
     scriptarguments:
       integrationinstancescreated:
         simple: ${ConfigurationSetup.IntegrationInstances}
@@ -1351,7 +1349,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "61"
+        - "61"
     scriptarguments:
       integration_instance_name:
         simple: ${ConfigurationSetup.IntegrationInstances.name}
@@ -1387,20 +1385,20 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#default#':
-      - "65"
+        - "65"
       "yes":
-      - "62"
+        - "62"
     separatecontext: false
     conditions:
-    - label: "yes"
-      condition:
-      - - operator: isNotEmpty
-          left:
-            value:
-              simple: ConfigurationSetup.IntegrationInstances
-            iscontext: true
-          right:
-            value: {}
+      - label: "yes"
+        condition:
+          - - operator: isNotEmpty
+              left:
+                value:
+                  simple: ConfigurationSetup.IntegrationInstances
+                iscontext: true
+              right:
+                value: {}
     continueonerrortype: ""
     view: |-
       {
@@ -1432,7 +1430,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "63"
+        - "63"
     separatecontext: false
     continueonerrortype: ""
     view: |-
@@ -1464,8 +1462,8 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "67"
-      - "17"
+        - "67"
+        - "17"
     separatecontext: false
     continueonerrortype: ""
     view: |-
@@ -1503,7 +1501,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "48"
+        - "48"
     scriptarguments:
       lookupdatasetscreated:
         simple: ${ConfigurationSetup.LookupDatasets}
@@ -1540,7 +1538,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "69"
+        - "69"
     separatecontext: false
     continueonerrortype: ""
     view: |-
@@ -1574,7 +1572,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "66"
+        - "66"
     scriptarguments:
       lookup_dataset_name:
         simple: ${ConfigurationSetup.LookupDatasets.dataset_name}
@@ -1610,20 +1608,20 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#default#':
-      - "48"
+        - "48"
       "yes":
-      - "70"
+        - "70"
     separatecontext: false
     conditions:
-    - label: "yes"
-      condition:
-      - - operator: isNotEmpty
-          left:
-            value:
-              simple: ConfigurationSetup.LookupDatasets
-            iscontext: true
-          right:
-            value: {}
+      - label: "yes"
+        condition:
+          - - operator: isNotEmpty
+              left:
+                value:
+                  simple: ConfigurationSetup.LookupDatasets
+                iscontext: true
+              right:
+                value: {}
     continueonerrortype: ""
     view: |-
       {
@@ -1655,20 +1653,20 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#default#':
-      - "68"
+        - "68"
       "yes":
-      - "71"
+        - "71"
     separatecontext: false
     conditions:
-    - label: "yes"
-      condition:
-      - - operator: isNotEmpty
-          left:
-            value:
-              simple: ConfigurationSetup.LookupDatasets.url
-            iscontext: true
-          right:
-            value: {}
+      - label: "yes"
+        condition:
+          - - operator: isNotEmpty
+              left:
+                value:
+                  simple: ConfigurationSetup.LookupDatasets.url
+                iscontext: true
+              right:
+                value: {}
     continueonerrortype: ""
     view: |-
       {
@@ -1701,7 +1699,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "68"
+        - "68"
     scriptarguments:
       filename:
         simple: ${ConfigurationSetup.LookupDatasets.dataset_name}
@@ -1746,7 +1744,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "32"
+        - "32"
     separatecontext: false
     continueonerrortype: ""
     view: |-
@@ -1780,7 +1778,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "40"
+        - "40"
     scriptarguments:
       arrayData:
         simple: ${alert.povgithubxsoarconfigfilepath}
@@ -1817,25 +1815,25 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#default#':
-      - "32"
+        - "32"
       "yes":
-      - "89"
+        - "89"
     separatecontext: false
     conditions:
-    - label: "yes"
-      condition:
-      - - operator: isExists
-          left:
-            value:
-              simple: ConfigurationSetup.PostConfigDocs
-            iscontext: true
-          right:
-            value: {}
-      - - operator: isNotEmpty
-          left:
-            value:
-              simple: ConfigurationSetup.PostConfigDocs
-            iscontext: true
+      - label: "yes"
+        condition:
+          - - operator: isExists
+              left:
+                value:
+                  simple: ConfigurationSetup.PostConfigDocs
+                iscontext: true
+              right:
+                value: {}
+          - - operator: isNotEmpty
+              left:
+                value:
+                  simple: ConfigurationSetup.PostConfigDocs
+                iscontext: true
     continueonerrortype: ""
     view: |-
       {
@@ -1868,7 +1866,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "85"
+        - "85"
     scriptarguments:
       extend-context:
         simple: template
@@ -1879,11 +1877,11 @@ tasks:
           root: ConfigurationSetup.PostConfigDocs
           accessor: markdown_text
           transformers:
-          - operator: join
-            args:
-              separator:
-                value:
-                  simple: |2+
+            - operator: join
+              args:
+                separator:
+                  value:
+                    simple: |2+
 
 
     separatecontext: false
@@ -1921,7 +1919,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "28"
+        - "28"
     separatecontext: false
     continueonerrortype: ""
     view: |-
@@ -1953,25 +1951,25 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#default#':
-      - "28"
+        - "28"
       "yes":
-      - "92"
+        - "92"
     separatecontext: false
     conditions:
-    - label: "yes"
-      condition:
-      - - operator: isExists
-          left:
-            value:
-              simple: ConfigurationSetup.PreConfigDocs
-            iscontext: true
-          right:
-            value: {}
-      - - operator: isNotEmpty
-          left:
-            value:
-              simple: ConfigurationSetup.PreConfigDocs
-            iscontext: true
+      - label: "yes"
+        condition:
+          - - operator: isExists
+              left:
+                value:
+                  simple: ConfigurationSetup.PreConfigDocs
+                iscontext: true
+              right:
+                value: {}
+          - - operator: isNotEmpty
+              left:
+                value:
+                  simple: ConfigurationSetup.PreConfigDocs
+                iscontext: true
     continueonerrortype: ""
     view: |-
       {
@@ -2004,7 +2002,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "90"
+        - "90"
     scriptarguments:
       extend-context:
         simple: template
@@ -2015,11 +2013,11 @@ tasks:
           root: ConfigurationSetup.PreConfigDocs
           accessor: markdown_text
           transformers:
-          - operator: join
-            args:
-              separator:
-                value:
-                  simple: |2+
+            - operator: join
+              args:
+                separator:
+                  value:
+                    simple: |2+
 
 
     separatecontext: false
@@ -2053,7 +2051,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "91"
+        - "91"
     separatecontext: false
     continueonerrortype: ""
     view: |-
@@ -2087,7 +2085,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "95"
+        - "95"
     separatecontext: false
     continueonerrortype: ""
     view: |-
@@ -2119,21 +2117,21 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#default#':
-      - "57"
+        - "57"
       "yes":
-      - "59"
+        - "59"
     separatecontext: false
     conditions:
-    - label: "yes"
-      condition:
-      - - operator: containsGeneral
-          left:
-            value:
-              simple: EnabledInstances
-            iscontext: true
-          right:
-            value:
-              simple: POV XSIAM Content Management Instance
+      - label: "yes"
+        condition:
+          - - operator: containsGeneral
+              left:
+                value:
+                  simple: EnabledInstances
+                iscontext: true
+              right:
+                value:
+                  simple: POV XSIAM Content Management Instance
     continueonerrortype: ""
     view: |-
       {
@@ -2172,7 +2170,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "97"
+        - "97"
     separatecontext: false
     continueonerrortype: ""
     view: |-
@@ -2207,7 +2205,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "5"
+        - "5"
     scriptarguments:
       entry_filename:
         simple: ${ConfigurationSetup.CustomPacks.packid}
@@ -2256,16 +2254,16 @@ view: |-
     }
   }
 inputs:
-- key: InstanceName
-  value: {}
-  required: false
-  description: Core REST API instance name to use.
-  playbookInputQuery: null
-- key: GitlabInstanceName
-  value: {}
-  required: false
-  description: Gitlab instance name to use.
-  playbookInputQuery: null
+  - key: InstanceName
+    value: {}
+    required: false
+    description: Core REST API instance name to use.
+    playbookInputQuery: null
+  - key: GitlabInstanceName
+    value: {}
+    required: false
+    description: Gitlab instance name to use.
+    playbookInputQuery: null
 outputs: []
 sourceplaybookid: Configuration Setup
 dirtyInputs: true
