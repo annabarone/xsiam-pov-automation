@@ -1,0 +1,401 @@
+commonfields:
+  id: SOCFWInstallPackZip
+  version: 46
+contentitemexportablefields:
+  contentitemfields:
+    packID: POVContentPack
+    packName: POV Content Pack
+    itemVersion: 1.0.0
+    fromServerVersion: ""
+    toServerVersion: ""
+    definitionid: ""
+    prevname: ""
+    isoverridable: false
+    supportedModules: []
+vcShouldKeepItemLegacyProdMachine: false
+name: SOCFWInstallPackZip
+script: |
+  import time
+  from typing import Any, Dict, List
+
+  SCRIPT_NAME = "SOCFWInstallPackZip"
+
+  # ---------------------------
+  # Logging (reliably visible in playbook task logs)
+  # ---------------------------
+
+  def log_info(msg: str):
+      try:
+          demisto.info(f"{SCRIPT_NAME}: {msg}")
+      except Exception:
+          pass
+
+  def log_debug(msg: str, debug: bool):
+      if not debug:
+          return
+      try:
+          demisto.debug(f"{SCRIPT_NAME}: {msg}")
+      except Exception:
+          pass
+
+  # ---------------------------
+  # Demisto helpers
+  # ---------------------------
+
+  def get_error(res):
+      try:
+          return res[0].get("Contents") or res[0].get("HumanReadable") or str(res[0])
+      except Exception:
+          return str(res)
+
+  def is_error(res0):
+      try:
+          return bool(res0.get("Type") == 4)  # entryTypes["error"] == 4
+      except Exception:
+          return False
+
+  def get_contents(res):
+      if not res or not isinstance(res, list) or not res[0]:
+          return {}
+      return res[0].get("Contents") or {}
+
+  def arg_to_bool(val, default=False) -> bool:
+      if val is None:
+          return default
+      if isinstance(val, bool):
+          return val
+      s = str(val).strip().lower()
+      if s == "":
+          return default
+      return s in ("true", "1", "yes", "y", "on")
+
+  def to_int(val, default: int) -> int:
+      try:
+          return int(val)
+      except Exception:
+          return default
+
+  def bool_str_tf(val: bool) -> str:
+      return "True" if bool(val) else "False"
+
+  def exec_cmd(command: str, args: Dict[str, Any], fail_on_error: bool = True):
+      res = demisto.executeCommand(command, args)
+      if not res:
+          if fail_on_error:
+              raise Exception(f"{command} returned empty response")
+          return res
+      if is_error(res[0]):
+          if fail_on_error:
+              raise Exception(get_error(res))
+          return res
+      return res
+
+  def exec_with_retry(
+      command: str,
+      args: Dict[str, Any],
+      retry_count: int,
+      retry_sleep_seconds: int,
+      context_for_error: str,
+      debug: bool,
+  ):
+      last_err = None
+      attempts = max(1, retry_count)
+
+      for attempt in range(1, attempts + 1):
+          try:
+              if attempt > 1:
+                  log_info(f"Retry {attempt}/{attempts} for {command}")
+              log_debug(f"Executing {command} args={args}", debug)
+              return exec_cmd(command, args, fail_on_error=True)
+          except Exception as e:
+              last_err = str(e)
+              if attempt >= attempts:
+                  break
+              time.sleep(max(1, retry_sleep_seconds))
+
+      raise Exception(f"{context_for_error}\nError: {last_err}")
+
+  def is_timeout_error(err_text: str) -> bool:
+      if not err_text:
+          return False
+      t = err_text.lower()
+      return (
+          "timeout" in t
+          or "timed out" in t
+          or "read timed out" in t
+          or "request timed out" in t
+          or "context deadline exceeded" in t
+          or "client.timeout exceeded" in t
+          or "awaiting headers" in t
+      )
+
+  # ---------------------------
+  # Best-effort verification (FAST and non-blocking)
+  # ---------------------------
+
+  def _extract_pack_ids(resp: Any) -> List[str]:
+      ids: List[str] = []
+      if isinstance(resp, dict):
+          r = resp.get("response")
+          if isinstance(r, list):
+              for p in r:
+                  if isinstance(p, dict) and p.get("id"):
+                      ids.append(str(p.get("id")))
+          elif isinstance(r, dict):
+              data = r.get("data")
+              if isinstance(data, list):
+                  for p in data:
+                      if isinstance(p, dict) and p.get("id"):
+                          ids.append(str(p.get("id")))
+          for k in ("data", "packs", "items", "result"):
+              v = resp.get(k)
+              if isinstance(v, list):
+                  for p in v:
+                      if isinstance(p, dict) and p.get("id"):
+                          ids.append(str(p.get("id")))
+      elif isinstance(resp, list):
+          for p in resp:
+              if isinstance(p, dict) and p.get("id"):
+                  ids.append(str(p.get("id")))
+      # de-dupe preserve order
+      seen = set()
+      out = []
+      for x in ids:
+          if x not in seen:
+              seen.add(x)
+              out.append(x)
+      return out
+
+  def fetch_installed_pack_ids(using: str, debug: bool) -> List[str]:
+      """
+      Best effort: try a couple common endpoints.
+      Return empty list if we can't fetch (we don't block installs on this).
+      """
+      candidates = [
+          "/public/v1/contentpacks/metadata/installed",
+          "/xsoar/public/v1/contentpacks/metadata/installed",
+      ]
+      for uri in candidates:
+          args = {"uri": uri, "execution-timeout": "600"}
+          if using:
+              args["using"] = using
+          try:
+              res = exec_cmd("core-api-get", args, fail_on_error=True)
+              data = get_contents(res) or {}
+              ids = _extract_pack_ids(data)
+              log_debug(f"verify endpoint {uri}: {len(ids)} ids", debug)
+              return ids
+          except Exception as e:
+              log_debug(f"verify endpoint {uri} failed: {e}", debug)
+              continue
+      return []
+
+  def quick_verify_window(
+      pack_id: str,
+      using: str,
+      seconds: int,
+      interval: int,
+      debug: bool,
+  ) -> bool:
+      """
+      Try to observe pack_id as installed for up to `seconds`.
+      If we can't, return False quickly (we won't hang the playbook).
+      """
+      if not pack_id:
+          return False
+
+      deadline = time.time() + max(0, seconds)
+      interval = max(5, interval)
+
+      while time.time() < deadline:
+          ids = fetch_installed_pack_ids(using=using, debug=debug)
+          if pack_id in (ids or []):
+              return True
+          time.sleep(interval)
+
+      return False
+
+  # ---------------------------
+  # Main
+  # ---------------------------
+
+  def main():
+      args = demisto.args()
+
+      file_url = (args.get("file_url") or "").strip()
+      if not file_url:
+          raise Exception("file_url is required")
+
+      pack_id = (args.get("pack_id") or "").strip()
+      using = (args.get("using") or "").strip()
+
+      execution_timeout = to_int(args.get("execution_timeout") or args.get("execution-timeout"), 3600)
+      skip_verify = arg_to_bool(args.get("skip_verify"), True)
+      skip_validation = arg_to_bool(args.get("skip_validation"), True)
+
+      retry_count = to_int(args.get("retry_count"), 3)
+      retry_sleep_seconds = to_int(args.get("retry_sleep_seconds"), 10)
+
+      # You said: "typically installs after 5 minutes either way"
+      # So default this to 300s to avoid playbook spinner hell.
+      poll_seconds = to_int(args.get("poll_seconds"), 300)
+      poll_interval_seconds = to_int(args.get("poll_interval_seconds"), 30)
+
+      continue_on_timeout = arg_to_bool(args.get("continue_on_timeout"), True)  # make playbook-friendly by default
+      debug = arg_to_bool(args.get("debug"), False)
+
+      log_info("Starting install")
+      log_info(f"file_url={file_url}")
+      log_info(f"pack_id={pack_id or '(none)'} using={using or '(default)'}")
+      log_info(f"execution_timeout={execution_timeout}s skip_verify={skip_verify} skip_validation={skip_validation}")
+      log_info(f"retry_count={retry_count} retry_sleep_seconds={retry_sleep_seconds}")
+      log_info(f"poll_seconds={poll_seconds} poll_interval_seconds={poll_interval_seconds}")
+      log_info(f"continue_on_timeout={continue_on_timeout} debug={debug}")
+
+      cmd_args = {
+          "file_url": file_url,
+          "execution-timeout": str(execution_timeout),
+          "skip_verify": bool_str_tf(skip_verify),
+          "skip_validation": bool_str_tf(skip_validation),
+      }
+      if using:
+          cmd_args["using"] = using
+
+      log_info("Invoking core-api-install-packs …")
+
+      try:
+          exec_with_retry(
+              "core-api-install-packs",
+              cmd_args,
+              retry_count=retry_count,
+              retry_sleep_seconds=retry_sleep_seconds,
+              context_for_error="core-api-install-packs failed",
+              debug=debug,
+          )
+
+          log_info("Install command completed without error.")
+          verified = None
+          if pack_id:
+              verified = quick_verify_window(pack_id, using, seconds=30, interval=10, debug=debug)
+
+          return_results(
+              {
+                  "status": "ok",
+                  "file_url": file_url,
+                  "pack_id": pack_id,
+                  "verified_installed": verified,
+              }
+          )
+          return
+
+      except Exception as e:
+          err = str(e)
+          log_info(f"Install raised error: {err}")
+
+          if is_timeout_error(err):
+              # Best-effort verify for up to ~5 minutes, then exit cleanly either way.
+              if pack_id:
+                  log_info(f"Timeout detected; waiting up to {poll_seconds}s to observe install (best effort) …")
+                  verified = quick_verify_window(
+                      pack_id=pack_id,
+                      using=using,
+                      seconds=poll_seconds,
+                      interval=poll_interval_seconds,
+                      debug=debug,
+                  )
+                  if verified:
+                      log_info("Observed pack as installed after timeout.")
+                      return_results(
+                          {
+                              "status": "ok_after_timeout",
+                              "file_url": file_url,
+                              "pack_id": pack_id,
+                              "verified_installed": True,
+                              "error": err,
+                          }
+                      )
+                      return
+
+              # Could not verify within the window — but you want to move on.
+              log_info("Did not verify within the window. Exiting cleanly so playbook can continue.")
+              return_results(
+                  {
+                      "status": "ok_after_timeout_unverified",
+                      "file_url": file_url,
+                      "pack_id": pack_id,
+                      "verified_installed": False,
+                      "error": err,
+                  }
+              )
+              return
+
+          # Non-timeout error -> fail (so you don't silently skip real problems)
+          raise
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+type: python
+tags:
+- Content Management
+- configuration
+- POV
+enabled: true
+system: true
+args:
+- supportedModules: []
+  name: file_url
+- supportedModules: []
+  name: execution_timeout
+  defaultValue: "3600"
+- supportedModules: []
+  name: skip_verify
+  auto: PREDEFINED
+  predefined:
+  - "True"
+  - "False"
+  defaultValue: "False"
+- supportedModules: []
+  name: skip_validation
+  auto: PREDEFINED
+  predefined:
+  - "True"
+  - "False"
+  defaultValue: "False"
+- supportedModules: []
+  name: pack_id
+- supportedModules: []
+  name: using
+- supportedModules: []
+  name: retry_count
+  defaultValue: "3"
+- supportedModules: []
+  name: retry_sleep_seconds
+  defaultValue: "10"
+- supportedModules: []
+  name: poll_seconds
+  defaultValue: "1800"
+- supportedModules: []
+  name: poll_interval_seconds
+  defaultValue: "60"
+- supportedModules: []
+  name: continue_on_timeout
+  auto: PREDEFINED
+  predefined:
+  - "True"
+  - "False"
+  defaultValue: "True"
+- supportedModules: []
+  name: debug
+  auto: PREDEFINED
+  predefined:
+  - "True"
+  - "False"
+  defaultValue: "False"
+scripttarget: 0
+subtype: python3
+pswd: ""
+runonce: false
+dockerimage: demisto/python3:3.12.12.6922358
+runas: DBotWeakRole
+engineinfo: {}
+mainengineinfo: {}
