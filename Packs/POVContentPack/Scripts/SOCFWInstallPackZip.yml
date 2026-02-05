@@ -1,11 +1,11 @@
 commonfields:
   id: SOCFWInstallPackZip
-  version: 46
+  version: 49
 contentitemexportablefields:
   contentitemfields:
     packID: POVContentPack
-    packName: POV Content Pack
-    itemVersion: 1.0.0
+    packName: ""
+    itemVersion: ""
     fromServerVersion: ""
     toServerVersion: ""
     definitionid: ""
@@ -76,7 +76,7 @@ script: |
           return default
 
   def bool_str_tf(val: bool) -> str:
-      return "True" if bool(val) else "False"
+      return "true" if bool(val) else "false"
 
   def exec_cmd(command: str, args: Dict[str, Any], fail_on_error: bool = True):
       res = demisto.executeCommand(command, args)
@@ -346,14 +346,14 @@ args:
   name: file_url
 - supportedModules: []
   name: execution_timeout
-  defaultValue: "3600"
+  defaultValue: "60"
 - supportedModules: []
   name: skip_verify
   auto: PREDEFINED
   predefined:
   - "True"
   - "False"
-  defaultValue: "False"
+  defaultValue: "True"
 - supportedModules: []
   name: skip_validation
   auto: PREDEFINED
@@ -367,7 +367,7 @@ args:
   name: using
 - supportedModules: []
   name: retry_count
-  defaultValue: "3"
+  defaultValue: "4"
 - supportedModules: []
   name: retry_sleep_seconds
   defaultValue: "10"
