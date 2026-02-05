@@ -1,6 +1,6 @@
 commonfields:
   id: SOCFWInstallPackZip
-  version: 49
+  version: 50
 contentitemexportablefields:
   contentitemfields:
     packID: POVContentPack
@@ -393,6 +393,7 @@ args:
   defaultValue: "False"
 scripttarget: 0
 subtype: python3
+timeout: 30m0s
 pswd: ""
 runonce: false
 dockerimage: demisto/python3:3.12.12.6922358
