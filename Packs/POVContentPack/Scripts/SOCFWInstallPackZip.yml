@@ -1,6 +1,6 @@
 commonfields:
   id: SOCFWInstallPackZip
-  version: 50
+  version: 73
 contentitemexportablefields:
   contentitemfields:
     packID: POVContentPack
@@ -346,7 +346,7 @@ args:
   name: file_url
 - supportedModules: []
   name: execution_timeout
-  defaultValue: "60"
+  defaultValue: "3600"
 - supportedModules: []
   name: skip_verify
   auto: PREDEFINED
@@ -367,13 +367,13 @@ args:
   name: using
 - supportedModules: []
   name: retry_count
-  defaultValue: "4"
+  defaultValue: "1"
 - supportedModules: []
   name: retry_sleep_seconds
-  defaultValue: "10"
+  defaultValue: "0"
 - supportedModules: []
   name: poll_seconds
-  defaultValue: "1800"
+  defaultValue: "0"
 - supportedModules: []
   name: poll_interval_seconds
   defaultValue: "60"

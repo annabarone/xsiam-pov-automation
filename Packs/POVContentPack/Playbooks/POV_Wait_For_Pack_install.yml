@@ -1,0 +1,193 @@
+id: 1d674722-f4a7-45c3-86f4-83f1efb37b5b
+version: 8
+vcShouldKeepItemLegacyProdMachine: false
+name: POV Wait For Pack install
+description: This is playbook checks the market place for a pack that was installed
+  and exits when it is installed.
+tags:
+- PoV
+starttaskid: "0"
+tasks:
+  "0":
+    id: "0"
+    taskid: ce093bec-358c-488b-86e1-db074c4d0f7d
+    type: start
+    task:
+      id: ce093bec-358c-488b-86e1-db074c4d0f7d
+      version: -1
+      name: ""
+      iscommand: false
+      brand: ""
+      playbooktaskmissingcomponent: null
+      istaskmissingcomponenterrordismissed: false
+    nexttasks:
+      '#none#':
+      - "2"
+    separatecontext: false
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 50
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "2":
+    id: "2"
+    taskid: 30edf6bf-7343-45de-ad62-35714fa93646
+    type: title
+    task:
+      id: 30edf6bf-7343-45de-ad62-35714fa93646
+      version: -1
+      name: Check If Packs are Installed
+      type: title
+      iscommand: false
+      brand: ""
+      playbooktaskmissingcomponent: null
+      istaskmissingcomponenterrordismissed: false
+    nexttasks:
+      '#none#':
+      - "8"
+    separatecontext: false
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 220
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "3":
+    id: "3"
+    taskid: b99136a1-7ccd-47f3-b445-7de01cff4356
+    type: title
+    task:
+      id: b99136a1-7ccd-47f3-b445-7de01cff4356
+      version: -1
+      name: Done
+      type: title
+      iscommand: false
+      brand: ""
+      playbooktaskmissingcomponent: null
+      istaskmissingcomponenterrordismissed: false
+    separatecontext: false
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 575
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "8":
+    id: "8"
+    taskid: 516532fd-e0a6-4edf-bb1f-c9eca8b12893
+    type: regular
+    task:
+      id: 516532fd-e0a6-4edf-bb1f-c9eca8b12893
+      version: -1
+      name: Check Package Status
+      description: 'Script to poll the Market Place to see if a pack has been installed. '
+      scriptName: SOCFWIsPackInstalled
+      type: regular
+      iscommand: false
+      brand: ""
+      playbooktaskmissingcomponent: null
+      istaskmissingcomponenterrordismissed: false
+    nexttasks:
+      '#none#':
+      - "3"
+    scriptarguments:
+      debug:
+        simple: ${inputs.debug}
+      pack_id:
+        complex:
+          root: ${inputs
+          accessor: pack_id}
+          transformers:
+          - operator: replace
+            args:
+              limit: {}
+              replaceWith: {}
+              toReplace:
+                value:
+                  simple: .zip
+    separatecontext: false
+    continueonerror: true
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 390
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 585,
+        "width": 380,
+        "x": 50,
+        "y": 50
+      }
+    }
+  }
+inputs:
+- key: pack_id
+  value: {}
+  required: true
+  description: 'Pack ids to check to see if pack was installed.  '
+  playbookInputQuery: null
+- key: debug
+  value:
+    simple: "false"
+  required: false
+  description: ""
+  playbookInputQuery: null
+inputSections:
+- inputs:
+  - pack_id
+  - debug
+  name: General (Inputs group)
+  description: Generic group for inputs
+outputSections:
+- outputs:
+  - SOCFW.PackInstall.done
+  name: General (Outputs group)
+  description: Generic group for outputs
+outputs:
+- contextPath: SOCFW.PackInstall.done
+  type: boolean
+sourceplaybookid: b9ebb1f7-364c-4fa3-8cfb-6e54a1218ea0
+dirtyInputs: true
+adopted: true
