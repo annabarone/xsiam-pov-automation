@@ -1,6 +1,17 @@
 commonfields:
-  id: 23d695d5-50d2-40b5-8ae8-1c969721be4e
-  version: 10
+  id: SOCFWInstallPackZip
+  version: 73
+contentitemexportablefields:
+  contentitemfields:
+    packID: POVContentPack
+    packName: ""
+    itemVersion: ""
+    fromServerVersion: ""
+    toServerVersion: ""
+    definitionid: ""
+    prevname: ""
+    isoverridable: false
+    supportedModules: []
 vcShouldKeepItemLegacyProdMachine: false
 name: SOCFWInstallPackZip
 script: |
@@ -65,7 +76,7 @@ script: |
           return default
 
   def bool_str_tf(val: bool) -> str:
-      return "True" if bool(val) else "False"
+      return "true" if bool(val) else "false"
 
   def exec_cmd(command: str, args: Dict[str, Any], fail_on_error: bool = True):
       res = demisto.executeCommand(command, args)
@@ -329,6 +340,7 @@ tags:
 - configuration
 - POV
 enabled: true
+system: true
 args:
 - supportedModules: []
   name: file_url
@@ -341,7 +353,7 @@ args:
   predefined:
   - "True"
   - "False"
-  defaultValue: "False"
+  defaultValue: "True"
 - supportedModules: []
   name: skip_validation
   auto: PREDEFINED
@@ -355,13 +367,13 @@ args:
   name: using
 - supportedModules: []
   name: retry_count
-  defaultValue: "3"
+  defaultValue: "1"
 - supportedModules: []
   name: retry_sleep_seconds
-  defaultValue: "10"
+  defaultValue: "0"
 - supportedModules: []
   name: poll_seconds
-  defaultValue: "1800"
+  defaultValue: "0"
 - supportedModules: []
   name: poll_interval_seconds
   defaultValue: "60"
@@ -381,6 +393,7 @@ args:
   defaultValue: "False"
 scripttarget: 0
 subtype: python3
+timeout: 30m0s
 pswd: ""
 runonce: false
 dockerimage: demisto/python3:3.12.12.6922358

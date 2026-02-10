@@ -1,5 +1,5 @@
 id: XSIAM Starter Configuration Setup
-version: 32
+version: 77
 contentitemexportablefields:
   contentitemfields:
     packID: POVContentPack
@@ -313,55 +313,6 @@ tasks:
     quietmode: 0
     isoversize: false
     isautoswitchedtoquietmode: false
-  "12":
-    id: "12"
-    taskid: 3eba8236-9ab7-468a-ada8-0886a03f5061
-    type: regular
-    task:
-      id: 3eba8236-9ab7-468a-ada8-0886a03f5061
-      version: -1
-      name: Install Custom Packs
-      scriptName: SOCFWInstallPackZip
-      type: regular
-      iscommand: false
-      brand: ""
-      playbooktaskmissingcomponent: null
-      istaskmissingcomponenterrordismissed: false
-    nexttasks:
-      '#error#':
-      - "96"
-      '#none#':
-      - "5"
-    scriptarguments:
-      continue_on_timeout:
-        simple: "True"
-      execution-timeout:
-        simple: "600"
-      file_url:
-        simple: ${ConfigurationSetup.CustomPacks.packurl}
-      poll_seconds:
-        simple: "0"
-      retry-count:
-        simple: "1"
-      skip_validation:
-        simple: "false"
-    separatecontext: false
-    continueonerror: true
-    continueonerrortype: errorPath
-    view: |-
-      {
-        "position": {
-          "x": 1179,
-          "y": 1963
-        }
-      }
-    note: false
-    timertriggers: []
-    ignoreworker: false
-    skipunavailable: false
-    quietmode: 0
-    isoversize: false
-    isautoswitchedtoquietmode: false
   "13":
     id: "13"
     taskid: c60ccb95-bd3a-45e9-83e2-949a1968afd2
@@ -633,7 +584,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "12"
+      - "98"
     scriptarguments:
       filename:
         simple: ${ConfigurationSetup.CustomPacks.packid}
@@ -2132,58 +2083,18 @@ tasks:
     quietmode: 0
     isoversize: false
     isautoswitchedtoquietmode: false
-  "96":
-    id: "96"
-    taskid: 88ec9f40-25d4-4eff-8562-3d211e49db5c
-    type: regular
+  "98":
+    id: "98"
+    taskid: ff3796a8-b97a-46db-9466-0b9590744bf8
+    type: playbook
     task:
-      id: 88ec9f40-25d4-4eff-8562-3d211e49db5c
+      id: ff3796a8-b97a-46db-9466-0b9590744bf8
       version: -1
-      name: Verify Custom Content Doesn't Exist
-      description: "The custom content that you're attempting to install failed. Please
-        make sure that all content that will be installed isn't already on your computer
-        as \"Custom\", not system content. \n\nTo do this:\n1. Download the .zip file
-        from the issue that failed. You can find the file in the Results section of
-        task #30 (Download Custom Packs using an HTTP request)\n2. Unzip the file
-        \n3. Search your XSIAM tenant for any instances of the content in the .zip
-        file that is \"Custom\"\n4. Delete any found custom content \n5. Click \"Mark
-        as Completed\"."
-      type: regular
-      iscommand: false
-      brand: ""
-      playbooktaskmissingcomponent: null
-      istaskmissingcomponenterrordismissed: false
-    nexttasks:
-      '#none#':
-      - "97"
-    separatecontext: false
-    continueonerrortype: ""
-    view: |-
-      {
-        "position": {
-          "x": 1650,
-          "y": 2050
-        }
-      }
-    note: false
-    timertriggers: []
-    ignoreworker: false
-    skipunavailable: false
-    quietmode: 0
-    isoversize: false
-    isautoswitchedtoquietmode: false
-  "97":
-    id: "97"
-    taskid: 33dbe986-ebc3-4dae-a246-ae2bc632ead3
-    type: regular
-    task:
-      id: 33dbe986-ebc3-4dae-a246-ae2bc632ead3
-      version: -1
-      name: Retry Install Custom Packs
-      description: Wrapper for the pov-install-content-bundle Integration Instance
-        Command
-      scriptName: POVInstallContentBundle
-      type: regular
+      name: POV Pack Installer
+      description: This designed to handle installing a series of packs at a time
+        including logic for timeouts due long run content install
+      playbookName: POV Pack Installer
+      type: playbook
       iscommand: false
       brand: ""
       playbooktaskmissingcomponent: null
@@ -2192,19 +2103,25 @@ tasks:
       '#none#':
       - "5"
     scriptarguments:
-      entry_filename:
+      debug:
+        simple: "false"
+      pack_id:
         simple: ${ConfigurationSetup.CustomPacks.packid}
-      retry-count:
-        simple: "1"
-      save_as_system:
-        simple: ${ConfigurationSetup.CustomPacks.system}
+      pack_url:
+        simple: ${ConfigurationSetup.CustomPacks.packurl}
     separatecontext: false
     continueonerrortype: ""
+    loop:
+      iscommand: false
+      exitCondition: ""
+      wait: 5
+      max: 100
+      forEach: true
     view: |-
       {
         "position": {
-          "x": 1650,
-          "y": 2182
+          "x": 1179,
+          "y": 2000
         }
       }
     note: false
@@ -2232,7 +2149,7 @@ view: |-
     "paper": {
       "dimensions": {
         "height": 6539,
-        "width": 1998,
+        "width": 1593,
         "x": 32,
         "y": -1718
       }
