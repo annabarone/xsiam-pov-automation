@@ -1,0 +1,225 @@
+commonfields:
+  id: 83e97a2a-6082-4e56-81dc-5aaeefc5d3a6
+  version: 24
+vcShouldKeepItemLegacyProdMachine: false
+name: SOCFWIsPackInstalled
+script: |
+  from typing import Any, Dict, List, Optional, Tuple
+  from datetime import datetime
+
+  SCRIPT_NAME = "SOCFWIsPackInstalled"
+
+  # ---------------------------
+  # Logging
+  # ---------------------------
+
+  def log_debug(msg: str, debug: bool):
+      if not debug:
+          return
+      try:
+          demisto.debug(f"{SCRIPT_NAME}: {msg}")
+      except Exception:
+          pass
+
+  # ---------------------------
+  # Demisto helpers
+  # ---------------------------
+
+  def get_error(res):
+      try:
+          return res[0].get("Contents") or res[0].get("HumanReadable") or str(res[0])
+      except Exception:
+          return str(res)
+
+  def is_error(res0):
+      try:
+          return bool(res0.get("Type") == 4)
+      except Exception:
+          return False
+
+  def get_contents(res):
+      if not res or not isinstance(res, list) or not res[0]:
+          return {}
+      return res[0].get("Contents") or {}
+
+  def exec_cmd(command: str, args: Dict[str, Any], fail_on_error: bool = True):
+      res = demisto.executeCommand(command, args)
+      if not res:
+          if fail_on_error:
+              raise Exception(f"{command} returned empty response")
+          return res
+      if is_error(res[0]):
+          if fail_on_error:
+              raise Exception(get_error(res))
+          return res
+      return res
+
+  def _ensure_str(x: Any) -> str:
+      return (str(x) if x is not None else "").strip()
+
+  def arg_to_bool(val, default=False) -> bool:
+      if val is None:
+          return default
+      if isinstance(val, bool):
+          return val
+      s = str(val).strip().lower()
+      if s == "":
+          return default
+      return s in ("true", "1", "yes", "y", "on")
+
+  # ---------------------------
+  # Parsing helpers
+  # ---------------------------
+
+  def _extract_pack_entries(resp: Any) -> List[Dict[str, Any]]:
+      """
+      Normalize various shapes into list[dict].
+      /xsoar/public/v1/contentpacks/metadata/installed often returns list[dict] directly.
+      """
+      if isinstance(resp, list):
+          return [x for x in resp if isinstance(x, dict)]
+
+      out: List[Dict[str, Any]] = []
+      if isinstance(resp, dict):
+          r = resp.get("response")
+          if isinstance(r, list):
+              out.extend([x for x in r if isinstance(x, dict)])
+          for k in ("data", "packs", "items", "result"):
+              v = resp.get(k)
+              if isinstance(v, list):
+                  out.extend([x for x in v if isinstance(x, dict)])
+      return out
+
+  def _match_pack(entry: Dict[str, Any], target: str) -> bool:
+      """
+      Match by id/name/packId (tenants vary). Compare lowercase.
+      """
+      t = target.lower()
+      for k in ("id", "name", "packId", "pack_id"):
+          v = str(entry.get(k) or "").strip().lower()
+          if v and v == t:
+              return True
+      return False
+
+  def _extract_version(entry: Dict[str, Any]) -> Optional[str]:
+      """
+      Tenants vary: version might be 'currentVersion', 'version', 'installedVersion', etc.
+      Return first non-empty string.
+      """
+      for k in ("currentVersion", "installedVersion", "version", "packVersion"):
+          v = str(entry.get(k) or "").strip()
+          if v:
+              return v
+      return None
+
+  # ---------------------------
+  # Core check (list endpoint, but only keep one match)
+  # ---------------------------
+
+  def _list_check_installed_and_version(pack_id: str, using: str, debug: bool) -> Tuple[bool, Optional[str]]:
+      """
+      Uses installed-metadata endpoint(s). We DO NOT return the list.
+      We find at most one matching entry and extract version.
+      """
+      candidates = [
+          "/xsoar/public/v1/contentpacks/metadata/installed",
+          "/public/v1/contentpacks/metadata/installed",
+      ]
+
+      target = pack_id.strip().lower()
+
+      for uri in candidates:
+          args = {"uri": uri, "execution-timeout": "120"}
+          if using:
+              args["using"] = using
+
+          try:
+              res = exec_cmd("core-api-get", args, fail_on_error=True)
+              data = get_contents(res)
+              entries = _extract_pack_entries(data)
+              log_debug(f"list-check {uri}: entries={len(entries)}", debug)
+
+              for e in entries:
+                  if _match_pack(e, target):
+                      return True, _extract_version(e)
+
+              return False, None
+
+          except Exception as e:
+              log_debug(f"list-check failed on {uri}: {e}", debug)
+
+      # If endpoints failed, safest for polling is "not installed yet"
+      return False, None
+
+  # ---------------------------
+  # Main
+  # ---------------------------
+
+  def main():
+      args = demisto.args()
+      debug = arg_to_bool(args.get("debug"), False)
+
+      pack_id = _ensure_str(args.get("pack_id") or args.get("PACK_ID") or args.get("id") or args.get("packId"))
+      if not pack_id:
+          raise Exception("pack_id is required")
+
+      using = _ensure_str(args.get("using"))
+
+      installed, version = _list_check_installed_and_version(pack_id=pack_id, using=using, debug=debug)
+      status = "done" if installed else "running"
+      last_checked = datetime.utcnow().isoformat(timespec="seconds") + "Z"
+
+      # IMPORTANT: match your configured output paths exactly: SOCFW.PackInstallall.*
+      ctx = {
+          "pack_id": pack_id,
+          "status": status,
+          "done": installed,
+          "version": version,
+          "last_checked": last_checked,
+      }
+
+      # Overwrite single object (no appending)
+      demisto.setContext("SOCFW.PackInstallall", ctx)
+
+      # Tiny war-room output
+      return_results(f"Pack {pack_id} installed={installed} version={version or 'unknown'}")
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+type: python
+tags: []
+comment: 'Script to poll the Market Place to see if a pack has been installed. '
+enabled: true
+args:
+- supportedModules: []
+  name: pack_id
+  required: true
+  default: true
+- supportedModules: []
+  name: using
+- supportedModules: []
+  name: debug
+  auto: PREDEFINED
+  predefined:
+  - "true"
+  - "false"
+  defaultValue: "false"
+outputs:
+- contextPath: SOCFW.PackInstall.pack_id
+  type: string
+- contextPath: SOCFW.PackInstall.status
+  type: string
+- contextPath: SOCFW.PackInstall.done
+  type: boolean
+- contextPath: SOCFW.PackInstall.version
+  type: string
+- contextPath: SOCFW.PackInstall.last_checked
+  type: date
+scripttarget: 0
+subtype: python3
+pswd: ""
+runonce: false
+dockerimage: demisto/python3:3.12.12.7036162
+runas: DBotWeakRole
+engineinfo: {}
+mainengineinfo: {}
