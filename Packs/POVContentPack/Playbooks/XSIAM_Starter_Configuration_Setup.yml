@@ -1,5 +1,5 @@
 id: XSIAM Starter Configuration Setup
-version: 77
+version: 78
 contentitemexportablefields:
   contentitemfields:
     packID: POVContentPack
@@ -569,14 +569,14 @@ tasks:
     isautoswitchedtoquietmode: false
   "30":
     id: "30"
-    taskid: 03c1d75b-3bd4-42fe-800b-b9dea077aec6
+    taskid: 6105d110-4c0f-4dc0-9fed-4e06cfabbd45
     type: regular
     task:
-      id: 03c1d75b-3bd4-42fe-800b-b9dea077aec6
+      id: 6105d110-4c0f-4dc0-9fed-4e06cfabbd45
       version: -1
       name: Download Custom Packs using an HTTP request
-      description: Sends an HTTP request. Returns the response as a JSON file.
-      scriptName: http
+      description: Sends a HTTP request with advanced capabilities.
+      scriptName: HttpV2
       type: regular
       iscommand: false
       brand: ""
@@ -590,8 +590,12 @@ tasks:
         simple: ${ConfigurationSetup.CustomPacks.packid}
       method:
         simple: GET
-      saveAsFile:
+      proxy:
+        simple: "False"
+      save_as_file:
         simple: "yes"
+      unsecure:
+        simple: "True"
       url:
         simple: ${ConfigurationSetup.CustomPacks.packurl}
     separatecontext: false
@@ -736,14 +740,14 @@ tasks:
     isautoswitchedtoquietmode: false
   "40":
     id: "40"
-    taskid: db3dc4fd-7b69-446e-8908-bdfe24db7b64
+    taskid: f5a7f61e-448f-4811-aa5a-f89a364e6050
     type: regular
     task:
-      id: db3dc4fd-7b69-446e-8908-bdfe24db7b64
+      id: f5a7f61e-448f-4811-aa5a-f89a364e6050
       version: -1
       name: Download Configuration File from raw HTTP GitHub Repo
-      description: Sends http request. Returns the response as json.
-      scriptName: http
+      description: Sends a HTTP request with advanced capabilities.
+      scriptName: HttpV2
       type: regular
       iscommand: false
       brand: ""
@@ -757,8 +761,12 @@ tasks:
         simple: xsoar_config.json
       method:
         simple: GET
-      saveAsFile:
+      proxy:
+        simple: "False"
+      save_as_file:
         simple: "yes"
+      unsecure:
+        simple: "True"
       url:
         simple: ${POVGitHubRepoArray}
     separatecontext: false
@@ -1620,14 +1628,14 @@ tasks:
     isautoswitchedtoquietmode: false
   "71":
     id: "71"
-    taskid: 95c2d0a6-abd7-4cb0-8757-6956c7f2ef50
+    taskid: 6144cf65-143e-4d13-a29c-c0eddc84ac58
     type: regular
     task:
-      id: 95c2d0a6-abd7-4cb0-8757-6956c7f2ef50
+      id: 6144cf65-143e-4d13-a29c-c0eddc84ac58
       version: -1
       name: Download Lookup Dataset from URL
-      description: Sends http request. Returns the response as json.
-      scriptName: http
+      description: Sends a HTTP request with advanced capabilities.
+      scriptName: HttpV2
       type: regular
       iscommand: false
       brand: ""
@@ -1641,8 +1649,10 @@ tasks:
         simple: ${ConfigurationSetup.LookupDatasets.dataset_name}
       method:
         simple: GET
-      saveAsFile:
+      save_as_file:
         simple: "yes"
+      unsecure:
+        simple: "True"
       url:
         simple: ${ConfigurationSetup.LookupDatasets.url}
     separatecontext: false
