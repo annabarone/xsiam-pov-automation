@@ -1,5 +1,5 @@
 id: XSIAM Starter Configuration Setup
-version: 78
+version: 11
 contentitemexportablefields:
   contentitemfields:
     packID: POVContentPack
@@ -584,7 +584,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - "98"
+      - "96"
     scriptarguments:
       filename:
         simple: ${ConfigurationSetup.CustomPacks.packid}
@@ -2093,18 +2093,18 @@ tasks:
     quietmode: 0
     isoversize: false
     isautoswitchedtoquietmode: false
-  "98":
-    id: "98"
-    taskid: ff3796a8-b97a-46db-9466-0b9590744bf8
-    type: playbook
+  "96":
+    id: "96"
+    taskid: 39863ad6-0ca3-4a61-97c0-217600491a24
+    type: regular
     task:
-      id: ff3796a8-b97a-46db-9466-0b9590744bf8
+      id: 39863ad6-0ca3-4a61-97c0-217600491a24
       version: -1
-      name: POV Pack Installer
-      description: This designed to handle installing a series of packs at a time
-        including logic for timeouts due long run content install
-      playbookName: POV Pack Installer
-      type: playbook
+      name: Install Custom Content Packs
+      description: Wrapper for the pov-install-content-bundle Integration Instance
+        Command
+      scriptName: POVInstallContentBundle
+      type: regular
       iscommand: false
       brand: ""
       playbooktaskmissingcomponent: null
@@ -2113,20 +2113,12 @@ tasks:
       '#none#':
       - "5"
     scriptarguments:
-      debug:
-        simple: "false"
-      pack_id:
+      entry_filename:
         simple: ${ConfigurationSetup.CustomPacks.packid}
-      pack_url:
-        simple: ${ConfigurationSetup.CustomPacks.packurl}
+      save_as_system:
+        simple: ${ConfigurationSetup.CustomPacks.system}
     separatecontext: false
     continueonerrortype: ""
-    loop:
-      iscommand: false
-      exitCondition: ""
-      wait: 5
-      max: 100
-      forEach: true
     view: |-
       {
         "position": {
